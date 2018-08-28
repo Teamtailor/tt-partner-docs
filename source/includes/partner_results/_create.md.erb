@@ -1,0 +1,56 @@
+## Create partner results
+
+```http
+POST https://api.teamtailor.com/partner/partner_results HTTP/1.1
+Authorization: Token token=abc123abc123
+X-Api-Version: <%= config[:api_version] %>
+
+{
+  "data":{
+    "type":"partner-results",
+    "attributes":{
+      "candidate-id":102,
+      "status":"sent",
+      "summary":"High five",
+      "assessment":{
+        "score":82,
+        "grade":2,
+        "duration":"0:32:14"
+      },
+      "details":{
+        "rating":"10",
+        "awesomeness":"confirmed"
+      }
+    }
+  }
+}
+```
+
+> Example response
+
+```json
+{
+  "data": {
+    "id": "3230d614-a33b-4a25-ac9c-4ec107e60f2e",
+    "type": "partner-results",
+    "links": {
+      "self": "https://api.teamtailor.localhost/partner/partner-results/3230d614-a33b-4a25-ac9c-4ec107e60f2e"
+    },
+    "attributes": {
+      "assessment": {
+        "score": 82,
+        "grade": "excelled",
+        "duration": 1934
+      },
+      "details": {
+        "rating": "10",
+        "awesomeness": "confirmed"
+      },
+      "status": "sent",
+      "summary": "High five",
+      "url": null,
+      "candidate-id": 102
+    }
+  }
+}
+```
