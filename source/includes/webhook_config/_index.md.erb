@@ -1,0 +1,55 @@
+# Webhook config 
+
+A webhook should be provided following the format below.
+We'll use the endpoint `/config` prefixed by your `BASE_URL` to fetch the configuration.
+
+```json
+{
+  "config": {
+    "fields": [
+      {
+        "id": "type",
+        "label": "Test",
+        "placeholder": "Select test",
+        "type": "select",
+        "options": [
+          { "id": 1, "label": "Algorithm test" },
+          { "id": 2, "label": "Data structure test" },
+          { "id": 3, "label": "Project" }
+        ]
+      },
+      {
+        "id": "threshold",
+        "label": "Threshold",
+        "placeholder": "Minimum score to pass",
+        "type": "number",
+        "step": 5,
+        "min": 0,
+        "max": 100
+      }
+    ]
+  }
+}
+```
+
+### Attributes
+
+Attribute        | Type    | Description
+-----------------|---------|------------
+config           | object  | Top-level object
+fields           | array   | List of possible fields
+
+### Field objects
+
+Field objects follow the HTML form standard in regards to types, possible options, labels and placeholders.
+For example, __step__, __min__ and __max__ may be provided for the __"number"__ type and an __options__ array
+may be provided for the __"select"__ type.
+
+Attribute        | Type    | Description
+-----------------|---------|------------
+id               | string  | Identifier for this field 
+label            | string  | Human readable label
+placeholder      | string  | Form placeholder
+type             | string  | Type of form element
+
+
