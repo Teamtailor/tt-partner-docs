@@ -1,1 +1,51 @@
 # Partner Results
+
+
+## Partner result object
+
+```json
+{
+  "data": {
+    "id": "3230d614-a33b-4a25-ac9c-4ec107e60f2e",
+    "type": "partner-results",
+    "links": {
+      "self": "https://api.teamtailor.com/partner/partner_results/3230d614-a33b-4a25-ac9c-4ec107e60f2e"
+    },
+    "attributes": {
+      "assessment": {
+        "score": 82,
+        "grade": "excelled",
+        "duration": 1934
+      },
+      "details": {
+        "rating": "10",
+        "awesomeness": "confirmed"
+      },
+      "status": "sent",
+      "summary": "High five",
+      "url": "apple.com",
+      "candidate-id": 333
+    }
+  }
+}
+```
+
+### Attributes
+
+Attribute        | Type    | Description
+-----------------|---------|------------
+assessment       | object  | Assessment object
+details          | object  | Details object. May be any valid JSON object at most 2 levels deep.
+status           | string  | May be __"sending"__, __"sent"__, __"pending"__, __"completed"__ or __"failed"__
+summary          | string  | Summary
+url              | string  | URL for result
+candidate-id     | string  | __Immutable__ UUID identifier for candidate
+
+
+#### Assessment object
+Attribute        | Type    | Description
+-----------------|---------|------------
+score            | integer | Must be between 0 and 100.
+grade            | string  | May be __"failed"__, __"passed"__ or __"excelled"__.
+duration         | integer | Duration of test in seconds
+
