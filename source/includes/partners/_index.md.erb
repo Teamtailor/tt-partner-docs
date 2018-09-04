@@ -1,0 +1,52 @@
+# Partners
+
+
+## Partner object
+
+```json
+{
+  "data": {
+    "id": "99",
+    "type": "partners",
+    "links": {
+      "self": "https://api.teamtailor.com/partner/v1/partners/99"
+    },
+    "attributes": {
+      "name": "Pied Piper",
+      "base-url": "https://piedpiper.com",
+      "webhook-config": {
+        "fields": [
+          {
+            "id": "type",
+            "label": "Test",
+            "placeholder": "Select test",
+            "type": "select",
+            "options": [
+              { "id": 1, "label": "Sales test" },
+              { "id": 2, "label": "Programming test" },
+              { "id": 3, "label": "Math exam" }
+            ]
+          },
+          {
+            "id": "threshold",
+            "label": "Threshold",
+            "placeholder": "Minimum score to pass",
+            "type": "number",
+            "step": 5,
+            "min": 0,
+            "max": 100
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+### Attributes
+
+Attribute        | Type    | Description
+-----------------|---------|------------
+name             | string  | __Immutable__ Partner name
+base-url         | string  | Base URL for receiving webhooks
+webhook-config   | object  | Webhook configuration object
