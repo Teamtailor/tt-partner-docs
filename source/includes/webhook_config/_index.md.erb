@@ -1,7 +1,8 @@
-# Webhook config 
+# Webhook config
 
-A webhook should be provided following the format below.
-We'll use the endpoint `/config` prefixed by your `BASE_URL` to fetch the configuration.
+A webhook config should be provided following the format below.
+We will fetch this config each time a new trigger is set up.
+The JSON to the right is an example of the expected response.
 
 ```json
 {
@@ -15,7 +16,7 @@ We'll use the endpoint `/config` prefixed by your `BASE_URL` to fetch the config
         "options": [
           { "id": 1, "label": "Algorithm test" },
           { "id": 2, "label": "Data structure test" },
-          { "id": 3, "label": "Project" }
+          { "id": 3, "label": "Javascript programming test" }
         ]
       },
       {
@@ -32,7 +33,10 @@ We'll use the endpoint `/config` prefixed by your `BASE_URL` to fetch the config
 }
 ```
 
-### Attributes
+### HTTP Request
+`GET ${BASE_URL}/config`
+
+### Expected response
 
 Attribute        | Type    | Description
 -----------------|---------|------------
@@ -43,13 +47,11 @@ fields           | array   | List of possible fields
 
 Field objects follow the HTML form standard in regards to types, possible options, labels and placeholders.
 For example, __step__, __min__ and __max__ may be provided for the __"number"__ type and an __options__ array
-may be provided for the __"select"__ type.
+with __id__/__label__ may be provided for the __"select"__ type.
 
 Attribute        | Type    | Description
 -----------------|---------|------------
-id               | string  | Identifier for this field 
+id               | string  | Identifier for this field, will be sent in webhook
 label            | string  | Human readable label
 placeholder      | string  | Form placeholder
 type             | string  | Type of form element
-
-

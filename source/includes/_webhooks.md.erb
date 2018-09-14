@@ -1,0 +1,65 @@
+# Webhooks
+
+When a trigger is executed in Teamtailor, the webhook JSON object is sent to your configurable endpoint.
+
+<aside class="notice">
+  Read more about <a href="http://support.teamtailor.com/applicant-tracking/triggers" target="_blank">triggers in our support center</a>.
+</aside>
+
+```http
+POST ${BASE_URL}/webhook HTTP/1.1
+Authorization: Bearer abc123abc123
+
+{
+  "partner_event": {
+    "id": "f3d7e8e2-da33-4c10-ae5f-0e7f4d46f6d7",
+    "name": "candidate moved",
+    "webhook_data": {
+      "test": "1",
+      "threshold": "75"
+    },
+    "partner_result": {
+      "id": "1a6d5a41-f0dd-4226-9d3b-186392bea484",
+      "status": "pending"
+    },
+    "candidate": {
+      "first_name": "Juston",
+      "last_name": "Becker",
+      "email": "applicant100@example.com",
+      "job": {
+        "title": "Full-stack web developer",
+        "stage": "After Interview"
+      },
+      "recruiter": {
+        "name": "Edison Kuhn",
+        "email": "email1@example.com"
+      },
+      "locations": [
+        {
+          "name": "Stockholm",
+          "address": "Åsögatan 18, 126 41, Stockholm"
+        }
+      ],
+      "department": "Product development",
+      "role": "Designer"
+    }
+  }
+}
+```
+
+### HTTP Request
+`POST ${BASE_URL}/webhook`
+
+### Webhook JSON object
+
+The JSON object sent to you contains the candidate data, the selected trigger's "webhook data" and a reference to the [partner result](#partner-results) object, in case an assessment is requested.
+
+The request is authenticated with the client-specific "provider key" in the Authorization Bearer header.
+
+Attribute         | Value
+------------------| -------
+id                | Unique identifier of this event.
+name              | Human readable event type.
+webhook_data      | The picked options from your [Webhook config](#webhook-config), for example test ID and threshold value.
+partner_result    | The result presented to the customer. Update scores, status etc using the [Partner Results resource]("#partner-results").
+candidate         | Candidate data.
