@@ -1,13 +1,14 @@
-## Create a new result
+## Update a result
 
 ```http
-POST https://api.teamtailor.com/partner/v1/partner_results HTTP/1.1
+PUT https://api.teamtailor.com/partner/v1/partner_results/3230d614-a33b-4a25-ac9c-4ec107e60f2e HTTP/1.1
 Authorization: Bearer abc123abc123
 X-Api-Version: <%= config[:api_version] %>
 
 {
   "data":{
     "type": "partner-results",
+    "id": "3230d614-a33b-4a25-ac9c-4ec107e60f2e",
     "attributes":{
       "status": "completed",
       "summary": "The candidate passed the test with excellent results",
@@ -53,3 +54,5 @@ X-Api-Version: <%= config[:api_version] %>
   }
 }
 ```
+
+Update a result by using the ID from the [Webhook object](#webhooks).

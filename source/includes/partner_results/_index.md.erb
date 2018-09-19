@@ -34,12 +34,12 @@
 
 Attribute        | Type    | Description
 -----------------|---------|------------
-assessment       | object  | Assessment object
-details          | object  | Details object. May be any valid JSON object at most 2 levels deep.
-status           | string  | May be __"sending"__, __"sent"__, __"pending"__, __"completed"__ or __"failed"__
-summary          | string  | Summary
-url              | string  | URL for result
-candidate-id     | string  | __Immutable__ UUID identifier for candidate
+assessment       | object  | Assessment object.
+details          | object  | Details object. May be any valid JSON object at most 2 levels deep. The data is displayed to the customer.
+status           | string  | May be __"sending"__, __"sent"__, __"pending"__, __"completed"__ or __"failed"__.
+summary          | string  | Summary text.
+url              | string  | URL for viewing a report on your website.
+candidate-id     | string  | __Immutable__ UUID identifier for candidate.
 
 
 #### Assessment object
@@ -48,4 +48,3 @@ Attribute        | Type    | Description
 score            | integer | Must be between 0 and 100.
 grade            | string  | May be __"failed"__, __"passed"__ or __"excelled"__.
 duration         | integer | Duration of test in seconds
-
