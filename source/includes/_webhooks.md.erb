@@ -11,20 +11,20 @@ POST ${BASE_URL}/webhook HTTP/1.1
 Authorization: Bearer xxx-provider-key
 
 {
-  "partner_event": {
+  "partner-event": {
     "id": "f3d7e8e2-da33-4c10-ae5f-0e7f4d46f6d7",
-    "webhook_data": {
+    "webhook-data": {
       "test": "1",
       "threshold": "75"
     },
-    "partner_result": {
+    "partner-result": {
       "id": "1a6d5a41-f0dd-4226-9d3b-186392bea484",
       "status": "sending"
     },
     "candidate": {
       "id": 54321,
-      "first_name": "Juston",
-      "last_name": "Becker",
+      "first-name": "Juston",
+      "last-name": "Becker",
       "email": "applicant100@example.com",
       "phone": "+4670432121"
       "job": {
@@ -61,6 +61,6 @@ The request is authenticated with the client-specific "provider key" in the Auth
 Attribute         | Value
 ------------------| -------
 id                | Unique identifier of this event.
-webhook_data      | The picked options from your [Webhook config](#webhook-config), for example test ID and threshold value.
-partner_result    | The result presented to the customer. Update scores, status etc using the [Partner Results resource](#partner-results).
+webhook-data      | The picked options from your [Webhook config](#webhook-config), for example test ID and threshold value.
+partner-result    | The result presented to the customer. Update scores, status etc using the [Partner Results resource](#partner-results).
 candidate         | Candidate data.
