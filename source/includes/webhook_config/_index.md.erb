@@ -9,7 +9,11 @@ The request is authenticated with the client-specific “provider key” in the 
 ```http
 GET ${BASE_URL}/config HTTP/1.1
 Authorization: Bearer xxx-provider-key
+```
 
+> Expected response
+
+```json
 {
   "config": {
     "fields": [
