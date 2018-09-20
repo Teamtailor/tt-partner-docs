@@ -13,20 +13,23 @@ Authorization: Bearer abc123abc123
 {
   "partner_event": {
     "id": "f3d7e8e2-da33-4c10-ae5f-0e7f4d46f6d7",
-    "name": "candidate moved",
+    "name": "Webhook trigger",
     "webhook_data": {
       "test": "1",
       "threshold": "75"
     },
     "partner_result": {
       "id": "1a6d5a41-f0dd-4226-9d3b-186392bea484",
-      "status": "sent"
+      "status": "sending"
     },
     "candidate": {
+      "id": 54321,
       "first_name": "Juston",
       "last_name": "Becker",
       "email": "applicant100@example.com",
+      "phone": "+4670432121"
       "job": {
+        "id": 12345,
         "title": "Full-stack web developer",
         "stage": "After Interview"
       },
@@ -59,7 +62,7 @@ The request is authenticated with the client-specific "provider key" in the Auth
 Attribute         | Value
 ------------------| -------
 id                | Unique identifier of this event.
-name              | Human readable event type.
+name              | Human readable event type. Can be "Trigger webhook" or "Manual webhook".
 webhook_data      | The picked options from your [Webhook config](#webhook-config), for example test ID and threshold value.
 partner_result    | The result presented to the customer. Update scores, status etc using the [Partner Results resource](#partner-results).
 candidate         | Candidate data.
