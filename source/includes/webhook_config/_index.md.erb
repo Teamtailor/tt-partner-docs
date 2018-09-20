@@ -4,7 +4,8 @@ A webhook config should be provided following the format below.
 We will fetch this config each time a new trigger is set up.
 The JSON to the right is an example of the expected response.
 
-The request is authenticated with the client-specific “provider key” in the Authorization Bearer header.
+To use the same config with the same set of fields for all clients, you can save a static config on the [Partner resource](#partners).
+In that case we won't get the config using this endpoint.
 
 ```http
 GET ${BASE_URL}/config HTTP/1.1
@@ -44,6 +45,8 @@ Authorization: Bearer xxx-provider-key
 
 ### HTTP Request
 `GET ${BASE_URL}/config`
+
+The request is authenticated with the client-specific “provider key” in the Authorization Bearer header.
 
 ### Expected response
 

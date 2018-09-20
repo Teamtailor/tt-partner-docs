@@ -1,5 +1,8 @@
 # Partners
 
+This is the object representing your Partner account.
+For most use-cases this object won't be used, but you can change your `BASE_URL` by updating this object.
+You can also save a static "webook-config" that will be used instead of the [`/config`](#webhook-config) endpoint.
 
 ## Partner object
 
@@ -13,7 +16,7 @@
     },
     "attributes": {
       "name": "Pied Piper",
-      "base-url": "https://piedpiper.com",
+      "base-url": "https://piedpiper.com/teamtailor",
       "webhook-config": {
         "fields": [
           {
@@ -49,4 +52,4 @@ Attribute        | Type    | Description
 -----------------|---------|------------
 name             | string  | __Immutable__ Partner name
 base-url         | string  | Base URL for receiving webhooks
-webhook-config   | object  | Webhook configuration object
+webhook-config   | object  | Static webhook config object (optional).
