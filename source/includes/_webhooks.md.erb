@@ -64,3 +64,7 @@ id                | Unique identifier of this event.
 webhook-data      | The picked options from your [Webhook config](#webhook-config), for example test ID and threshold value.
 partner-result    | The result presented to the customer. Update scores, status etc using the [Partner Results resource](#partner-results).
 candidate         | Candidate data.
+
+### Error handling
+
+We expect your webhook to return a HTTP 2xx status code. Other responses will indicate to us that you didn't successfully receive the webhook. In this case we will attempt to deliver the webhook every hour for three days or until we get a HTTP 2xx status code. We will notify you by email on the first retry failure as well as every third from there on.
