@@ -53,17 +53,42 @@ The request is authenticated with the client-specific “provider key” in the 
 Attribute        | Type    | Description
 -----------------|---------|------------
 config           | object  | Top-level object
-fields           | array   | List of possible fields
+fields           | array   | List of possible fields (see below)
 
 ### Field objects
-
-Field objects follow the HTML form standard in regards to types, possible options, labels and placeholders.
-For example, __step__, __min__ and __max__ may be provided for the __"number"__ type and an __options__ array
-with __id__/__label__ may be provided for the __"select"__ type.
 
 Attribute        | Type    | Description
 -----------------|---------|------------
 id               | string  | Identifier for this field, will be sent in webhook
 label            | string  | Human readable label
 placeholder      | string  | Form placeholder
-type             | string  | Type of form element
+type             | string  | Type of form element (see below)
+
+### Supported field types
+
+Field objects follow the HTML form standard in regards to types, possible options, labels and placeholders.
+For example, __disabled__ may be provided for the __"text"__ type, __step__, __min__ and __max__ may be provided for the __"number"__ type and an __options__ array
+with __id__/__label__ may be provided for the __"select"__ type.
+
+All of the supported field types:
+
+- checkbox
+- color
+- date
+- datetime
+- datetime-local
+- email
+- file
+- hidden
+- month
+- number
+- password
+- radio
+- range
+- reset
+- search
+- select
+- tel
+- text
+- url
+- week
