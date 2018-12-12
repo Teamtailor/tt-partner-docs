@@ -25,7 +25,13 @@ This is the object representing a result from a test or similar, displayed on th
       "status": "sent",
       "summary": "High five",
       "url": "apple.com",
-      "candidate-id": 333
+      "candidate-id": 333,
+      "attachments": [
+        {
+          "url": "https://google.com/robots.txt",
+          "description": "Test results"
+        }
+      ]
     }
   }
 }
@@ -41,6 +47,7 @@ status           | string  | May be __"sending"__, __"sent"__, __"pending"__, __
 summary          | string  | Summary text.
 url              | string  | URL for viewing a report on your website.
 candidate-id     | string  | __Immutable__ UUID identifier for candidate.
+attachments	 | list	   | List of attachment objects containing keys: __"url"__ and __"description"__.
 
 
 #### Assessment object
