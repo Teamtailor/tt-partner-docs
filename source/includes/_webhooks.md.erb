@@ -27,6 +27,8 @@ Authorization: Bearer xxx-provider-key
       "last-name": "Becker",
       "email": "applicant100@example.com",
       "phone": "+4670432121"
+      "department": "Product development",
+      "role": "Designer"
       "job": {
         "id": 12345,
         "title": "Full-stack web developer",
@@ -34,7 +36,8 @@ Authorization: Bearer xxx-provider-key
       },
       "recruiter": {
         "name": "Edison Kuhn",
-        "email": "email1@example.com"
+        "email": "email1@example.com",
+        "phone": "+461234567"
       },
       "locations": [
         {
@@ -42,8 +45,20 @@ Authorization: Bearer xxx-provider-key
           "address": "Åsögatan 18, 126 41, Stockholm"
         }
       ],
-      "department": "Product development",
-      "role": "Designer"
+      "questions": [
+        {
+          "question": "What are your preferred environments?",
+          "answer": ["Ruby on Rails", "Ember.js"]
+        },
+        {
+          "question": "How many years relevant work experience do you have?",
+          "answer": "10 years"
+        },
+        {
+          "question": "Are you open for working remote?",
+          "answer": "yes"
+        }
+      ]
     }
     "company": {
       "name": "Teamtailor",
@@ -63,13 +78,17 @@ The JSON object sent to you contains the candidate data, the selected trigger's 
 
 The request is authenticated with the client-specific "provider key" in the Authorization Bearer header.
 
-Attribute         | Value
-------------------| -------
-id                | Unique identifier of this event.
-webhook-data      | The picked options from your [Webhook config](#webhook-config), for example test ID and threshold value.
-partner-result    | The result presented to the customer. Update scores, status etc using the [Partner Results resource](#partner-results).
-candidate         | Candidate data.
-company           | Company data.
+Attribute           | Value
+------------------- | -------
+id                  | Unique identifier of this event.
+webhook-data        | The picked options from your [Webhook config](#webhook-config), for example test ID and threshold value.
+partner-result      | The result presented to the customer. Update scores, status etc using the [Partner Results resource](#partner-results).
+company             | Company data.
+candidate           | Candidate data.
+candidate.job       | Candidate job data: `id`, `title`, `stage`.
+candidate.recruiter | Job recruiter data: `name`, `email`, `phone`.
+candidate.locations | Candidate locations, list with: `name`, `address`.
+candidate.questions | Candidate answers to questions, list with: `question`, `answer`. Supported types: Text, Choice (list), Boolean (`yes`/`no`), Range (eg, "10 years"), File (url to file, valid for 1 hour)
 
 ### Error handling
 
