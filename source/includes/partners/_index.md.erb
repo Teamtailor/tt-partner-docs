@@ -18,28 +18,30 @@ You can also save a static "webook-config" that will be used instead of the [`/c
       "name": "Pied Piper",
       "base-url": "https://piedpiper.com/teamtailor",
       "webhook-config": {
-        "fields": [
-          {
-            "id": "type",
-            "label": "Test",
-            "placeholder": "Select test",
-            "type": "select",
-            "options": [
+        "config": {
+          "fields": [
+            {
+              "id": "type",
+              "label": "Test",
+              "placeholder": "Select test",
+              "type": "select",
+              "options": [
               { "id": 1, "label": "Sales test" },
               { "id": 2, "label": "Programming test" },
               { "id": 3, "label": "Math exam" }
-            ]
-          },
-          {
-            "id": "threshold",
-            "label": "Threshold",
-            "placeholder": "Minimum score to pass",
-            "type": "number",
-            "step": 5,
-            "min": 0,
-            "max": 100
-          }
-        ]
+              ]
+            },
+            {
+              "id": "threshold",
+              "label": "Threshold",
+              "placeholder": "Minimum score to pass",
+              "type": "number",
+              "step": 5,
+              "min": 0,
+              "max": 100
+            }
+          ]
+        }
       }
     }
   }
