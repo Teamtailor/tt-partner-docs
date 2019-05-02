@@ -20,3 +20,33 @@ After checking the timestamp you can verify the hash by computing it yourself an
 # Computing the hash
 hash = sha256(timestamp + "." + payload, secret_key)
 ```
+
+## Example implementation (Node)
+
+```js
+// Bundled with Node
+const crypto = require('crypto');
+
+// External dependencies
+const express = require('express');
+const bodyParser = require('body-parser');
+
+// Webhook secret as environment variable
+const SECRET = process.env.WEBHOOK_SECRET;
+
+app.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res) => {
+  const signaturePattern = /^t=(\d+),v\d=(\w+),.+$/;
+  const signature = req.headers['teamtailor-signature'];
+  const [_, timestamp, cHmac] = signaturePattern.exec(signature);
+  const payload = `${timestamp}.${payload}`;
+  const hmac = crypto.createHmac('sha256', SECRET)
+    .update(payload, 'utf-8')
+    .digest('hex');
+  if (cHmac === hmac) {
+    // Signature check passed.
+    // If you want to prevent replay attacks, check timestamp as well.
+    return res.status(200).send();
+  }
+  return res.status(401).send();
+})
+```
