@@ -1,14 +1,18 @@
 # Webhook config
 
-A webhook config should be provided following the format below.
-We will fetch this config each time a new trigger is set up.
+To allow users to pick options for the webhook, that will be included in the webhook sent to you, we will fetch this endpoint each time a new trigger is set up and create a HTML form from the fields.
+
+This could be, for example a select tag with tests that the client can choose to send to candidates.
+
 The JSON to the right is an example of the expected response.
 
-To use the same config with the same set of fields for all clients, you can save a static config on the [Partner resource](#partners).
-In that case we won't get the config using this endpoint.
+If the config is requested from a "trigger" on a job, we will include the job and stage id's as parameters, which can be used as context for the form.
+
+Note, if you use the same config with the same set of fields for all clients, you can save a static config on the [Partner resource](#partners).
+In that case we won't fetch this endpoint to get the config.
 
 ```http
-GET ${BASE_URL}/config HTTP/1.1
+GET ${BASE_URL}/config?job_id=123&stage_id=456 HTTP/1.1
 Authorization: Bearer xxx-provider-key
 ```
 
@@ -23,21 +27,33 @@ Authorization: Bearer xxx-provider-key
         "label": "Test",
         "placeholder": "Select test",
         "type": "select",
-        "options": [
-          { "id": 1, "label": "Algorithm test" },
-          { "id": 2, "label": "Data structure test" },
-          { "id": 3, "label": "Javascript programming test" }
+        "optgroups": [
+          {
+            "label": "Logical tests",
+            "options": [
+              { "id": 1, "label": "Algorithm test" },
+              { "id": 2, "label": "Data structure test" },
+            ]
+          },
+          {
+            "label": "Programming tests",
+            "options": [
+              { "id": 3, "label": "Javascript test" },
+              { "id": 4, "label": "Ruby test" },
+            ]
+          }
         ]
       },
       {
-        "id": "threshold",
-        "label": "Threshold",
-        "placeholder": "Minimum score to pass",
-        "type": "number",
-        "step": 5,
-        "min": 0,
-        "max": 100
-      }
+        "id": "persona",
+        "label": "Persona",
+        "placeholder": "Select persona",
+        "type": "select",
+        "options": [
+          { "id": 1, "label": "Senior developer" },
+          { "id": 2, "label": "Junior developer" },
+        ]
+      },
     ]
   }
 }
@@ -63,6 +79,7 @@ id               | string  | Identifier for this field, will be sent in webhook
 label            | string  | Human readable label
 placeholder      | string  | Form placeholder
 type             | string  | Type of form element (see below)
+optgroups        | array   | Can be used to form a select tag with multiple optgroups (see example)
 
 ### Supported field types
 
