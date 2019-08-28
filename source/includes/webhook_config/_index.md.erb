@@ -2,7 +2,7 @@
 
 To allow users to pick options for the webhook, that will be included in the webhook sent to you, we will fetch this endpoint each time a new trigger is set up and create a HTML form from the fields.
 
-This could be, for example a select tag with tests that the client can choose to send to candidates.
+This could be, for example, a select tag with tests the client can send to candidates.
 
 The JSON to the right is an example of the expected response.
 
@@ -95,7 +95,7 @@ All of the supported field types:
 - datetime
 - datetime-local
 - email
-- file
+- file (see notes below)
 - hidden
 - month
 - number
@@ -109,3 +109,7 @@ All of the supported field types:
 - text
 - url
 - week
+
+#### File uploads
+When using the `file` type, we upload the files to a private folder on S3, and send a signed URL to the file in the webhook.
+This URL is valid for 24 hours, so make sure to download the file when the webhook is sent to you.
