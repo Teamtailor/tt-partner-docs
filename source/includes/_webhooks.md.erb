@@ -51,6 +51,18 @@ Authorization: Bearer xxx-provider-key
         {
           "question": "What are your preferred environments?",
           "answer": ["Ruby on Rails", "Ember.js"]
+        }
+      ],
+      "custom-fields": [
+        {
+          "has-driver-license": {
+              "value": true,
+              "type": "boolean"
+          },
+          "social-security-number":
+              "value": "123456-7890",
+              "type": "text"
+          }
         },
         {
           "question": "How many years relevant work experience do you have?",
@@ -81,17 +93,18 @@ The JSON object sent to you contains the candidate data, the selected trigger's 
 
 The request is authenticated with the client-specific "provider key" in the Authorization Bearer header.
 
-Attribute           | Value
-------------------- | -------
-id                  | Unique identifier of this event.
-webhook-data        | The picked options from your [Webhook config](#webhook-config), for example test ID and threshold value.
-partner-result      | The result presented to the customer. Update scores, status etc using the [Partner Results resource](#partner-results).
-company             | Company data: `uuid`, `name`, `url` (to career site), `logotype` (URL to file).
-candidate           | Candidate data.
-candidate.job       | Candidate job data: `id`, `title`, `stage`, `tags`.
-candidate.recruiter | Job recruiter data: `name`, `email`, `phone`.
-candidate.locations | Candidate locations, list with: `name`, `address`.
-candidate.questions | Candidate answers to questions, list with: `question`, `answer`. Supported types: Text, Choice (list), Boolean (`yes`/`no`), Range (eg, "10 years"), File (url to file, valid for 1 hour)
+Attribute               | Value
+-------------------     | -------
+id                      | Unique identifier of this event.
+webhook-data            | The picked options from your [Webhook config](#webhook-config), for example test ID and threshold value.
+partner-result          | The result presented to the customer. Update scores, status etc using the [Partner Results resource](#partner-results).
+company                 | Company data: `uuid`, `name`, `url` (to career site), `logotype` (URL to file).
+candidate               | Candidate data.
+candidate.job           | Candidate job data: `id`, `title`, `stage`, `tags`.
+candidate.recruiter     | Job recruiter data: `name`, `email`, `phone`.
+candidate.locations     | Candidate locations, list with: `name`, `address`.
+candidate.questions     | Candidate answers to questions, list with: `question`, `answer`. Supported types: Text, Choice (list), Boolean (`yes`/`no`), Range (eg, "10 years"), File (url to file, valid for 1 hour)
+candidate.custom-fields | Candidate custom fields, list with: `type`, `value`. Supported types: `text`, `date`, `boolean`, `phone`, `number`, `email`, `url`
 
 ### Error handling
 
