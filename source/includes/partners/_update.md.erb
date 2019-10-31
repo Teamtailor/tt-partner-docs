@@ -13,19 +13,21 @@ Content-Type: application/vnd.api+json
     "attributes":{
       "base-url": "https://piedpiper.com",
       "webhook-config": {
-        "fields": [
-          {
-            "id": "type",
-            "label": "Test",
-            "placeholder": "Select test",
-            "type": "select",
-            "options": [
-              { "id": 1, "label": "Sales test" },
-              { "id": 2, "label": "Programming test" },
-              { "id": 3, "label": "Math exam" }
-            ]
-          }
-        ]
+        "config": {
+          "fields": [
+            {
+              "id": "type",
+              "label": "Test",
+              "placeholder": "Select test",
+              "type": "select",
+              "options": [
+                { "id": 1, "label": "Sales test" },
+                { "id": 2, "label": "Programming test" },
+                { "id": 3, "label": "Math exam" }
+              ]
+            }
+          ]
+        }
       }
     }
   }
@@ -46,28 +48,30 @@ Content-Type: application/vnd.api+json
       "name": "Pied Piper",
       "base-url": "https://piedpiper.com",
       "webhook-config": {
-        "fields": [
-          {
-            "id": "type",
-            "label": "Test",
-            "placeholder": "Select test",
-            "type": "select",
-            "options": [
-              { "id": 1, "label": "Sales test" },
-              { "id": 2, "label": "Programming test" },
-              { "id": 3, "label": "Math exam" }
-            ]
-          },
-          {
-            "id": "threshold",
-            "label": "Threshold",
-            "placeholder": "Minimum score to pass",
-            "type": "number",
-            "step": 5,
-            "min": 0,
-            "max": 100
-          }
-        ]
+        "config": {
+          "fields": [
+            {
+              "id": "type",
+              "label": "Test",
+              "placeholder": "Select test",
+              "type": "select",
+              "options": [
+                { "id": 1, "label": "Sales test" },
+                { "id": 2, "label": "Programming test" },
+                { "id": 3, "label": "Math exam" }
+              ]
+            },
+            {
+              "id": "threshold",
+              "label": "Threshold",
+              "placeholder": "Minimum score to pass",
+              "type": "number",
+              "step": 5,
+              "min": 0,
+              "max": 100
+            }
+          ]
+        }
       }
     }
   }
