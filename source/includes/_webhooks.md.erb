@@ -23,6 +23,7 @@ Authorization: Bearer xxx-provider-key
     },
     "candidate": {
       "id": 54321,
+      "uuid": "092fba68-496c-4d44-9821-3496be2631ea",
       "first-name": "Juston",
       "last-name": "Becker",
       "email": "applicant100@example.com",
@@ -98,6 +99,7 @@ Attribute               | Value
 id                      | Unique identifier of this event.
 webhook-data            | The picked options from your [Webhook config](#webhook-config), for example test ID and threshold value.
 partner-result          | The result presented to the customer. Update scores, status etc using the [Partner Results resource](#partner-results).
+partner-result.update-url | The URL used to update a [Partner Results resource](#partner-results)
 company                 | Company data: `uuid`, `name`, `url` (to career site), `logotype` (URL to file).
 candidate               | Candidate data.
 candidate.job           | Candidate job data: `id`, `title`, `stage`, `tags`.
