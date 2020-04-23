@@ -26,6 +26,7 @@ This is the object representing a result from a test or similar, displayed on th
       "summary": "High five",
       "url": "apple.com",
       "candidate-id": 333,
+      "job-id": 444,
       "attachments": [
         {
           "url": "https://google.com/robots.txt",
@@ -47,6 +48,7 @@ status           | string  | May be __"sending"__, __"sent"__, __"pending"__, __
 summary          | string  | Summary text.
 url              | string  | URL for viewing a report on your website.
 candidate-id     | string  | __Immutable__ UUID identifier for candidate.
+job-id           | number  | ID of the job webhook was sent from.
 attachments	 | list	   | List of attachment objects containing keys: __"url"__ and __"description"__.
 
 
