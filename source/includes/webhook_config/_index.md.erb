@@ -96,6 +96,8 @@ All of the supported field types:
 - datetime-local
 - email
 - file (see notes below)
+- infobox
+- error
 - hidden
 - month
 - number
@@ -113,3 +115,26 @@ All of the supported field types:
 #### File uploads
 When using the `file` type, we upload the files to a private folder on S3, and send a signed URL to the file in the webhook.
 This URL is valid for 24 hours, so make sure to download the file when the webhook is sent to you.
+
+#### Infobox
+Renders a box with the icon of following types: 'info', 'error', 'warning', 'success', 'default'
+
+```json
+{
+  "type": "infobox",
+  "content": "To get information how to activate this integration works please <a href="">CLICK</a>",
+  "icon": "info"
+}
+```
+
+#### Error
+You can render a red alert error message with error field
+
+
+```json
+{
+  "type":"error",
+  "message": "Something wrong has happened",
+  "required":"true"
+}
+```
