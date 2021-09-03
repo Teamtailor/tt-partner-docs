@@ -7,4 +7,9 @@ If you have any question or feedback please contact us at [integrations@teamtail
 * Retrieve webhooks with candidate data when triggers are executed in Teamtailor.
 * Update assessment results for candidates.
 
-To set up new clients to use the webhook API, contact [integrations@teamtailor.com](mailto:integrations@teamtailor.com) for activation and to get the client-specific "provider key".
+To set up new clients to use the webhook API, contact [integrations@teamtailor.com](mailto:integrations@teamtailor.com)
+
+If your integration will need to utilize the Public Teamtailor API of the company
+We can change the setting of your partner to require this company token.
+On installation of your Integration user will see additional select field with the list of API with the correct scope
+It will be send as 'teamtailor-api-token' header in each call to `GET /config` `POST /webhook` and `GET /activation`
