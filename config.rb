@@ -21,6 +21,7 @@ activate :syntax
 activate :livereload
 
 activate :sprockets
+activate :router
 
 activate :autoprefixer do |config|
   config.browsers = ['last 2 version', 'Firefox ESR']
@@ -48,3 +49,5 @@ end
 set :port, 4567
 
 config[:api_version] = "20180828"
+
+page "/partners/*", :layout => "docs"
