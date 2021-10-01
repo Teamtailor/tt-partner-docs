@@ -71,10 +71,12 @@ html, body {
   }
 
   // This is the logo at the top of the ToC
-  &>img {
-    display: block;
-    max-width: 80%;
-    margin: 10px auto;
+  & > a {
+    & > img {
+      display: block;
+      max-width: 80%;
+      margin: 10px auto;
+    }
   }
 
   &>.search {
