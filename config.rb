@@ -51,3 +51,4 @@ set :port, 4567
 config[:api_version] = "20180828"
 
 page "/partners/*", :layout => "docs"
+page "/job_boards/*", :layout => "docs"
