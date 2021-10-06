@@ -1,0 +1,128 @@
+# HTTP Webhooks
+
+When a user creates, updates or removes a job in Teamtailor, you will receive a webhook JSON request that 
+contains the job ad data.
+
+You will need to configure and handle the following endpoints:
+
+1. `GET ${BASE_URL}/config` - provide options for the user
+2. `POST ${BASE_URL}/webhook` - handle created job ad in Teamtailor
+3. `PUT ${BASE_URL}/webhook` - handle updated job ad in Teamtailor
+4. `DELETE ${BASE_URL}/webhook/:reference_id` - handle deleted job ad in Teamtailor
+
+## GET Config
+
+To allow users to pick options for a job ad in your system, return the configuration object in the response.
+
+### HTTP Request
+`GET ${BASE_URL}/config`
+
+> Example of expected config response
+
+```json
+{
+  "config": {
+    "1": [
+      {
+        "id": "experience-level",
+        "label": "Experience level",
+        "placeholder": "Experience level",
+        "type": "select",
+        "options": [
+          { "id": 1, "label": "Junior" },
+          { "id": 2, "label": "Senior" },
+        ]
+      }
+    ],
+    "2": [
+      {
+        "id": "degree-level",
+        "label": "Required degree level",
+        "placeholder": "Choose degree level",
+        "type": "select",
+        "options": [
+          { "id": 1, "label": "Bachelor's Degree" },
+          { "id": 2, "label": "Master's Degree" },
+        ]
+      },
+    ],
+    "page": 1,
+    "hasNextPage": true
+  }
+}
+```
+
+### Expected config response
+
+Attribute        | Type    | Description
+-----------------|---------|------------
+config           | object  | Top-level object
+page             | number  | Indicates current page
+hasNextPage      | boolean | Indicates where there is a next page to be fetched
+
+### Field objects
+
+Attribute        | Type    | Description
+-----------------|---------|------------
+id               | string  | Identifier for this field, will be sent in webhook
+label            | string  | Human readable label
+placeholder      | string  | Form placeholder
+type             | string  | Type of form element (see below)
+options          | array   | Options
+
+### Supported field types
+
+Field objects follow the HTML form standard in regards to types, possible options, labels and placeholders.
+For example, __disabled__ may be provided for the __"text"__ type, __step__, __min__ and __max__ may be provided for the __"number"__ type and an __options__ array
+with __id__/__label__ may be provided for the __"select"__ type.
+
+All of the supported field types:
+
+- checkbox
+- color
+- date
+- datetime
+- datetime-local
+- email
+- infobox
+- hidden
+- month
+- number
+- password
+- radio
+- range
+- reset
+- search
+- select
+- tel
+- text
+- url
+- week
+
+### Pagination
+
+We support multiple pages of the config form (pagination).
+In order to do that, you have to include more than one config page object, as well as handle
+a `page` (current page) and `hasNextPage` attributes in the response.
+In order to make the form dependent on the previously selected options,
+there will be included query string parameters with the selected options (id=value).
+
+> Example of paginated config response
+
+```json
+{
+  "config": {
+    "1": [],
+    "2": [],
+    "3": [],
+    "page": 1,
+    "hasNextPage": true
+  }
+}
+```
+
+## POST Webhook
+
+## PUT Webhook
+
+## DELETE Webhook
