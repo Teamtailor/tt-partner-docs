@@ -247,3 +247,18 @@ DELETE ${BASE_URL}/webhook/:reference_id HTTP/1.1
 
 ### HTTP Request
 `DELETE ${BASE_URL}/webhook/:reference_id`
+
+## Transferring secrets
+
+> Example of Authorization header
+
+```http
+POST ${BASE_URL}/webhook HTTP/1.1
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9
+```
+
+If you require secrets from user, e.g. API key or password, we will include it in a headers of every request.
+It is a JWT `Bearer` token placed in `Authorization` header, encoded using **HS256** signing algorithm.
+
+In order to decode it and get the secrets, you will need a signing key.
+We will provide it to you if you ask us at [integrations@teamtailor.com](mailto:integrations@teamtailor.com).
