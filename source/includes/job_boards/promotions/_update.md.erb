@@ -1,0 +1,37 @@
+## Update promotion
+
+> Example request
+
+```http
+PUT https://api.teamtailor.localhost/channel/v1/promotions/1 HTTP/1.1
+Authorization: Token abc123abc123
+X-Api-Version: <%= config[:api_version] %>
+Content-Type: application/vnd.api+json
+
+{
+  "data": {
+    "id": "1",
+    "type": "promotions",
+    "attributes": {
+      "external-url": "http://www.example.com"
+    }
+  }
+}
+```
+
+> Example response
+
+```json
+{
+  "data": {
+    "id": "1",
+    "type": "promotions",
+    "links": {
+      "self": "https://api.teamtailor.localhost/channel/v1/promotions/1"
+    },
+    "attributes": {
+      "external-url": "http://www.example.com"
+    }
+  }
+}
+```
