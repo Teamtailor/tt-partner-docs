@@ -1,10 +1,11 @@
-# Possible integration ways
+# Possible integration types
 
-Teamtailor offers several ways to for your job board to integrate with us:
+Teamtailor offers several ways for your job board to integrate with us:
 
 ## 1. HTTP Webhooks
 
 When a user creates/updates/removes a job ad Teamtailor will send a JSON request that contains the job ad data.
+Read more [here](#http-webhooks).
 
 ## 2. Always included XML feed
 
@@ -12,16 +13,16 @@ Teamtailor generates a unique XML feed for a single job board containing all job
 who activated the integration. It’s generated three times a day. 
 The job board will receive a unique url to the XML feed. 
 The feed contains a current state of job ads, that means if the job is unlisted on Teamtailor it will be removed from the XML feed - job board should remove it as well.
-An example feed is here. Read more [here](#xml-feeds).
+An example feed is here. Read more [here](#xml-feed).
 
 ## 3. Premium XML feed
 
 XML feed containing all job ads selected by the user to promote. 
 It works in the same way as described in [Always included XML feed](#2-always-included-xml-feed), except the XML feed 
 contains only selected job ads. Each job ad node in the XML feed contains a special tag used to identify the company.
-Read more [here](#xml-feeds).
+Read more [here](#xml-feed).
 
 ## 4. Email with job data
 
 Job board provider receives an email with job ad data when the user selects it to be promoted.
-Teamtailor sends email when a job ad is created/updated/removed.
+Teamtailor sends email when a job ad is created/updated/removed. Read more [here](#email-with-job-data).
