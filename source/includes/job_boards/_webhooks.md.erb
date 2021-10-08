@@ -5,14 +5,16 @@ contains the job ad data.
 
 You will need to configure and handle the following endpoints:
 
-1. `GET ${BASE_URL}/config` - provide options for the user
+1. `GET ${BASE_URL}/config` - provide options for a form rendered to the user
 2. `POST ${BASE_URL}/webhook` - handle created job ad in Teamtailor
 3. `PUT ${BASE_URL}/webhook` - handle updated job ad in Teamtailor
 4. `DELETE ${BASE_URL}/webhook/:reference_id` - handle deleted job ad in Teamtailor
 
 ## GET Config
 
-To allow users to pick options for a job ad in your system, return the configuration object in the response.
+When user want to publish a job ad we display a form.
+Use this endpoint to configure the options visible in the form by returning 
+the configuration object in the response.
 
 ```http
 GET ${BASE_URL}/config?page=1&job_id=23 HTTP/1.1
@@ -178,7 +180,7 @@ Attribute               | Value
 id                      | Unique identifier of this event
 reference-id            | Unique identifier of job ad in Teamtailor
 webhook-data            | Object containg picked options by user
-location                | Locations of the job. Implements location object
+location                | Location of the job. Implements location object
 company                 | Company that job belongs to. Implements company object
 job                     | Job data. Implements job object
 
