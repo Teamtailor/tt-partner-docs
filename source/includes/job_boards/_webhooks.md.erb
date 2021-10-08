@@ -1,0 +1,266 @@
+# HTTP Webhooks
+
+When a user creates, updates or removes a job in Teamtailor, you will receive a webhook JSON request that 
+contains the job ad data.
+
+You will need to configure and handle the following endpoints:
+
+1. `GET ${BASE_URL}/config` - provide options for a form rendered to the user
+2. `POST ${BASE_URL}/webhook` - handle created job ad in Teamtailor
+3. `PUT ${BASE_URL}/webhook` - handle updated job ad in Teamtailor
+4. `DELETE ${BASE_URL}/webhook/:reference_id` - handle deleted job ad in Teamtailor
+
+## GET Config
+
+When user want to publish a job ad we display a form.
+Use this endpoint to configure the options visible in the form by returning 
+the configuration object in the response.
+
+```http
+GET ${BASE_URL}/config?page=1&job_id=23 HTTP/1.1
+```
+
+> Example of expected config response
+
+```json
+{
+  "config": {
+    "1": [
+      {
+        "id": "experience-level",
+        "label": "Experience level",
+        "placeholder": "Experience level",
+        "type": "select",
+        "options": [
+          { "id": 1, "label": "Junior" },
+          { "id": 2, "label": "Senior" },
+        ]
+      }
+    ],
+    "2": [
+      {
+        "id": "degree-level",
+        "label": "Required degree level",
+        "placeholder": "Choose degree level",
+        "type": "select",
+        "options": [
+          { "id": 1, "label": "Bachelor's Degree" },
+          { "id": 2, "label": "Master's Degree" },
+        ]
+      },
+    ],
+    "page": 1,
+    "hasNextPage": true
+  }
+}
+```
+
+### HTTP Request
+`GET ${BASE_URL}/config`
+
+#### Query parameters
+* page - the page number for which it should be config
+* job_id - id of the job
+
+### Expected config response
+
+Attribute        | Type    | Description
+-----------------|---------|------------
+config           | object  | Top-level object
+page             | number  | Indicates current page
+hasNextPage      | boolean | Indicates where there is a next page to be fetched
+
+### Field objects
+
+Attribute        | Type    | Description
+-----------------|---------|------------
+id               | string  | Identifier for this field, will be sent in webhook
+label            | string  | Human readable label
+placeholder      | string  | Form placeholder
+type             | string  | Type of form element (see below)
+options          | array   | Options
+
+### Supported field types
+
+Field objects follow the HTML form standard in regards to types, possible options, labels and placeholders.
+For example, __disabled__ may be provided for the __"text"__ type, __step__, __min__ and __max__ may be provided for the __"number"__ type and an __options__ array
+with __id__/__label__ may be provided for the __"select"__ type.
+
+All of the supported field types:
+
+- checkbox
+- color
+- date
+- datetime
+- datetime-local
+- email
+- infobox
+- hidden
+- month
+- number
+- password
+- radio
+- range
+- reset
+- search
+- select
+- tel
+- text
+- url
+- week
+
+### Pagination
+
+We support multiple pages of the config form (pagination).
+In order to do that, you have to include more than one config page object, as well as handle
+a `page` (current page) and `hasNextPage` attributes in the response.
+In order to make the form dependent on the previously selected options,
+there will be included query string parameters with the selected options (id=value).
+
+> Example of paginated config response
+
+```json
+{
+  "config": {
+    "1": [],
+    "2": [],
+    "3": [],
+    "page": 1,
+    "hasNextPage": true
+  }
+}
+```
+
+## POST Webhook
+
+When user picks options in the form and submit it, the webhook POST request will be send.
+
+```http
+POST ${BASE_URL}/webhook HTTP/1.1
+
+{
+  "id": "04798257-51ff-42e4-aa56-61e75632f23b",
+  "reference-id": "1",
+  "webhook-data": {
+    "experience-level": "Junior",
+    "degree-level": "Master's Degree"
+  },
+  "location": {
+    "address": "Sankt Paulsgatan 7B",
+    "city": "Stockholm",
+    "country": "Sweden",
+    "country-code": "SE",
+    "zip": "118 46"
+  },
+  "company": {
+    "name": "Teamtailor",
+    "company-info-about": "Cupio barba articulus.</p><p>Spes deleniti cubicularis.",
+    "url": "https://career.teamtailor.localhost",
+    "uuid": "ZPXFT2VMtr8",
+    "logotype": "https://example.com/original.jpg"
+  },
+  "job": { 
+    "title": "Marketing Coordinator",
+    "body": "Depereo decumbo defungo. Ubi stipes vel. Cupio barba articulus.",
+    "remote-status": "none",
+    "url": "https://career.teamtailor.localhost/jobs/23-marketing-coordinator",
+    "apply-url": "https://career.teamtailor.localhost/jobs/23-marketing-coordinator/applications/new?promotion=2-monster-finland"
+  }
+}
+```
+
+
+### HTTP Request
+`POST ${BASE_URL}/webhook`
+
+### Webhook JSON object
+
+Attribute               | Value
+-------------------     | -------
+id                      | Unique identifier of this event
+reference-id            | Unique identifier of job ad in Teamtailor
+webhook-data            | Object containg picked options by user
+location                | Location of the job. Implements location object
+company                 | Company that job belongs to. Implements company object
+job                     | Job data. Implements job object
+
+### Location object
+
+Attribute               | Value
+-------------------     | -------
+address                 | Address
+city                    | City name
+country                 | Country name
+country-code            | Country code
+zip                     | Postal code
+
+### Company object
+
+Attribute               | Value
+-------------------     | -------
+name                    | Company name
+company-info-about      | Description of the company
+url                     | URL to the company's website
+uuid                    | Company's uuid
+logotype                | URL to the company’s logo
+
+### Job object
+
+Attribute               | Value
+-------------------     | -------
+title                   | Job title
+description             | Job description
+remote-status           | Remote status. One of following: **none**, **temporary**, **hybrid**, **fully**
+url                     | URL to the job ad in Teamtailor
+apply-url               | URL to the job apply form in Teamtailor
+
+> Example of expected response
+
+```json
+{
+  "externalId": "044a35ea-0fe1-49d3-a2aa-e67b0e89dd3e"
+}
+```
+
+### Expected response
+
+We expect successfull response to have a **HTTP 200 OK** response code.
+The response must include `externalId` which should be your internal identifier of the job ad.
+
+## PUT Webhook
+
+When user updates options in the form and submit it, the webhook PUT request will be send.
+It works in the same way as [POST Webhook](#post-webhook) in terms of a request structure and an expected response.
+
+```http
+PUT ${BASE_URL}/webhook HTTP/1.1
+```
+
+### HTTP Request
+`PUT ${BASE_URL}/webhook`
+
+## DELETE Webhook
+
+When job ad is unlisted in Teamtailor, the webhook DELETE request will be send.
+
+```http
+DELETE ${BASE_URL}/webhook/:reference_id HTTP/1.1
+```
+
+### HTTP Request
+`DELETE ${BASE_URL}/webhook/:reference_id`
+
+## Transferring secrets
+
+> Example of Authorization header
+
+```http
+POST ${BASE_URL}/webhook HTTP/1.1
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9
+```
+
+If you require secrets from user, e.g. API key or password, we will include it in a headers of every request.
+It is a JWT `Bearer` token placed in `Authorization` header, encoded using **HS256** signing algorithm.
+
+In order to decode it and get the secrets, you will need a signing key.
+We will provide it to you if you ask us at [integrations@teamtailor.com](mailto:integrations@teamtailor.com).

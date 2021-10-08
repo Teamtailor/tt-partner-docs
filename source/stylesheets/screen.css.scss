@@ -71,10 +71,12 @@ html, body {
   }
 
   // This is the logo at the top of the ToC
-  &>img {
-    display: block;
-    max-width: 80%;
-    margin: 10px auto;
+  & > a {
+    & > img {
+      display: block;
+      max-width: 80%;
+      margin: 10px auto;
+    }
   }
 
   &>.search {
@@ -343,6 +345,13 @@ html, body {
 
     @extend %left-col;
   }
+
+  &.content-full-width {
+    &>h1, &>h2, &>h3, &>h4, &>h5, &>h6, &>p, &>table, &>ul, &>ol, &>aside, &>dl {
+      margin-right: initial;
+    }
+  }
+
   h1,h2,h3,h4,h5,h6 {
     font-weight: normal;
   }

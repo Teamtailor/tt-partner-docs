@@ -1,0 +1,185 @@
+# XML feed
+
+If you choose the Always included or Premium XML feed integration, you will receive a unique url to the XML feed.
+
+> Example XML feed
+
+```xml
+<source>
+  <publisher>Teamtailor</publisher>
+  <publisherurl>https://www.teamtailor.com</publisherurl>
+  <lastupdatedat>
+    <![CDATA[ 2021-03-23T10:50:08+01:00 ]]>
+  </lastupdatedat>
+  <job>
+    <company>
+      <![CDATA[ Test company ]]>
+    </company>
+    <companydescription>
+      <![CDATA[ Cupio barba articulus.</p><p>Spes deleniti cubicularis. ]]>
+    </companydescription>
+    <logotype>
+      <![CDATA[ https://teamtailor-production.s3.eu-west-1.amazonaws.com/image_uploads/cd24c21b-db10-4cf2-aabd-4a6f4ef1cf06/original.png ]]>
+    </logotype>
+    <headquarters>
+      <country>
+        <![CDATA[ Sweden ]]>
+      </country>
+      <city>
+        <![CDATA[ Stockholm ]]>
+      </city>
+      <postalcode>
+        <![CDATA[ 118 46 ]]>
+      </postalcode>
+      <address>
+        <![CDATA[ Sankt Paulsgatan 7B ]]>
+      </address>
+      <countrycode>
+        <![CDATA[ SE ]]>
+      </countrycode>
+      <region>
+        <![CDATA[ Västra Götaland County ]]>
+      </region>
+    </headquarters>
+    <referencenumber>
+      <![CDATA[ teamtailor-23 ]]>
+    </referencenumber>
+    <title>
+      <![CDATA[ Marketing Coordinator ]]>
+    </title>
+    <description>
+      <![CDATA[ Depereo decumbo defungo. Ubi stipes vel. Cupio barba articulus. ]]>
+    </description>
+    <startdate>
+      <![CDATA[ 2021-03-24T00:00:00+01:00 ]]>
+    </startdate>
+    <enddate>
+      <![CDATA[ 2021-03-31T00:00:00+02:00 ]]>
+    </enddate>
+    <createddate>
+      <![CDATA[ 2021-03-02T19:18:22+01:00 ]]>
+    </createddate>
+    <remotestatus>
+      <![CDATA[ none ]]>
+    </remotestatus>
+    <url>
+      <![CDATA[ https://career.teamtailor.localhost/jobs/23-marketing-coordinator ]]>
+    </url>
+    <pitch>
+      <![CDATA[ Coadunatio centum animi. Succedo adversus inventore. Rem est uberrime. ]]>
+    </pitch>
+    <applybuttontext>
+      <![CDATA[ Become a developer ]]>
+    </applybuttontext>
+    <locations>
+      <location>
+        <country>
+          <![CDATA[ Finland ]]>
+        </country>
+        <city>
+          <![CDATA[ Helsinki ]]>
+        </city>
+        <postalcode>
+          <![CDATA[ 00100 ]]>
+        </postalcode>
+        <address>
+          <![CDATA[ ]]>
+        </address>
+        <countrycode>
+          <![CDATA[ FI ]]>
+        </countrycode>
+        <region>
+          <![CDATA[ Västra Götaland County ]]>
+        </region>
+      </location>
+      <location>
+        <country>
+          <![CDATA[ Sweden ]]>
+        </country>
+        <city>
+          <![CDATA[ Stockholm ]]>
+        </city>
+        <postalcode>
+          <![CDATA[ 118 46 ]]>
+        </postalcode>
+        <address>
+          <![CDATA[ Sankt Paulsgatan 7B ]]>
+        </address>
+        <countrycode>
+          <![CDATA[ SE ]]>
+        </countrycode>
+        <region>
+          <![CDATA[ Västra Götaland County ]]>
+        </region>
+      </location>
+    </locations>
+    <department>
+      <name>
+        <![CDATA[ Product Development ]]>
+      </name>
+    </department>
+    <role>
+      <name>
+        <![CDATA[ Developer ]]>
+      </name>
+    </role>
+    <recruiter>
+      <name>
+        <![CDATA[ Hammes Grud ]]>
+      </name>
+      <email>
+        <![CDATA[ email1@example.com ]]>
+      </email>
+      <phone>
+        <![CDATA[ 123456 ]]>
+      </phone>
+    </recruiter>
+  </job>
+</source>
+```
+
+### Feed elements
+
+Attribute               | Value
+-------------------     | -------
+publisher               | Name of publisher of the feed
+publisherurl            | Url to feed publisher's website 
+lastupdatedat           | Timestamp of when the feed was last time updated. It's updated 3 times a days
+job                     | Node containg all the job ad data
+company                 | Company name
+companydescription      | Description of the company
+logotype                | URL to the company's logo
+headquarters            | Headquarters of the company. Implements *location* element
+referencenumber         | Unique identifier of job ad in Teamtailor
+title                   | Job title
+description             | Job description
+startdate               | Date from when the job ad is published
+enddate                 | Date when job ad will be unlisted
+createddate             | Date when job ad was created
+remotestatus            | Remote status. One of following: **none**, **temporary**, **hybrid**, **fully**
+url                     | URL to the job ad in Teamtailor
+pitch                   | Pitch text about the job
+applybuttontext         | Text displayed on "apply" button
+locations               | Locations of the job. Implement many *location* elements
+department.name         | Name of the job's department
+role.name               | Name of the job's role
+recruiter               | Recruiter of the job. Implements *recruiter* object
+
+### Location element
+
+Attribute               | Value
+-------------------     | -------
+country                 | Country name
+city                    | City name
+postalcode              | Postal code
+address                 | Address
+countrycode             | Country code
+region                  | Region name
+
+### Recruiter element
+
+Attribute               | Value
+-------------------     | -------
+name                    | Recruiter name
+email                   | Recruiter email
+phone                   | Recruiter phone
