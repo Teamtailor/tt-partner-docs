@@ -229,6 +229,23 @@ apply-url               | URL to the job apply form in Teamtailor
 We expect successfull response to have a **HTTP 200 OK** response code.
 The response must include `externalId` which should be your internal identifier of the job ad.
 
+
+> Example of expected error response
+
+```json
+{
+  "body": {
+    "externalId": "044a35ea-0fe1-49d3-a2aa-e67b0e89dd3e"
+  },
+  "errors": ["Job title can't be longer than 80 characters"]
+}
+```
+
+### Error handling
+When something will went wrong on your end (e.g. validation error) we will display the error message
+to the user. In that case the response code must be other than **HTTP 2xx** and you have to include
+an **errors** attribute, which is array of error messages.
+
 ## PUT Webhook
 
 When user updates options in the form and submit it, the webhook PUT request will be send.
