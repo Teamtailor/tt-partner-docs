@@ -1,1 +1,226 @@
 # Direct Apply
+
+Use the Teamtailor Direct Apply API if you want your 
+
+You will need to use following endpoints:
+
+1. `GET ${BASE_URL}/inquiry` - get job data (questions, consents, etc) from Teamtailor
+2. `POST ${BASE_URL}/apply` - send candidate data to Teamtailor
+
+If you decide to proceed with integrating the Direct Apply solution, please ask for the `BASE_URL` at [integrations@teamtailor.com](mailto:integrations@teamtailor.com).
+You will also need to ask for configuring authentication flow. Read more [here](#authentication).
+
+## Authentication
+
+You can choose one of the following methods of authentication in Teamtailor:
+
+- whitelisting your IP - choose it when your system uses a static IP
+- computing request signagure - **not implemented yet, coming soon**
+
+## GET Inquiry
+
+Get the job data needed to configure apply form in your system.
+
+```http
+GET ${BASE_URL}/inquiry HTTP/1.1
+JobBoardId: job_board
+ReferenceNumber: 1
+```
+
+> Example of inquiry response
+
+```json
+{
+  "job_status": "active",
+  "application_fields": [
+    {
+        "name": "name",
+        "requirement": "required"
+    },
+    {
+        "name": "phone",
+        "requirement": "optional"
+    },
+    {
+        "name": "resume",
+        "requirement": "optional"
+    },
+    {
+        "name": "cover_letter",
+        "requirement": "off"
+    }
+  ],
+  "questions": [
+    {
+      "id": 4,
+      "question": "Are you a designer?",
+      "required": true,
+      "type": "select",
+      "options": [
+        { "value": true, "label": "Yes" },
+        { "value": false, "label": "No" }
+      ]
+    },
+    {
+      "id": 5,
+      "question": "Favorite social media platforms?",
+      "required": false,
+      "type": "multiselect",
+      "options": [
+        { "value": 1, "label": "Facebook" },
+        { "value": 2, "label": "Twitter" },
+        { "value": 3, "label": "Instagram" },
+        { "value": 4, "label": "Snapchat" },
+        { "value": 5, "label": "Other" }
+      ]
+    },
+    {
+      "id": 6,
+      "question": "What did you learn this week?",
+      "required": true,
+      "type": "textarea"
+    },
+    {
+      "id": 7,
+      "question": "Years of experience",
+      "required": true,
+      "type": "range",
+      "format": "integer",
+      "min": 0,
+      "max": 20
+    },
+    {
+      "id": 8,
+      "question": "Please upload your diploma",
+      "required": false,
+      "type": "file"
+    },
+    {
+      "id": 9,
+      "question": "What is your name?",
+      "required": false,
+      "type": "text"
+    }
+  ],
+  "consents": [
+    {
+      "consent_type": "privacy_policy",
+      "required": true,
+      "text": "I have read the <a class=\"privacy-policy\" href=\"https://career.teamtailor.localhost/privacy-policy\">Privacy Policy</a> and confirm that Teamtailor store my personal details to be able to process my job application.",
+      "url": "https://career.teamtailor.localhost/privacy-policy"
+    },
+    {
+      "consent_type": "future_jobs",
+      "required": false,
+      "text": "Yes, Teamtailor can also contact me about future job opportunities."
+    }
+  ]
+}
+```
+
+### HTTP Request
+`GET ${BASE_URL}/inquiry`
+
+#### Headers
+* JobBoardId - Unique identifier of job board in Teamtailor
+* ReferenceNumber - Unique identifier of job ad in Teamtailor
+
+### Inquiry response
+
+Attribute           | Type    | Description
+--------------------|---------|------------
+job_status          | string  | Job status. One of following: **active**, **expired**
+application_fields  | array   | List of application field statuses. Implements many *application field* objects
+questions           | array   | List of questions. Implements many *question* objects
+consents            | array   | List of consents. Implements many *consent* objects
+
+### Application field object
+
+Attribute        | Type    | Description
+-----------------|---------|------------
+name             | string  | Type of field
+requirement      | string  | Requirement type. One of following: **optional**, **required**, **off**
+
+### Question objects
+
+Attribute        | Type    | Description
+-----------------|---------|------------
+id               | string  | Unique identifier of question
+question         | string  | Human readable label
+required         | boolean | Indicates if the question is required
+type             | string  | Type of form element (see below)
+options          | array   | Options
+
+### Possible question types:
+
+- text
+- textarea
+- select
+- multiselect
+- range
+- file
+
+### Consent object
+
+Attribute        | Type    | Description
+-----------------|---------|------------
+consent_type     | string  | Type of consent. One of following: **privacy_policy**, **future_jobs**
+required         | boolean | Indicates if consent is required
+text             | string  | Human readable label
+url              | string  | Url to consent page. Present only for **privacy_policy** consent
+
+## POST apply
+
+Get the job data needed to configure apply form in your system.
+
+```http
+POST ${BASE_URL}/apply HTTP/1.1
+JobBoardId: job_board
+ReferenceNumber: 1
+
+{
+  "candidate": {
+    "full-name": "Example Name",
+    "email": "example@indeed.com",
+    "phone": "08886485454",
+    "cover-letter": "Hello I'm Examlpe",
+    "resume": {
+      "binary-data": "TWF4IFBheW5lIENW",
+      "file-name": "example_resume.pdf",
+      "file-type": "application/pdf",
+    },
+    "answers": [
+      { "id": "4", "value": "true" },
+      { "id": "5", "values": ["1", "4"] },
+      { "id": "6", "value": "Test ICE Cream flavor" },
+      { "id": "8", "file": { "file-name": "sample_resume.pdf", "file-type": "application/pdf", "binary-data": "..." }},
+      { "id": "9", "value": "My name is Max" },
+    ],
+  },
+  "analytics": {
+    "referring-site": "Job Board Website",
+    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36",
+  }
+}
+```
+
+### HTTP Request
+`POST ${BASE_URL}/apply`
+
+#### Headers
+* JobBoardId - Unique identifier of job board in Teamtailor
+* ReferenceNumber - Unique identifier of job ad in Teamtailor
+
+### Apply JSON object
+
+Attribute        | Required   | Description
+-----------------|------------|------------
+candidate        | true       | Contains candidate data
+analytics        | false      | Contains analytics data. Implements *analytics* object
+
+### Analytics object
+
+Attribute        | Type    | Description
+-----------------|---------|------------
+referring-site   | string  | If provided, will be displayed as apply source. Defaults to your job board name
+user-agent       | string  | Candidate's user agent
