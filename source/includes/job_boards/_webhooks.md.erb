@@ -142,6 +142,8 @@ POST ${BASE_URL}/webhook HTTP/1.1
 {
   "id": "04798257-51ff-42e4-aa56-61e75632f23b",
   "reference-id": "1",
+  "created-at": "2021-03-24T00:00:00+01:00",
+  "duration": 30,
   "job-board-id": "job_board",
   "webhook-data": {
     "experience-level": "Junior",
@@ -224,6 +226,8 @@ Attribute               | Value
 -------------------     | -------
 id                      | Unique identifier of this event
 reference-id            | Unique identifier of job ad in Teamtailor
+created-at              | Date when job ad was created
+duration                | Duration of job ad. In days
 job-board-id            | Unique identifier of job board in Teamtailor
 webhook-data            | Object containg picked options by user
 location                | Location of the job ad. User can optionally select it during purchasing the job ad. Implements location object
