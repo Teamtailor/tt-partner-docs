@@ -195,7 +195,7 @@ ReferenceNumber: 1
       { "id": "5", "values": ["1", "4"] },
       { "id": "6", "value": "Test ICE Cream flavor" },
       { "id": "7", "value": "6" },
-      { "id": "8", "file": { "file-name": "sample_resume.pdf", "file-type": "application/pdf", "binary-data": "..." }},
+      { "id": "8", "file": { "file-name": "sample_resume.pdf", "file-type": "application/pdf", "binary-data": "TWF4IFBheW5lIENW" }},
       { "id": "9", "value": "My name is Max" },
     ],
   },
@@ -217,8 +217,14 @@ ReferenceNumber: 1
 
 Attribute        | Required   | Description
 -----------------|------------|------------
-candidate        | true       | Contains candidate data
+candidate        | true       | Contains candidate data Implements *candidate* object
 analytics        | false      | Contains analytics data. Implements *analytics* object
+
+### Candidate object
+
+Attribute        | Type    | Description
+-----------------|---------|------------
+resume           | string  | Candidate's resume. Binary data must be in encoded in Base64
 
 ### Analytics object
 
