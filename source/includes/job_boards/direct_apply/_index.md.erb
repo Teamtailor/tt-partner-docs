@@ -13,10 +13,46 @@ You will also need to ask for configuring authentication flow. Read more [here](
 
 ## Authentication
 
-You can choose one of the following methods of authentication in Teamtailor:
+You can choose one of the following methods of authentication in Teamtailor Direct Apply:
 
-- whitelisting your IP - choose it when your system uses a static IP
-- computing request signagure - **not implemented yet, coming soon**
+- computing request signagure - most convenient way for your system and for Teamtailor
+- whitelisting your IP - choose it when you can't use request signature and your system uses a static IP
+
+### Computing request signagure
+
+> Example of function computing request signature in JavaScript
+
+```js
+function generateSignature(body, secret) {
+  const hmac = crypto.createHmac('sha256', secret);
+  hmac.write(body);
+  hmac.end();
+  return Buffer.from(hmac.read().toString('hex')).toString('base64');
+}
+````
+
+> Example
+
+```js
+generateSignature('', '327d2d0c-531e-4c23-98da-23aaa4ba8da3')
+> MTI1YzliMDg3ZTY1MmYyMGUwMTYzZDUzMGZlZjA0N2M0YzE4NGYwY2UwY2ViOTM4ZDM3OTUxM2ViMjNjMWZiYw==
+````
+
+You need to provide the signature with every request you make to `/inquiry` or `/apply` endpoints
+in a `X-Api-Signature` header.
+
+There will be two params needed: `body` and `secret`.
+
+1. `body` - use following bodys for computing signature for different enpoints:
+  - for `/inquiry` - use empty string ""
+  - for `/apply` - use request body that you pass
+2. `secret` - your unique secret key. We will provide it to you if you ask us at [integrations@teamtailor.com](mailto:integrations@teamtailor.com).
+
+Use `sha256` algorithm. The end result signature should be a `base64` string, first encoded in `hex`.
+
+### Whitelisting your IP
+
+Provide us a list of the IPs that your system uses.
 
 ## GET Inquiry
 
