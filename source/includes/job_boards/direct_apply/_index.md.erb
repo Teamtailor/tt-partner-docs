@@ -124,7 +124,8 @@ ReferenceNumber: 1
       "type": "range",
       "format": "integer",
       "min": 0,
-      "max": 20
+      "max": 20,
+      "unit": "years"
     },
     {
       "id": 8,
@@ -137,6 +138,18 @@ ReferenceNumber: 1
       "question": "What is your name?",
       "required": false,
       "type": "text"
+    },
+    {
+      "id": 10,
+      "question": "What is your date of birth?",
+      "required": false,
+      "type": "date"
+    },
+    {
+      "id": 11,
+      "question": "How many apples do you eat?",
+      "required": false,
+      "type": "number"
     }
   ],
   "consents": [
@@ -196,6 +209,8 @@ options          | array   | Options
 - multiselect
 - range
 - file
+- date
+- number
 
 ### Consent object
 
@@ -233,6 +248,8 @@ ReferenceNumber: 1
       { "id": "7", "value": "6" },
       { "id": "8", "file": { "file-name": "sample_resume.pdf", "file-type": "application/pdf", "binary-data": "TWF4IFBheW5lIENW" }},
       { "id": "9", "value": "My name is Max" },
+      { "id": "10", "value": "25/12/1995" },
+      { "id": "11", "value": "3" },
     ],
   },
   "analytics": {
