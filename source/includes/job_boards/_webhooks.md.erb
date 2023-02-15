@@ -211,7 +211,13 @@ POST ${BASE_URL}/webhook HTTP/1.1
         "country-code": "SE",
         "zip": "118 46"
       }
-    ]
+    ],
+    salary: {
+      "min-salary": "500.0",
+      "max-salary": "800.0",
+      "salary-currency": "EUR",
+      "salary-time-unit": "monthly"
+    }
   }
 }
 ```
@@ -277,6 +283,7 @@ department.name         | Name of the job's department
 role.name               | Name of the job's role
 recruiter               | Recruiter of the job. Implements *recruiter* object
 locations               | Locations of the job. Implements many *location* objects
+salary                  | Salary of the job. Implements *salary* object
 
 ### Recruiter object
 
@@ -285,6 +292,16 @@ Attribute               | Value
 name                    | Recruiter name
 email                   | Recruiter email
 phone                   | Recruiter phone
+
+
+### Salary object
+
+Attribute               | Value
+-------------------     | -------
+min-salary              | Minimum salary for the job if range otherwise offered salary amount
+max-salary              | Maximum salary for the job
+salary-currency         | Salary currency
+salary-time-unit        | Salary time unit. One of the following **monthly**, **hourly**, **yearly**, **daily**
 
 > Example of expected response
 
