@@ -39,8 +39,14 @@ Authorization: Bearer xxx-provider-key
         "stage": "After Interview",
         "tags": ["ruby", "javascript"],
         "trigger-id": 1,
-        "status": { "rejected": false },
-        'triggered-by': { id: 31, email: 'email22@example.com', name: 'Champlin19' }
+        "status": {
+          "rejected": false
+        },
+        "triggered-by": {
+          "id": 31,
+          "email": "email22@example.com",
+          "name": "Champlin19"
+        }
       },
       "recruiter": {
         "name": "Edison Kuhn",
@@ -62,13 +68,11 @@ Authorization: Bearer xxx-provider-key
       "custom-fields": [
         {
           "has-driver-license": {
-              "value": true,
-              "type": "boolean"
+            "value": true,
+            "type": "boolean"
           },
-          "social-security-number":
-              "value": "123456-7890",
-              "type": "text"
-          }
+          "social-security-number": { "value": "123456-7890" },
+          "type": "text"
         }
       ]
     },
