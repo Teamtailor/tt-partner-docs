@@ -212,12 +212,24 @@ POST ${BASE_URL}/webhook HTTP/1.1
         "zip": "118 46"
       }
     ],
-    salary: {
+    "salary": {
       "min-salary": "500.0",
       "max-salary": "800.0",
       "salary-currency": "EUR",
       "salary-time-unit": "monthly"
-    }
+    },
+    "custom-fields": [
+      { id: 3, name: 'Custom date', value: '2023-06-14' },
+      { id: 9, name: 'Custom bool', value: true },
+      {
+        id: 8,
+        name: 'Custom multiselect',
+        value: [ 'OpcjaMulti 3', 'OpcjaMulti 1' ]
+      },
+      { id: 7, name: 'Custom select', value: [ 'Opcja 2' ] },
+      { id: 6, name: 'Custom number', value: 44 },
+      { id: 5, name: 'Custom string', value: 'MojePole wypełnione' }
+    ]
   }
 }
 ```
@@ -302,6 +314,14 @@ min-salary              | Minimum salary for the job if range otherwise offered 
 max-salary              | Maximum salary for the job
 salary-currency         | Salary currency
 salary-time-unit        | Salary time unit. One of the following **monthly**, **hourly**, **yearly**, **daily**
+
+### Custom fields object
+
+Attribute               | Value
+-------------------     | -------
+id                      | Unique identifier of this custom field
+name                    | Field name set up by user
+value                   | Can be array of strings, string, number, boolean, date in format YYYY-MM-DD
 
 > Example of expected response
 
