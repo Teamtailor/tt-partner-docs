@@ -1,5 +1,5 @@
 # Webhook signatures
-To validate authenticity of webhooks sent by Teamtailor we include a `Teamtailor-Signature` header in each request. The header contains a [HMAC](https://en.wikipedia.org/wiki/HMAC) and allows you to validate that the webhook was actually sent by Teamtailor. Webhooks signatures are optional and if you'd like to use it, please contact us on partner@teamtailor.com we'll provide you with the secret key needed.
+To validate authenticity of webhooks sent by Teamtailor we include a `Teamtailor-Signature` header in each request. The header contains a [HMAC](https://en.wikipedia.org/wiki/HMAC) and allows you to validate that the webhook was actually sent by Teamtailor. Webhooks signatures are optional and if you'd like you can find your Secret key in the Integrations hub inside Teamtailor App.
 
 ## Signature structure
 The structure of `Teamtailor-Signature` is a timestamp (to prevent [replay attacks](https://en.wikipedia.org/wiki/Replay_attack)) followed by a comma and two or more schemes separated by commans. The current only valid signature scheme is `v1` and the latest scheme should always be used to prevent [downgrading attacks](https://en.wikipedia.org/wiki/Downgrade_attack).
