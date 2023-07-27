@@ -41,7 +41,8 @@
             ]
          }
       ]
-   }
+   },
+   "validateEndpoint": "activation/validate"
 }
 ```
 ### This config is visible during trigger activation in settings page.
@@ -193,4 +194,37 @@ Content-Type: application/vnd.api+json
     }
   }
 }
+```
+
+## Validation endpoint
+
+If you would like to validate the activation of your user, you are able to include in your webhook activation config
+
+```json
+{
+   "config":{
+      "fields":[
+      
+         {
+            "id":"api_key",
+            "type":"text",
+            "label":"Enter your api key",     
+         }
+      ]
+   },
+   "validateEndpoint": "my-validation/validate"
+}
+```
+
+We will make the following request:
+
+`GET ${BASE_URL}/my-validation/validate` 
+You can validate Authorization header and make a response
+
+You can response with 200, in this case user will see that validation was successful
+If you will render error http status (>=400) we will render your response
+
+The error response should be in format of an object with property 'errors' and array of strings as a value
+```json
+  {errors: ["String1", "String2"]}
 ```
