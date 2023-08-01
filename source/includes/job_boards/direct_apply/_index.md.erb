@@ -275,9 +275,23 @@ analytics        | false      | Contains analytics data. Implements *analytics* 
 
 ### Candidate object
 
-Attribute        | Type    | Description
------------------|---------|------------
-resume           | string  | Candidate's resume. Binary data must be in encoded in Base64
+Attribute         | Type    | Description
+------------------|---------|------------
+resume            | string  | Candidate's resume. Binary data must be in encoded in Base64
+first-name        | string  |
+last-name         | string  |
+full-name         | string  |
+email             | string  |
+phone             | string  |
+cover-letter      | string  |
+remote_picture_url| string  |
+linkedin_url      | string  |
+locations         | array   | Implements array location object
+notes             | array   | array of strings
+tags              | array   | array of strings
+
+
+
 
 ### Analytics object
 
@@ -285,3 +299,13 @@ Attribute        | Type    | Description
 -----------------|---------|------------
 referring-site   | string  | If provided, will be displayed as apply source. Defaults to your job board name
 user-agent       | string  | Candidate's user agent
+
+
+### Location object
+
+Attribute        | Type    | Description
+-----------------|---------|------------
+id               | number  | If provided we will try to lookup location by id, otherwise we will use combination of address, city and zip
+address          | string  |
+zip              | string  |
+city             | string  |
