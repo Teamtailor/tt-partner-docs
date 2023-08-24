@@ -1,0 +1,67 @@
+## List all partner results created by your partner
+
+```http
+GET https://api.teamtailor.com/partner/v1/partner-results HTTP/1.1
+Authorization: Bearer abc123abc123
+X-Api-Version: <%= config[:api_version] %>
+Content-Type: application/vnd.api+json
+```
+
+> Example response
+
+```json
+{
+    "data": [
+        {
+            "id": "ca00ae6f-62c2-44b6-8c63-92acde6a1250",
+            "type": "partner-results",
+            "links": {
+                "self": "https://api.teamtailor.com/partner/v1/partner-results/ca00ae6f-62c2-44b6-8c63-92acde6a1250"
+            },
+            "attributes": {
+                "assessment": {
+                    "duration": null,
+                    "grade": null,
+                    "score": null
+                },
+                "details": {},
+                "status": "failed",
+                "summary": null,
+                "url": null,
+                "candidate-id": 329,
+                "attachments": null,
+                "job-id": 17
+            }
+        },
+        {
+            "id": "f7d734f4-8f2a-433d-a8dd-695a32852b2e",
+            "type": "partner-results",
+            "links": {
+                "self": "https://api.teamtailor.com/partner/v1/partner-results/f7d734f4-8f2a-433d-a8dd-695a32852b2e"
+            },
+            "attributes": {
+                "assessment": {
+                    "duration": null,
+                    "grade": null,
+                    "score": null
+                },
+                "details": {},
+                "status": "failed",
+                "summary": null,
+                "url": null,
+                "candidate-id": 329,
+                "attachments": null,
+                "job-id": 17
+            }
+        }
+    ],
+    "meta": {
+        "record-count": 2,
+        "page-count": 1
+    },
+    "links": {
+        "first": "https://api.teamtailor.com/partner/v1/partner-results?page%5Bnumber%5D=1&page%5Bsize%5D=10",
+        "last": "https://api.teamtailor.com/partner/v1/partner-results?page%5Bnumber%5D=1&page%5Bsize%5D=10"
+    }
+}
+```
