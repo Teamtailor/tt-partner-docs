@@ -39,6 +39,14 @@ Authorization: Bearer xxx-provider-key
         "stage": "After Interview",
         "tags": ["ruby", "javascript"],
         "trigger-id": 1,
+        "custom-fields": [
+          {
+            "is-remote": {
+              "value": true,
+              "type": "boolean"
+            }
+          }
+        ]
         "status": {
           "rejected": false
         },
@@ -103,7 +111,7 @@ partner-result          | The result presented to the customer. Update scores, s
 partner-result.update-url | The URL used to update a [Partner Results resource](#partner-results)
 company                 | Company data: `uuid`, `name`, `url` (to career site), `logotype` (URL to file).
 candidate               | Candidate data.
-candidate.job           | Candidate job data: `id`, `title`, `stage`, `tags`. When run by trigger also includes: `stage-id`, `trigger-id` and `triggered-by`.
+candidate.job           | Candidate job data: `id`, `title`, `stage`, `tags`, `custom-fields`. When run by trigger also includes: `stage-id`, `trigger-id` and `triggered-by`.
 candidate.recruiter     | Job recruiter data: `name`, `email`, `phone`.
 candidate.locations     | Candidate locations, list with: `name`, `address`.
 candidate.questions     | Candidate answers to questions, list with: `question`, `answer`. Supported types: Text, Choice (list), Boolean (`yes`/`no`), Range (eg, "10 years"), File (url to file, valid for 1 hour)
