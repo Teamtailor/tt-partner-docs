@@ -131,7 +131,6 @@ Renders a box with the icon of following types: 'info', 'error', 'warning', 'suc
 #### Error
 You can render a red alert error message with error field
 
-
 ```json
 {
   "type":"error",
@@ -139,3 +138,15 @@ You can render a red alert error message with error field
   "required":"true"
 }
 ```
+
+#### Serialization
+Id of the element will be passed in the webhook payload along with the user input value
+Please note that we serialize "_" to "-" so "id": "test_assessment" will result in the following webhook-data:
+
+```json
+{
+  "test-assessment": "123"
+}
+```
+
+
