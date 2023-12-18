@@ -54,6 +54,16 @@ Authorization: Bearer xxx-provider-key
           { "id": 2, "label": "Junior developer" },
         ]
       },
+    ],
+    "assessment-criteria": [
+      {
+        "id": "algorithm-test-recursive-24566",
+        "label": "Recursive thinking"
+      },
+      {
+        "id": "algorithm-test-sorting-66345",
+        "label": "Overall grasp of sorting algorithms"
+      }
     ]
   }
 }
@@ -66,10 +76,11 @@ The request is authenticated with the client-specific “provider key” in the 
 
 ### Expected response
 
-Attribute        | Type    | Description
------------------|---------|------------
-config           | object  | Top-level object
-fields           | array   | List of possible fields (see below)
+Attribute            | Type    | Description
+---------------------|---------|------------
+config               | object  | Top-level object
+fields               | array   | List of possible fields (see below)
+assessment-criteria  | array   | List of available assessment criteria (optional)
 
 ### Field objects
 
@@ -128,6 +139,13 @@ Renders a box with the icon of following types: 'info', 'error', 'warning', 'suc
   "icon": "info"
 }
 ```
+
+### Assessment Criteria Object
+
+Attribute        | Type    | Description
+-----------------|---------|------------
+id               | string  | Your unique identifier for this assessment criteria.  Use this identifier when updating the `partner-result` with the score for the assessment criteria
+label            | string  | Human readable label
 
 #### Error
 You can render a red alert error message with error field
