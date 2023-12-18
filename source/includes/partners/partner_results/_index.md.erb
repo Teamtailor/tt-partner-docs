@@ -32,7 +32,18 @@ This is the object representing a result from a test or similar, displayed on th
           "url": "https://google.com/robots.txt",
           "description": "Test results"
         }
+      ],
+      "assessment-criteria": [
+        {
+          "id": "algorithm-test-recursive-24566",
+          "score": 96
+        },
+        {
+          "id": "algorithm-test-sorting-66345",
+          "score": 45
+        }
       ]
+
     }
   }
 }
@@ -50,6 +61,7 @@ url              | string  | URL for viewing a report on your website.
 candidate-id     | string  | __Immutable__ UUID identifier for candidate.
 job-id           | number  | ID of the job webhook was sent from.
 attachments	 | list	   | List of attachment objects containing keys: __"url"__ and __"description"__.
+assessmnet-criteria	 | list	   | List of assessment criteria objects containing keys: __“id”__ and __“score”__ (optional)
 
 
 #### Assessment object
@@ -58,3 +70,9 @@ Attribute        | Type    | Description
 score            | integer | Must be between 0 and 100.
 grade            | string  | May be __"failed"__, __"passed"__ or __"excelled"__.
 duration         | integer | Duration of test in seconds
+
+#### Assessment Criteria object
+Attribute        | Type    | Description
+-----------------|---------|------------
+id               | string  | Your unique identifier for the assessment criteria specified in the webhook config.
+score            | integer | Must be between 0 and 100.
