@@ -5,6 +5,7 @@
 </p>
 
 Live version - [HERE](https://partner.teamtailor.com/)
+<br>
 Hosted on Netlify by auto push master branch
 
 Getting Started with Slate
