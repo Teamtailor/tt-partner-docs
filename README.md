@@ -4,6 +4,8 @@
   <a href="https://travis-ci.org/lord/slate"><img src="https://travis-ci.org/lord/slate.svg?branch=master" alt="Build Status"></a>
 </p>
 
+Live version - [HERE](https://partner.teamtailor.com/)
+
 Getting Started with Slate
 ------------------------------
 
@@ -12,7 +14,7 @@ Getting Started with Slate
 You're going to need:
 
  - **Linux or OS X** — Windows may work, but is unsupported.
- - **Ruby, version 2.0 or newer**
+ - **Ruby, version 2.0 or newer** (If got problem instaling ruby 2.6.5 run RUBY_CFLAGS="-Wno-error=implicit-function-declaration" rbenv install 2.6.5)
  - **Bundler** — If Ruby is already installed, but the `bundle` command doesn't work, just run `gem install bundler` in a terminal.
 
 ### Getting Set Up
