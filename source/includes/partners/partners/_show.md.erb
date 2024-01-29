@@ -20,6 +20,20 @@ X-Api-Version: <%= config[:api_version] %>
     "attributes": {
       "name": "Pied Piper",
       "base-url": "https://piedpiper.com",
+      "webhook-activation-config":{
+        "config":{
+            "fields":[
+              {
+                "id": "username",
+                "label": "Username",
+                "placeholder": "jondoe666",
+                "type": "text",
+                "required": true
+              }
+            ]
+        }
+      },
+      "dynamic-activation-config": false,
       "webhook-config": {
         "config": {
           "fields": [
