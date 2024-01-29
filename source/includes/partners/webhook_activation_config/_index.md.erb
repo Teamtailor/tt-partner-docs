@@ -133,6 +133,24 @@ Content-Type: application/vnd.api+json
 Set the static config on partner resource. The fields values filled by the user will be 
 turned into JSONWebToken. You can mark options required
 
+## Turn on dynamic activation config
+In order to use this option you need to update dynamic-activation-config property using PUT /partner
+```http
+PUT https://api.teamtailor.com/partner/v1/partners/99 HTTP/1.1
+Authorization: Token abc123abc123
+X-Api-Version: <%= config[:api_version] %>
+Content-Type: application/vnd.api+json
+
+{
+  "data": {
+    "id": 99,
+    "type":"partners",
+    "attributes":{
+      "dynamic-activation-config": true
+    }
+  }
+}
+```
 
 
 ## Empty fields
