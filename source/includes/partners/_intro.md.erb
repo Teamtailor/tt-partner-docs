@@ -13,3 +13,11 @@ If your integration will need to utilize the Public Teamtailor API of the compan
 We can change the setting of your partner to require this company token.
 On installation of your Integration user will see additional select field with the list of API with the correct scope
 It will be send as 'teamtailor-api-token' header in each call to `GET /config` `POST /webhook` and `GET /activation`
+
+### Teamtailor's Partner API base URLs for different stacks:
+When calling Teamtailor's Partner API the base URL will depend on the stack that your integration is using.
+
+Stack  | Teamtailor Partner API Base URL    
+-------|------------------------------------------------
+EU     | api.teamtailor.com
+NA     | api.na.teamtailor.com
