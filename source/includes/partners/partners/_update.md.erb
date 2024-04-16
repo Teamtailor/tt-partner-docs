@@ -1,7 +1,7 @@
 ## Update partner
 
 ```http
-PUT https://api.teamtailor.com/partner/v1/partners/99 HTTP/1.1
+PUT https://api.teamtailor.com/partner/v1/partners/{ID} HTTP/1.1
 Authorization: Token abc123abc123
 X-Api-Version: <%= config[:api_version] %>
 Content-Type: application/vnd.api+json
@@ -42,7 +42,7 @@ Content-Type: application/vnd.api+json
     "id": "99",
     "type": "partners",
     "links": {
-      "self": "https://api.teamtailor.com/partner/v1/partners/99"
+      "self": "https://api.teamtailor.com/partner/v1/partners/{ID}"
     },
     "attributes": {
       "name": "Pied Piper",
