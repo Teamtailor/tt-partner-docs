@@ -99,7 +99,7 @@ You have several options on how to implement activation config:
 ## Set the static activation config on Partner
 
 ```http
-PUT https://api.teamtailor.com/partner/v1/partners/99 HTTP/1.1
+PUT https://api.teamtailor.com/partner/v1/partners/{ID} HTTP/1.1
 Authorization: Token abc123abc123
 X-Api-Version: <%= config[:api_version] %>
 Content-Type: application/vnd.api+json
@@ -136,7 +136,7 @@ turned into JSONWebToken. You can mark options required
 ## Turn on dynamic activation config
 In order to use this option you need to update dynamic-activation-config property using PUT /partner
 ```http
-PUT https://api.teamtailor.com/partner/v1/partners/99 HTTP/1.1
+PUT https://api.teamtailor.com/partner/v1/partners/{ID} HTTP/1.1
 Authorization: Token abc123abc123
 X-Api-Version: <%= config[:api_version] %>
 Content-Type: application/vnd.api+json
@@ -198,7 +198,7 @@ and try to render returned config fields
 
 
 ```http
-PUT https://api.teamtailor.com/partner/v1/partners/99 HTTP/1.1
+PUT https://api.teamtailor.com/partner/v1/partners/{ID} HTTP/1.1
 Authorization: Token abc123abc123
 X-Api-Version: <%= config[:api_version] %>
 Content-Type: application/vnd.api+json

@@ -1,7 +1,7 @@
 ## Get partner
 
 ```http
-GET https://api.teamtailor.com/partner/v1/partners/99 HTTP/1.1
+GET https://api.teamtailor.com/partner/v1/partners/{ID} HTTP/1.1
 Authorization: Token abc123abc123
 X-Api-Version: <%= config[:api_version] %>
 
@@ -12,10 +12,10 @@ X-Api-Version: <%= config[:api_version] %>
 ```json
 {
   "data": {
-    "id": "99",
+    "id": {ID},
     "type": "partners",
     "links": {
-      "self": "https://api.teamtailor.com/partner/v1/partners/99"
+      "self": "https://api.teamtailor.com/partner/v1/partners/{ID}"
     },
     "attributes": {
       "name": "Pied Piper",
