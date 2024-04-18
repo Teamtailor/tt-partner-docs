@@ -4,12 +4,10 @@ When you use the Teamtailor Direct Apply API candidates will stay and apply at y
 still get the candidate data. However, we strongly recommend redirecting candidates to our customer's career sites.
 
 You will need to use following endpoints:
+Production BASE_URL = `https://puz9tpa6s8.execute-api.eu-west-1.amazonaws.com/production`
 
 1. `GET ${BASE_URL}/inquiry` - get job data (questions, consents, etc) from Teamtailor
 2. `POST ${BASE_URL}/apply` - send candidate data to Teamtailor
-
-If you decide to proceed with integrating the Direct Apply solution, please ask for the `BASE_URL` at [integrations@teamtailor.com](mailto:integrations@teamtailor.com).
-You will also need to ask for configuring authentication flow. Read more [here](#authentication).
 
 ## Authentication
 
@@ -46,7 +44,7 @@ There will be two params needed: `body` and `secret`.
 1. `body` - use following bodys for computing signature for different enpoints:
   - for `/inquiry` - use empty string ""
   - for `/apply` - use request body that you pass
-2. `secret` - your unique secret key. We will provide it to you if you ask us at [integrations@teamtailor.com](mailto:integrations@teamtailor.com).
+2. `secret` - your API KEY (you can see it in integrations hub) .
 
 Use `sha256` algorithm. The end result signature should be a `base64` string, first encoded in `hex`.
 
