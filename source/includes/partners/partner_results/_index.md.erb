@@ -56,7 +56,7 @@ Attribute        | Type    | Description
 assessment       | object  | Assessment object.
 details          | object  | Details object. May be any valid JSON object at most 2 levels deep. The data is displayed to the customer.
 status           | string  | May be __"sending"__, __"sent"__, __"pending"__, __"completed"__ or __"failed"__.
-summary          | string  | Summary text.
+summary          | string  | Summary text. This field does not have character limit, but we show only 150 characters in the candidate modal. So we recommend keeping it short. Full message can be viewed in 'view details' modal.
 url              | string  | URL for viewing a report on your website.
 candidate-id     | string  | __Immutable__ UUID identifier for candidate.
 job-id           | number  | ID of the job webhook was sent from.
