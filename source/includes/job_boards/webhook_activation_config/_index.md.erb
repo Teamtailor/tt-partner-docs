@@ -1,0 +1,167 @@
+# Webhook activation config
+## About activation config
+
+```json
+{
+   "config":{
+      "fields":[
+         {
+            "id":"clientId",
+            "type":"text",
+            "label":"Client ID",
+            "required":true,
+            "description":"Please insert the Client ID"
+         },
+         {
+            "id":"clientSecret",
+            "type":"password",
+            "label":"Client SECRET",
+            "required":true,
+            "description":"Please insert the Client secret"
+         },
+         {
+            "id":"language",
+            "type":"select",
+            "label":"Test Default language",
+            "description":"Select the default test language",
+            "options":[
+               {
+                  "id":"1",
+                  "label":"English"
+               },
+               {
+                  "id":"2",
+                  "label":"French"
+               }
+            ]
+         }
+      ]
+   },
+}
+```
+### This config is visible during trigger activation in settings page.
+This is the place where you should collect the data you need in order to identify user.
+You can render a form that will need to be filled to enable integration. It could be email, passwords, api tokens.
+
+## Example implementation of middleware
+
+```js
+module.exports = async (req, res, next) => {
+  const [JWTtoken] = req.headers.authorization.split('Bearer ');
+
+  try {
+    const decoded = JWT.verify(JWTtoken, TT_JOB_BOARD_API_KEY);
+    req.auth = decoded;
+    return next();
+  } catch (error) {
+    if (req.path.includes('config')) {
+      return res.json({
+        config: {
+          fields: [
+            {
+              type: 'error',
+              message: 'Wrong authorization token',
+            },
+          ],
+        },
+      });
+    }
+    return next(error);
+  }
+};
+
+```
+
+After user will finish the installation Teamtailor will turn this form into a JSON web token
+The token will be included in any request to `GET ${BASE_URL}/config`
+ and `POST ${BASE_URL/webhook}`
+Payload can be verified with TT_JOB_BOARD_API_KEY
+
+
+## Setting up activation config
+Create an activation config using the same elements as in the webhook config.
+You have several options on how to implement activation config:
+
+1. Setting static config on a Job board using API with at least one input field (recommended)
+1. Implementing dynamic config that will call your endpoint every time user will go to your integration in the settings page
+
+## Set the static activation config on Job board
+
+```http
+PUT https://api.teamtailor.com/channel/v1/channels/{ID} HTTP/1.1
+Authorization: Token abc123abc123
+X-Api-Version: <%= config[:api_version] %>
+Content-Type: application/vnd.api+json
+
+{
+  "data": {
+    "id": 99,
+    "type":"channels",
+    "attributes":{
+      "activation-config": {
+        "config": {
+          "fields": [
+            {
+              "id":"token",
+              "type":"text",
+              "label":"Example Token",
+              "required":true
+            },
+          ]
+        }
+      }
+    }
+  }
+}
+```
+Set the static config on job board resource. The fields values filled by the user will be 
+turned into JSONWebToken. You can mark options required
+
+
+## Dynamic config
+
+Sometimes you may need to dynamically render the content of the fields
+You can achieve that with setting the empty object in webhook-activation-config.
+Each time the user will go to settings/your integration we will call
+
+`GET ${BASE_URL}/activation?company_uuid=xyz` 
+
+and try to render returned config fields
+
+
+```http
+PUT https://api.teamtailor.com/channel/v1/channels/{ID} HTTP/1.1
+Authorization: Token abc123abc123
+X-Api-Version: <%= config[:api_version] %>
+Content-Type: application/vnd.api+json
+
+{
+  "data": {
+    "id": 99,
+    "type":"channels",
+    "attributes":{
+      "webhook-activation-config": {}
+    }
+  }
+}
+```
+
+## Turn on dynamic activation config
+In order to use this option you need to update dynamic-activation-config property using PUT /channel
+
+```http
+PUT https://api.teamtailor.com/channel/v1/channels/{ID} HTTP/1.1
+Authorization: Token abc123abc123
+X-Api-Version: <%= config[:api_version] %>
+Content-Type: application/vnd.api+json
+
+{
+  "data": {
+    "id": 99,
+    "type":"channels",
+    "attributes":{
+      "dynamic-activation-config": true
+    }
+  }
+}
+```
