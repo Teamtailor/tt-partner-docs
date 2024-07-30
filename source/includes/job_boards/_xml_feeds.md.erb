@@ -2,6 +2,8 @@
 
 If you choose the Always included or Premium XML feed integration, you will receive a unique url to the XML feed.
 
+Salary field is optiona
+
 > Example XML feed
 
 ```xml
@@ -149,6 +151,12 @@ If you choose the Always included or Premium XML feed integration, you will rece
         <![CDATA[ 123456 ]]>
       </phone>
     </recruiter>
+    <salary>
+      <min> <![CDATA[ 1000 ]]></min>
+      <max> <![CDATA[ 2000 ]]></max>
+      <currency> <![CDATA[ EUR ]]></currency>
+      <timeunit> <![CDATA[ weekly ]]></timeunit>
+    </salary>
   </job>
 </source>
 ```
@@ -184,6 +192,7 @@ locations               | Locations of the job. Implement many *location* elemen
 department.name         | Name of the job's department
 role.name               | Name of the job's role
 recruiter               | Recruiter of the job. Implements *recruiter* object
+salary                  | Salary of the job. Implements *salary* object Salary is optional on may not be present, depends on the company settings. Salary can be range, or single value, in the second case only min will be present
 
 ### Location element
 
@@ -203,3 +212,12 @@ Attribute               | Value
 name                    | Recruiter name
 email                   | Recruiter email
 phone                   | Recruiter phone
+
+### Salary element
+
+Attribute               | Value
+-------------------     | -------
+min                     | Minimum salary
+max                     | Maximum salary
+currency                | Currency
+timeunit                | Time unit. One of following: **hourly**, **daily**, **weekly**, **monthly**, **yearly**
