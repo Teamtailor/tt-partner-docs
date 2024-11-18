@@ -32,6 +32,22 @@ Authorization: Bearer xxx-provider-key
       "tags": ["developer", "ruby"],
       "department": "Product development",
       "role": "Designer",
+      "job-offers": [
+        {
+          "id": "8734sg4d-6421-8954-934b-024b13412b7b",
+          "created_at": "2024-11-13T15:38:02.074+01:00",
+          "salary": {
+            "amount": "2000",
+            "currency": "EUR",
+            "salary_time_unit": "yearly"
+          },
+          "status": "accepted",
+          "response": "I'm glad to accept your offer",
+          "message": "Offer Message",
+          "name": "Offer Name",
+          "answered_at": "2024-11-18T12:39:19.856+01:00"
+        }
+      ]
       "job": {
         "id": 12345,
         "title": "Full-stack web developer",
@@ -120,6 +136,7 @@ candidate.recruiter     | Job recruiter data: `name`, `email`, `phone`.
 candidate.locations     | Candidate locations, list with: `name`, `address`.
 candidate.questions     | Candidate answers to questions, list with: `question`, `answer`. Supported types: Text, Choice (list), Boolean (`yes`/`no`), Range (eg, "10 years"), File (url to file, valid for 1 hour)
 candidate.custom-fields | Candidate custom fields, list with: `type`, `value`. Supported types: `text`, `date`, `boolean`, `phone`, `number`, `email`, `url`
+candidate.job-offers    | Candidate job offers, list with: `id`, `created_at`, `salary` (contains `amount`, `currency`, `salary_time_unit`), `status`, `response`, `message`, `name`, `answered_at`. **Note:** Job offers are only available to partners with "Include job offers" option enabled.
 
 ### Error handling
 
