@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  tt-partner-docs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: "bundle exec middleman server"
+    ports:
+      - "4567:4567"
+    volumes:
+      - ./:/app
