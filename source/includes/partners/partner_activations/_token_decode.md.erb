@@ -1,0 +1,38 @@
+## Decode token
+
+Tokens are encoded using the JWE standard.
+You can decode the token using your Webhook Secret as a secret key. (Secret key is not the same as the API key, you can view secret key in the integrations hub/show keys)
+
+
+```javascript
+const crypto = require('crypto');
+const jose = require('jose');
+
+class JWE {
+  // token here is the provider-key from the partner-activation object
+  async decode(token, secret) {
+    const directKey = this.getDirectKey(secret);
+    const importedKey = await jose.importJWK(directKey, 'A256GCM');
+
+    const { plaintext } = await jose.compactDecrypt(token, importedKey);
+
+    return new TextDecoder().decode(plaintext);
+  }
+
+  getDirectKey(secret) {
+    const key = Buffer.from(
+      crypto.createHash('sha256').update(secret).digest('hex').slice(0, 32),
+      'hex'
+    );
+
+    const directKey = {
+      kty: 'oct',
+      k: key.toString('base64url'),
+      alg: 'dir',
+      enc: 'A256GCM',
+    };
+
+    return directKey;
+  }
+}
+```

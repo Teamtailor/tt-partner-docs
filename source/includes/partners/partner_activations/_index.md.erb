@@ -1,0 +1,41 @@
+# Partner Activations
+
+This is the object representing a result from a test or similar, displayed on the candidate profile.
+
+## Partner activation object
+
+
+```json
+{
+  "data": [
+    {
+      "id": "1",
+      "type": "partner-activations",
+      "links": {
+        "self": "https://api.teamtailor.com/partner/v1/partner-activations/1"
+      },
+      "attributes": {
+        "provider-key": "xyz",
+        "company-name": "Sandbox: Company Name",
+        "company-uuid": "Uf90iujmioh12"
+      }
+    }
+  ],
+  "meta": {
+    "record-count": 1,
+    "page-count": 1
+  },
+  "links": {
+    "first": "https://api.teamtailor.com/partner/v1/partner-activations?page%5Bnumber%5D=1&page%5Bsize%5D=10",
+    "last": "https://api.teamtailor.com/partner/v1/partner-activations?page%5Bnumber%5D=1&page%5Bsize%5D=10"
+  }
+}
+```
+
+### Attributes
+
+| Attribute | Type | Description |
+| --- | --- | --- |
+| provider-key | object | JWE token |
+| company-name | string | Company name |
+| company-uuid | string | Company uuid |
