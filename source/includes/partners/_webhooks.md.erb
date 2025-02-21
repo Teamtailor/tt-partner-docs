@@ -55,6 +55,19 @@ Authorization: Bearer xxx-provider-key
           "email": "john@example.com"
         }
       ], 
+      "onboardings": [
+            {
+              "id": 177,
+              "status": "active",
+              "progress": 33,
+              "created_at": "2025-01-09T16:45:31.292+01:00",
+              "start_date": "2025-01-15",
+              "department": "Marketing",
+              "role": null,
+              "job": "Marketing Manager",
+              "user": "candidate@example.com"
+            }
+          ],
       "job": {
         "id": 12345,
         "title": "Full-stack web developer",
@@ -144,6 +157,8 @@ candidate.locations     | Candidate locations, list with: `name`, `address`.
 candidate.questions     | Candidate answers to questions, list with: `question`, `answer`. Supported types: Text, Choice (list), Boolean (`yes`/`no`), Range (eg, "10 years"), File (url to file, valid for 1 hour)
 candidate.custom-fields | Candidate custom fields, list with: `type`, `value`. Supported types: `text`, `date`, `boolean`, `phone`, `number`, `email`, `url`
 candidate.job-offers    | Candidate job offers, list with: `id`, `created_at`, `salary` (contains `amount`, `currency`, `salary_time_unit`), `status`, `response`, `message`, `name`, `answered_at`. **Note:** Job offers are only available to partners with "Include job offers" option enabled.
+candidate.referrals     | Candidate referrals, list with `id`, `name`, `email`
+candidate.onboardings   | Candidate onboardings, list with: `id`, `status`, `progress`, `created_at`, `start_date`, `departament`, `role`, `job`, `user`. <br> **Note:** It will be only included if you use the Onboarding feature.
 
 ### Error handling
 
