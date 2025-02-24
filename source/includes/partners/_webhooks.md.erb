@@ -9,7 +9,11 @@ When a trigger is executed in Teamtailor, the webhook JSON object is sent to you
 ```http
 POST ${BASE_URL}/webhook HTTP/1.1
 Authorization: Bearer xxx-provider-key
+```
 
+> Expected payload
+
+```json
 {
   "partner-event": {
     "id": "f3d7e8e2-da33-4c10-ae5f-0e7f4d46f6d7",
@@ -54,7 +58,7 @@ Authorization: Bearer xxx-provider-key
           "name": "John Doe",
           "email": "john@example.com"
         }
-      ], 
+      ],
       "onboardings": [
         {
           "id": 177,
@@ -82,7 +86,7 @@ Authorization: Bearer xxx-provider-key
               "type": "boolean"
             }
           }
-        ]
+        ],
         "status": {
           "rejected": false
         },
@@ -114,13 +118,13 @@ Authorization: Bearer xxx-provider-key
           "has-driver-license": {
             "value": true,
             "type": "boolean"
-          },
+          }
         },
         {
-          "social-security-number": { 
-            "value": "123456-7890", 
+          "social-security-number": {
+            "value": "123456-7890",
             "type": "text"
-          },
+          }
         }
       ]
     },
