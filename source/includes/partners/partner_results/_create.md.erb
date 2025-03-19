@@ -4,6 +4,7 @@
 POST https://api.teamtailor.com/partner/v1/partner-results HTTP/1.1
 Authorization: Bearer abc123abc123
 X-Api-Version: <%= config[:api_version] %>
+Content-Type: application/vnd.api+json
 
 {
   "data":{
@@ -12,6 +13,7 @@ X-Api-Version: <%= config[:api_version] %>
       "status": "completed",
       "summary": "The candidate passed the test with excellent results",
       "job-id": 444,
+      "candidate-id": 102,
       "assessment": {
         "score": 82,
         "grade": "excelled",
