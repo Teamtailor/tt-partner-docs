@@ -33,9 +33,7 @@ Authorization: Bearer xxx-provider-key
       "last-name": "Becker",
       "email": "applicant100@example.com",
       "phone": "+4670432121",
-      "picture": {
-        "url": "https://res.cloudinary.com/teamtailor/image/upload/c_limit,f_auto,h_100,q_auto,w_100,dpr_2.0/v1433344861/b2urpbafegvjzexula0n"
-      },
+      "picture-url": "https://res.cloudinary.com/teamtailor/image/upload/c_limit,f_auto,h_100,q_auto,w_100,dpr_2.0/v1433344861/b2urpbafegvjzexula0n",
       "tags": ["developer", "ruby"],
       "department": "Product development",
       "role": "Designer",
@@ -158,7 +156,6 @@ partner-result          | The result presented to the customer. Update scores, s
 partner-result.update-url | The URL used to update a [Partner Results resource](#partner-results)
 company                 | Company data: `uuid`, `name`, `url` (to career site), `logotype` (URL to file).
 candidate               | Candidate data.
-candidate.picture       | Candidate picture, contains `url`.
 candidate.job           | Candidate job data: `id`, `title`, `stage`, `tags`, `custom-fields`. When run by trigger also includes: `stage-id`, `trigger-id` and `triggered-by`.
 candidate.recruiter     | Job recruiter data: `name`, `email`, `phone`.
 candidate.locations     | Candidate locations, list with: `name`, `address`.
