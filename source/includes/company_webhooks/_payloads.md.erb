@@ -1,0 +1,73 @@
+# Webhook Payloads
+
+When an event occurs, Teamtailor sends a JSON payload to your endpoint containing details about the event.
+
+## Payload Structure
+
+```json
+{
+  "payload": {
+    "event_name": "job.update",
+    "data": {
+      "id": "2",
+      "type": "jobs",
+      "attributes": {
+        "title": "IT Designer 1",
+        "body": "<p>Job description...</p>",
+        "company-name": "Teamtailor",
+        "cover-letter-requirement": "cover_letter_optional",
+        "created-at": "2023-02-08T10:10:13.611+01:00",
+        "employment-level": "none",
+        "employment-type": "none",
+        "human-status": "archived",
+        "internal": false,
+        "remote-status": "none",
+        "status": "archived",
+        "tags": [],
+        "updated-at": "2023-02-22T22:10:48.705+01:00"
+      }
+    }
+  },
+  "signature": "YzU1N2FhOTUwMjlkNTFiMGM5NjIxNTEyODc5NGY5ZjgxZWNkMmNkZTZhNmIxYmI2YmM3NmVmYmQ1ZGZiMDg0Zg=="
+}
+```
+
+The standard payload structure includes:
+
+1. `payload`: Object containing:
+   - `event_name`: The type of event (e.g., "job.update")
+   - `data`: Resource data with:
+     - `id`: Resource identifier
+     - `type`: Resource type (e.g., "jobs", "candidates")
+     - `attributes`: Resource-specific attributes
+2. `signature`: Base64-encoded signature for verification
+
+For `destroy` events, the data structure is simpler but follows the same overall structure.
+
+## Resource-Specific Attributes
+
+Each resource type includes different attributes in the payload:
+
+### Candidate
+- first_name, last_name, email, phone etc.
+- tags, custom fields, status
+
+### Job
+- title, body, status, company-name etc.
+- employment details, dates, tags
+
+### Job Application
+- candidate_id, job_id, stage etc.
+- status, created_at, updated_at
+
+## Headers
+
+Each webhook request includes these headers:
+
+- `TT-Signature`: Signature for verifying webhook authenticity
+- `Authorization`: Bearer token (for partner webhooks, if applicable)
+- `teamtailor-api-token`: API token (if applicable)
+
+<aside class="notice">
+Note that attributes follow kebab-case naming convention (e.g., "company-name", "remote-status").
+</aside>
