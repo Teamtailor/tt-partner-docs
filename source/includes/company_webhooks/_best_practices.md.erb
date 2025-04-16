@@ -1,0 +1,37 @@
+# Best Practices
+
+Follow these best practices to ensure reliable and secure webhook integration with Teamtailor.
+
+## Implementation Recommendations
+
+### Webhook Processing
+
+1. **Verify signatures** - Always verify the signature before processing webhooks
+2. **Process asynchronously** - Handle webhooks asynchronously to respond quickly
+3. **Idempotency** - Design your webhook handlers to be idempotent (can safely receive the same webhook multiple times)
+4. **Return quickly** - Respond with a 200 status code as soon as possible, then process the webhook
+
+### Error Handling
+
+1. **Graceful failures** - Handle errors gracefully and log issues for debugging
+2. **Webhook monitoring** - Monitor webhook deliveries and failures
+3. **Handle retries** - Be prepared for webhooks to be retried if your endpoint is temporarily unavailable
+
+## Performance Considerations
+
+1. **Selective subscriptions** - Only subscribe to the events you need
+2. **Efficient processing** - Process webhooks efficiently to avoid bottlenecks
+3. **Scalable infrastructure** - Ensure your webhook endpoint can handle bursts of traffic
+
+## Security Guidelines
+
+1. **HTTPS only** - Always use HTTPS for webhook endpoints
+2. **Signature verification** - Always verify webhook signatures
+3. **Secrets management** - Securely store your webhook signature key
+4. **Input validation** - Validate webhook payloads before processing
+
+### Handling Duplicate Events
+
+Webhooks might be delivered multiple times, especially during retries:
+- Use a unique identifier (like the event ID) to detect duplicates
+- Make your webhook processing idempotent
