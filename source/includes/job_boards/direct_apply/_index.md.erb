@@ -94,7 +94,10 @@ ReferenceNumber: 1
       "options": [
         { "value": true, "label": "Yes" },
         { "value": false, "label": "No" }
-      ]
+      ],
+      "conditional": false,
+      "parent_question_id": null,
+      "conditional_value": null
     },
     {
       "id": 5,
@@ -107,13 +110,19 @@ ReferenceNumber: 1
         { "value": 3, "label": "Instagram" },
         { "value": 4, "label": "Snapchat" },
         { "value": 5, "label": "Other" }
-      ]
+      ],
+      "conditional": false,
+      "parent_question_id": null,
+      "conditional_value": null
     },
     {
       "id": 6,
       "question": "What did you learn this week?",
       "required": true,
-      "type": "textarea"
+      "type": "textarea",
+      "conditional": false,
+      "parent_question_id": null,
+      "conditional_value": null
     },
     {
       "id": 7,
@@ -123,31 +132,55 @@ ReferenceNumber: 1
       "format": "integer",
       "min": 0,
       "max": 20,
-      "unit": "years"
+      "unit": "years",
+      "conditional": false,
+      "parent_question_id": null,
+      "conditional_value": null
     },
     {
       "id": 8,
       "question": "Please upload your diploma",
       "required": false,
-      "type": "file"
+      "type": "file",
+      "conditional": false,
+      "parent_question_id": null,
+      "conditional_value": null
     },
     {
       "id": 9,
       "question": "What is your name?",
       "required": false,
-      "type": "text"
+      "type": "text",
+      "conditional": false,
+      "parent_question_id": null,
+      "conditional_value": null
     },
     {
       "id": 10,
       "question": "What is your date of birth?",
       "required": false,
-      "type": "date"
+      "type": "date",
+      "conditional": false,
+      "parent_question_id": null,
+      "conditional_value": null
     },
     {
       "id": 11,
       "question": "How many apples do you eat?",
       "required": false,
-      "type": "number"
+      "type": "number",
+      "conditional": false,
+      "parent_question_id": null,
+      "conditional_value": null
+    },
+    {
+      "id": 12,
+      "question": "What is your favorite color?",
+      "required": false,
+      "type": "color",
+      "conditional": true,
+      "parent_question_id": 11,
+      "conditional_value": 10
     }
   ],
   "consents": [
@@ -191,13 +224,16 @@ requirement      | string  | Requirement type. One of following: **optional**, *
 
 ### Question objects
 
-Attribute        | Type    | Description
------------------|---------|------------
-id               | string  | Unique identifier of question
-question         | string  | Human readable label
-required         | boolean | Indicates if the question is required
-type             | string  | Type of form element (see below)
-options          | array   | Options
+Attribute          | Type    | Description
+-------------------|---------|------------
+id                 | string  | Unique identifier of question
+question           | string  | Human readable label
+required           | boolean | Indicates if the question is required
+type               | string  | Type of form element (see below)
+options            | array   | Options
+conditional        | boolean | Indicates if the question is conditional
+parent_question_id | string  | Unique identifier of parent question
+conditional_value  | string  | Value of parent question
 
 ### Possible question types:
 
