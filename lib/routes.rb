@@ -3,4 +3,5 @@ Router.draw do
   route :job_boards do
     route :direct_apply
   end
+  route :company_webhooks
 end

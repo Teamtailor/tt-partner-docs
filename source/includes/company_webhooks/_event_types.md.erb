@@ -1,0 +1,29 @@
+# Event Types
+
+Company Webhooks use a consistent naming pattern for events:
+
+```
+resource_name.action
+```
+
+Where:
+* `resource_name` is the object type (candidate, job, etc.)
+* `action` is what occurred (create, update, destroy)
+
+## Common Events
+
+### Candidate Events
+* `candidate.create` - New candidate created
+* `candidate.update` - Candidate information updated
+* `candidate.destroy` - Candidate deleted
+
+### Job Events
+* `job.create` - New job created
+* `job.update` - Job information updated
+* `job.destroy` - Job deleted
+
+### Job Application Events
+* `job_application.create` - New application submitted
+* `job_application.update` - Application updated (e.g., stage change)
+* `job_application.destroy` - Application deleted
+

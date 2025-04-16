@@ -1,0 +1,21 @@
+# Setting Up Webhooks
+
+## Prerequisites
+
+To use Company Webhooks, you need:
+
+1. The Webhooks feature enabled for your company
+2. Administrator permissions in Teamtailor
+3. An endpoint that can receive webhook notifications (HTTPS required)
+
+## Configuration Steps
+
+1. In Teamtailor dashboard, go to **Settings** > **Integrations** > **Webhooks**
+2. Click **Add webhook** and provide:
+   * **Label**: A descriptive name (e.g., "CRM Integration")
+   * **Webhook URL**: Your HTTPS endpoint
+   * **Events**: Select the events you want to subscribe to
+3. Save the automatically generated signature key for security verification
+4. Test the connection to ensure your endpoint is receiving events
+
+You can create multiple webhook subscriptions with different event filters to organize your integrations efficiently.
