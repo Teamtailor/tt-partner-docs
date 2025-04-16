@@ -1,0 +1,87 @@
+# Webhook Signatures
+
+To validate the authenticity of webhooks sent by Teamtailor, each request includes a `TT-Signature` header and a signature field in the payload. This allows you to verify the webhook came from Teamtailor.
+
+## Signature Format
+
+The signature is a Base64-encoded hexadecimal string. In the example payload:
+
+```
+"signature": "YzU1N2FhOTUwMjlkNTFiMGM5NjIxNTEyODc5NGY5ZjgxZWNkMmNkZTZhNmIxYmI2YmM3NmVmYmQ1ZGZiMDg0Zg=="
+```
+
+## Signature Verification
+
+Based on the code in the `tt-webhooks` repository, the signature verification should follow this pattern:
+
+```javascript
+const crypto = require('crypto');
+
+// Get this from your webhook setup in Teamtailor
+const SECRET_KEY = 'your_webhook_signature_key';
+
+function verifyWebhookSignature(requestBody, signatureHeader) {
+  const { payload } = requestBody;
+  
+  // Calculate expected signature
+  // The exact calculation method may vary - check with Teamtailor for the exact formula
+  const hmac = crypto.createHmac('sha256', SECRET_KEY)
+    .update(payload.data.id.toString())
+    .digest('hex');
+  
+  const expectedSignature = Buffer.from(hmac).toString('base64');
+  
+  // Compare signatures
+  return signatureHeader === expectedSignature;
+}
+
+// In your webhook handler
+app.post('/webhook', (req, res) => {
+  const signature = req.headers['tt-signature'];
+  
+  if (!verifyWebhookSignature(req.body, signature)) {
+    return res.status(401).send('Invalid signature');
+  }
+  
+  // Process the webhook...
+  res.status(200).send('Webhook processed');
+});
+```
+
+## Example Implementation (PHP)
+
+```php
+<?php
+// Get this from your webhook setup in Teamtailor
+$secretKey = 'your_webhook_signature_key';
+
+function verifySignature($requestBody, $signatureHeader, $secretKey) {
+    $id = $requestBody['payload']['data']['id'];
+    
+    // Calculate the HMAC using SHA-256
+    $hmac = hash_hmac('sha256', $id, $secretKey, true);
+    
+    // Convert to base64
+    $expectedSignature = base64_encode(bin2hex($hmac));
+    
+    return hash_equals($signatureHeader, $expectedSignature);
+}
+
+// Webhook handler
+$requestBody = json_decode(file_get_contents('php://input'), true);
+$signature = $_SERVER['HTTP_TT_SIGNATURE'];
+
+if (!verifySignature($requestBody, $signature, $secretKey)) {
+    http_response_code(401);
+    echo 'Invalid signature';
+    exit;
+}
+
+// Process the webhook...
+http_response_code(200);
+echo 'Webhook processed';
+```
+
+<aside class="warning">
+Note: The exact signature calculation method may depend on your specific implementation.
+</aside>
