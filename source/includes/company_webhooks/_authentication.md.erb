@@ -1,0 +1,46 @@
+# Authentication & Security
+
+Teamtailor uses multiple security measures to ensure webhook deliveries are secure and authentic.
+
+## Webhook Security
+
+Each webhook request includes:
+
+1. A `TT-Signature` header containing the signature
+2. The same signature in the request body
+3. Optional authorization headers for partner-specific webhooks
+
+This allows you to verify that the webhook is legitimately from Teamtailor.
+
+## HTTPS Requirements
+
+All webhook endpoints must use HTTPS to ensure data is encrypted in transit. Teamtailor will not send webhooks to non-HTTPS URLs.
+
+## Authentication Headers
+
+Based on the implementation in `tt-webhooks`, the following headers may be present:
+
+```javascript
+const headers = {
+  "TT-Signature": signature,
+};
+
+if (providerKey) {
+  headers.authorization = `Bearer ${providerKey}`;
+}
+
+if (apiKey) {
+  headers["teamtailor-api-token"] = apiKey;
+}
+```
+
+The standard header for signature verification is `TT-Signature`.
+
+## Retry Mechanism
+
+If your endpoint is temporarily unavailable or returns a non-2xx status code, Teamtailor will retry the webhook delivery:
+
+- First retry: Shortly after the initial attempt
+- Subsequent retries: Using an exponential backoff strategy
+
+After multiple failed attempts, if the webhook still fails to deliver, it will be logged as a failed delivery.
