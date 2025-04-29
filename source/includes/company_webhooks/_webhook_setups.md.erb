@@ -1,0 +1,36 @@
+# Partner Webhook Setups
+
+Partner webhook setups are a specialized type of webhook system specifically designed for Teamtailor integration partners.
+
+## Key Differences from Company Webhooks
+
+Partner webhook setups differ from company webhooks in several important ways:
+
+1. **Automatic Activation**: When a client activates a partner integration that has a webhook setup, webhooks are automatically activated for that company without requiring additional configuration.
+
+2. **Partner-Managed Endpoints**: The webhook endpoint is configured by the partner, not the client company.
+
+3. **Different Authentication**: Partner webhooks use a different authorization header format and signature verification method.
+
+4. **Controlled Access**: This feature is enabled by Teamtailor specifically for approved integration partners.
+
+## Authentication for Partner Webhooks
+
+Partner webhook requests use a different authentication system than company webhooks:
+
+### Headers
+- `Authorization`: Bearer token (JWT-encoded provider keys)
+- `Teamtailor-Signature`: Format with timestamp (e.g., `t=1539756759,v1=hmac,v0=hmac_fake`)
+- `Teamtailor-Api-Token`: API key when available
+- `Teamtailor-Host`: Current TeamtailorStack host
+- `Content-Type`: application/json
+
+Company webhooks use a Base64-encoded HMAC SHA-256 signature calculated from the resource ID, while partner webhooks use a JWT-based authentication system with additional verification headers.
+
+## Setup Process
+
+To set up partner webhook integrations:
+
+1. Contact Teamtailor at integrations@teamtailor.com to request partner integration status
+2. Teamtailor will enable the webhook setup feature for your partner account
+3. Configure your endpoint to properly handle and authenticate the incoming webhooks
