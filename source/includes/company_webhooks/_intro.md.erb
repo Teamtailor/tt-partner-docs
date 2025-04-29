@@ -2,6 +2,16 @@
 
 Teamtailor's Company Webhooks allow you to receive real-time notifications when data changes in Teamtailor. This enables seamless integration with your existing systems without constantly polling the API.
 
+## Types of Webhook Systems in Teamtailor
+
+Teamtailor offers two different webhook systems:
+
+1. **Company Webhooks** - These are activated directly by companies in their Teamtailor settings. They allow companies to receive notifications about their own recruitment activities to any endpoint they configure.
+
+2. **Partner Webhook Setups** - These are part of the partner integration system. When a client activates a partner integration that has a webhook setup, webhooks will be automatically activated for that company and sent to the endpoint configured in the partner's webhook setup. These use a different authentication signature format and are enabled by Teamtailor for specific partner integrations.
+
+This documentation focuses on Company Webhooks. For information about Partner Webhook Setups, please refer to the [Partners documentation section](/partners/#webhooks).
+
 ## Key Benefits
 
 * **Real-time updates**: Get notified immediately when changes occur
