@@ -66,6 +66,10 @@ ReferenceNumber: 1
 
 ```json
 {
+  "company": {
+       "name": "Teamtailor",
+       "uuid": "xyz"
+  }
   "job_status": "active",
   "application_fields": [
     {
@@ -210,6 +214,7 @@ ReferenceNumber: 1
 
 Attribute           | Type    | Description
 --------------------|---------|------------
+company               object    Implements company object
 job_status          | string  | Job status. One of following: **active**, **expired**
 application_fields  | array   | List of application field statuses. Implements many *application field* objects
 questions           | array   | List of questions. Implements many *question* objects
@@ -221,6 +226,13 @@ Attribute        | Type    | Description
 -----------------|---------|------------
 name             | string  | Type of field
 requirement      | string  | Requirement type. One of following: **optional**, **required**, **off**
+
+### Company field object
+
+Attribute        | Type    | Description
+-----------------|---------|------------
+name             | string  | Name of the company
+uuid             | string  | Company uuid
 
 ### Question objects
 

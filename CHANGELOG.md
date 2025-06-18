@@ -1,6 +1,8 @@
 # Changelog
 
 ## Version 1.3.3
+*June 18, 2025*
+Added company object to inquiry response
 
 *June 11, 2016*
 
