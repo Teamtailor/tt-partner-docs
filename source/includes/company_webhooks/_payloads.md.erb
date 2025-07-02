@@ -57,8 +57,25 @@ Each resource type includes different attributes in the payload:
 - employment details, dates, tags
 
 ### Job Application
-- candidate_id, job_id, stage etc.
-- status, created_at, updated_at
+The job application resource includes the following attributes:
+
+- `id` - Application identifier
+- `updated_at` - Last update timestamp
+- `job_id` - Associated job identifier
+- `job_title` - Title of the associated job
+- `last_moved_at` - Timestamp when application was last moved between stages
+- `stage_name` - Current stage name
+- `referring_site` - Site where candidate found the job
+- `referring_url` - URL where candidate found the job
+- `referer_id` - Referer identifier
+- `rejected_at` - Rejection timestamp (if applicable)
+- `promotion_id` - Associated promotion identifier
+- `company_uuid` - Company unique identifier
+- `transparent_recruiting_visible_at` - Earliest date when rejection can be communicated to candidate
+
+<aside class="warning">
+<strong>Transparent Recruiting Compliance:</strong> If your system notifies candidates about application status changes (especially rejections), you must respect the <code>transparent_recruiting_visible_at</code> date. This represents the earliest date when you can notify the candidate about their rejection status.
+</aside>
 
 ## Headers
 

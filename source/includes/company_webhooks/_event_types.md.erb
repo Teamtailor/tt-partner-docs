@@ -24,6 +24,10 @@ Where:
 
 ### Job Application Events
 * `job_application.create` - New application submitted
-* `job_application.update` - Application updated (e.g., stage change)
+* `job_application.update` - Application updated (e.g., stage change, rejection)
 * `job_application.destroy` - Application deleted
+
+<aside class="warning">
+<strong>Important:</strong> When handling job application rejection events, if your system notifies candidates about rejection, you must respect the <code>transparent_recruiting_visible_at</code> date as the earliest date for candidate notification. Do not notify candidates before this date.
+</aside>
 

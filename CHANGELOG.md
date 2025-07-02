@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.3.4
+*July 2, 2025*
+Added detailed job_application webhook event documentation with complete payload serialization fields and transparent recruiting compliance requirements
+
 ## Version 1.3.3
 *June 18, 2025*
 Added company object to inquiry response
