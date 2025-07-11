@@ -1,6 +1,18 @@
 # Partner Activations
 
-This is the object representing a result from a test or similar, displayed on the candidate profile.
+Partner activations represent active integrations between your application and Teamtailor companies. Each activation contains the necessary information to interact with a specific company's data, including authentication tokens and company identifiers.
+
+## Endpoints
+
+### List all partner activations
+`GET https://api.teamtailor.com/partner/v1/partner-activations`
+
+Returns all activations for your integration. This endpoint is filtered by your API key, so you'll only see activations for your specific integration.
+
+### Get a specific partner activation
+`GET https://api.teamtailor.com/partner/v1/partner-activations/{id}`
+
+Returns details for a specific activation. Use the activation ID from the list endpoint.
 
 ## Partner activation object
 
