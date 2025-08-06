@@ -277,6 +277,7 @@ JobBoardId: job_board
 ReferenceNumber: 1
 
 {
+  "referer-id": "123qwerty789",
   "candidate": {
     "full-name": "Max Name",
     "email": "example@test.com",
@@ -316,7 +317,8 @@ ReferenceNumber: 1
 
 Attribute        | Required   | Description
 -----------------|------------|------------
-candidate        | true       | Contains candidate data Implements *candidate* object
+referer-id       | false      | Unique identifier of the application in your system. Can be used for disposition data sync
+candidate        | true       | Contains candidate data. Implements *candidate* object
 analytics        | false      | Contains analytics data. Implements *analytics* object
 
 ### Candidate object
@@ -339,7 +341,7 @@ tags              | array   | array of strings
 
 ### Resume file types
 
-Resume type | file-type   
+Resume type | file-type
 ------------|-----------
 * docx      | "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 * pptx      | "application/vnd.openxmlformats-officedocument.presentationml.presentation"
