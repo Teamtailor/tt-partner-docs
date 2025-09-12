@@ -190,3 +190,57 @@ candidate.resume        | Candidate resume, object with: `file-name`, `url`.
 ### Error handling
 
 We expect your webhook to return a HTTP 2xx status code. Other responses will indicate to us that you didn't successfully receive the webhook. In this case we will attempt to deliver the webhook for three times or until we get a HTTP 2xx status code. We will notify you by email on the first retry failure. To render an error message in the partner result you need to return a plain string with a status code >=400.
+
+## Webhook Response
+
+You can optionally update the partner result directly from your webhook response without needing to make a separate API call to the [Partner Results](#partner-results) endpoint. Include a `partner_result_attributes` object in your webhook response to automatically update the partner result status, assessment scores, details, and attachments.
+
+> Example webhook response payload
+
+```json
+{
+  "partner_result_attributes": {
+    "status": "completed",
+    "assessment": {
+      "score": 85
+    },
+    "details": {
+      "rating": "10",
+      "awesomeness": {
+        "good": "good"
+      }
+    },
+    "attachments": [
+      {
+        "url": "https://google.com",
+        "description": "google"
+      },
+      {
+        "url": "https://slack.com",
+        "description": "slack"
+      }
+    ]
+  }
+}
+```
+
+### Webhook Response JSON object
+
+Attribute               | Type    | Description
+----------------------- | ------- | -----------
+partner_result_attributes | object | Container object for partner result updates
+
+### Partner Result Attributes object
+
+Attribute               | Type    | Description
+----------------------- | ------- | -----------
+status                  | string  | Partner result status (must be a valid status value)
+assessment              | object  | Assessment data containing score
+assessment.score        | integer | Assessment score between 0-100
+details                 | object  | Additional details (maximum depth of 2 levels)
+attachments             | array   | List of attachment objects with `url` and `description`
+
+
+<aside class="notice">
+The partner result will only be updated if the webhook response contains valid data.
+</aside>
