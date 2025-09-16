@@ -130,13 +130,25 @@ When using the `file` type, we upload the files to a private folder on S3, and s
 This URL is valid for 24 hours, so make sure to download the file when the webhook is sent to you.
 
 #### Infobox
-Renders a box with the icon of following types: 'info', 'error', 'warning', 'success', 'default'
+Renders a box with styling based on one of the following types: 'info', 'error', 'warning', 'success', 'default'
 
 ```json
 {
   "type": "infobox",
   "content": "To get information how to activate this integration works please <a href="">CLICK</a>",
   "icon": "info"
+}
+```
+
+By providing an attribute `required` it is possible to block a trigger from being configured:
+
+
+```json
+{
+  "type": "infobox",
+  "content": "Trigger cannot be configured at this time",
+  "icon": "error",
+  "required": true
 }
 ```
 
