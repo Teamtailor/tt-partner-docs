@@ -2,17 +2,40 @@
 
 To validate the authenticity of webhooks sent by Teamtailor, each request includes a `TT-Signature` header and a signature field in the payload. This allows you to verify the webhook came from Teamtailor.
 
+Teamtailor supports two signature versions:
+- **v1** (legacy): This version is deprecated and will be removed in the future
+- **v2** (recommended): This is the current version and should be used for all new implementations
+
+You can configure the signature version in your webhook settings. **We strongly recommend using v2 for all new integrations.**
+
 ## Signature Format
 
-The signature is a Base64-encoded hexadecimal string. In the example payload:
+The signature is a Base64-encoded string. The format depends on the signature version:
 
+### v1 Signature (Legacy - Deprecated)
 ```
 "signature": "YzU1N2FhOTUwMjlkNTFiMGM5NjIxNTEyODc5NGY5ZjgxZWNkMmNkZTZhNmIxYmI2YmM3NmVmYmQ1ZGZiMDg0Zg=="
 ```
 
+### v2 Signature (Recommended)
+```
+"signature": "dD0xNzAxMjM0NTY3LHYyPWFiY2RlZjEyMzQ1Njc4OTBhYmNkZWYxMjM0NTY3ODkwYWJjZGVmMTIzNDU2Nzg5MA=="
+```
+
+When decoded, the v2 signature contains a timestamp and the HMAC:
+```
+t=1701234567,v2=abcdef1234567890abcdef1234567890abcdef1234567890
+```
+
 ## Signature Verification
 
-Based on the code in the `tt-webhooks` repository, the signature verification should follow this pattern:
+### v1 Signature Verification (Legacy - Deprecated)
+
+<aside class="warning">
+v1 signatures are deprecated and will be removed in the future. Please migrate to v2 signatures for all new integrations.
+</aside>
+
+#### JavaScript Example
 
 ```javascript
 const crypto = require('crypto');
@@ -22,15 +45,14 @@ const SECRET_KEY = 'your_webhook_signature_key';
 
 function verifyWebhookSignature(requestBody, signatureHeader) {
   const { payload } = requestBody;
-  
+
   // Calculate expected signature
-  // The exact calculation method may vary - check with Teamtailor for the exact formula
   const hmac = crypto.createHmac('sha256', SECRET_KEY)
     .update(payload.data.id.toString())
     .digest('hex');
-  
+
   const expectedSignature = Buffer.from(hmac).toString('base64');
-  
+
   // Compare signatures
   return signatureHeader === expectedSignature;
 }
@@ -38,17 +60,17 @@ function verifyWebhookSignature(requestBody, signatureHeader) {
 // In your webhook handler
 app.post('/webhook', (req, res) => {
   const signature = req.headers['tt-signature'];
-  
+
   if (!verifyWebhookSignature(req.body, signature)) {
     return res.status(401).send('Invalid signature');
   }
-  
+
   // Process the webhook...
   res.status(200).send('Webhook processed');
 });
 ```
 
-## Example Implementation (PHP)
+#### PHP Example
 
 ```php
 <?php
@@ -57,13 +79,13 @@ $secretKey = 'your_webhook_signature_key';
 
 function verifySignature($requestBody, $signatureHeader, $secretKey) {
     $id = $requestBody['payload']['data']['id'];
-    
+
     // Calculate the HMAC using SHA-256
     $hmac = hash_hmac('sha256', $id, $secretKey, true);
-    
+
     // Convert to base64
     $expectedSignature = base64_encode(bin2hex($hmac));
-    
+
     return hash_equals($signatureHeader, $expectedSignature);
 }
 
@@ -82,6 +104,96 @@ http_response_code(200);
 echo 'Webhook processed';
 ```
 
-<aside class="warning">
-Note: The exact signature calculation method may depend on your specific implementation.
-</aside>
+### v2 Signature Verification (Recommended)
+
+The v2 signature provides enhanced security by including a timestamp and signing the entire payload.
+
+#### JavaScript Example
+
+```javascript
+const crypto = require('crypto');
+
+// Get this from your webhook setup in Teamtailor
+const SECRET_KEY = 'your_webhook_signature_key';
+
+function verifyV2Signature(requestBody, signatureHeader) {
+  const { payload } = requestBody;
+
+  // Decode the signature
+  const decodedSignature = Buffer.from(signatureHeader, 'base64').toString('utf-8');
+
+  // Parse timestamp and signature from the decoded string
+  // Format: t=1701234567,v2=abcdef...
+  const parts = decodedSignature.split(',');
+  const timestamp = parts[0].split('=')[1];
+  const receivedHmac = parts[1].split('=')[1];
+
+  // Create the signed payload: timestamp + '.' + JSON payload
+  const signedPayload = `${timestamp}.${JSON.stringify(payload)}`;
+
+  // Calculate expected HMAC
+  const expectedHmac = crypto.createHmac('sha256', SECRET_KEY)
+    .update(signedPayload)
+    .digest('hex');
+
+  // Compare HMACs using constant-time comparison
+  return crypto.timingSafeEqual(
+    Buffer.from(receivedHmac),
+    Buffer.from(expectedHmac)
+  );
+}
+
+// In your webhook handler
+app.post('/webhook', (req, res) => {
+  const signature = req.headers['tt-signature'];
+
+  if (!verifyV2Signature(req.body, signature)) {
+    return res.status(401).send('Invalid signature');
+  }
+
+  // Process the webhook...
+  res.status(200).send('Webhook processed');
+});
+```
+
+#### PHP Example
+
+```php
+<?php
+// Get this from your webhook setup in Teamtailor
+$secretKey = 'your_webhook_signature_key';
+
+function verifyV2Signature($requestBody, $signatureHeader, $secretKey) {
+    // Decode the signature
+    $decodedSignature = base64_decode($signatureHeader);
+
+    // Parse timestamp and signature from the decoded string
+    // Format: t=1701234567,v2=abcdef...
+    $parts = explode(',', $decodedSignature);
+    $timestamp = explode('=', $parts[0])[1];
+    $receivedHmac = explode('=', $parts[1])[1];
+
+    // Create the signed payload: timestamp + '.' + JSON payload
+    $signedPayload = $timestamp . '.' . json_encode($requestBody['payload']);
+
+    // Calculate expected HMAC
+    $expectedHmac = hash_hmac('sha256', $signedPayload, $secretKey);
+
+    // Compare HMACs using constant-time comparison
+    return hash_equals($receivedHmac, $expectedHmac);
+}
+
+// Webhook handler
+$requestBody = json_decode(file_get_contents('php://input'), true);
+$signature = $_SERVER['HTTP_TT_SIGNATURE'];
+
+if (!verifyV2Signature($requestBody, $signature, $secretKey)) {
+    http_response_code(401);
+    echo 'Invalid signature';
+    exit;
+}
+
+// Process the webhook...
+http_response_code(200);
+echo 'Webhook processed';
+```
