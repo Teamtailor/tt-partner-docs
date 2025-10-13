@@ -33,6 +33,12 @@ This is the object representing a result from a test or similar, displayed on th
           "description": "Test results"
         }
       ],
+      "actions": [
+        {
+          "buttonText": "Archive candidate",
+          "endpoint": "archive/333"
+        }
+      ],
       "assessment-criteria": [
         {
           "id": "algorithm-test-recursive-24566",
@@ -60,8 +66,9 @@ summary          | string  | Summary text. This field does not have character li
 url              | string  | URL for viewing a report on your website.
 candidate-id     | string  | __Immutable__ UUID identifier for candidate.
 job-id           | number  | ID of the job webhook was sent from.
-attachments	 | list	   | List of attachment objects containing keys: __"url"__ and __"description"__.
-assessment-criteria	 | list	   | List of assessment criteria objects containing keys: __"id"__ and __"score"__ (optional)
+attachments      | list    | List of attachment objects containing keys: __"url"__ and __"description"__.
+actions          | list    | List of action objects containing button label and POST endpoint configuration.
+assessment-criteria | list    | List of assessment criteria objects containing keys: __"id"__ and __"score"__ (optional)
 
 
 #### Assessment object
@@ -70,6 +77,14 @@ Attribute        | Type    | Description
 score            | integer | Must be between 0 and 100.
 grade            | string  | May be __"failed"__, __"passed"__ or __"excelled"__.
 duration         | integer | Duration of test in seconds
+
+#### Action object
+Attribute        | Type    | Description
+-----------------|---------|------------
+buttonText       | string  | Text displayed on the action button.
+endpoint         | string  | Path appended to the partner result base URL; Teamtailor issues a POST request when the button is clicked.
+
+Actions let you surface contextual buttons on the candidate's partner result card. Provide any `buttonText` you want rendered in the UI and an `endpoint` relative to the your partner base URL. When a recruiter clicks the button we send POST request to `{base-url}/{endpoint}` with the same partner event as [originally sent](#webhooks) allowing you to let user trigger additional operations.
 
 #### Assessment Criteria object
 Attribute        | Type    | Description
