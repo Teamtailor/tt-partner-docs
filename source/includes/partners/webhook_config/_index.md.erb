@@ -140,13 +140,6 @@ Renders a box with the icon of following types: 'info', 'error', 'warning', 'suc
 }
 ```
 
-### Assessment Criteria Object
-
-Attribute        | Type    | Description
------------------|---------|------------
-id               | string  | Your unique identifier for this assessment criteria.  Use this identifier when updating the `partner-result` with the score for the assessment criteria
-label            | string  | Human readable label
-
 #### Error
 You can render a red alert error message with error field
 
@@ -167,5 +160,20 @@ Please note that we serialize "_" to "-" so "id": "test_assessment" will result 
   "test-assessment": "123"
 }
 ```
+
+### Assessment Criteria Objects
+
+If you want to let users include the assessment results in the evaluation of 
+[job match scores](https://support.teamtailor.com/en/articles/11514674-evaluate-your-candidates-within-teamtailor#h_ef90a0f041) 
+in Teamtailor, you need to specify a list of which assessment criteria you'll include in the [Partner Results](#partner-results).
+
+Users will then be able to map those criteria to skills and traits that are part of the job's evaluation profile in Teamtailor.
+
+You can include any assessment criteria you want, for example the overall result of the assessment, separate sub-criteria, or a combination.
+
+Attribute        | Type    | Description
+-----------------|---------|------------
+id               | string  | Your unique identifier for this assessment criteria.  Use this identifier when updating the `partner-result` with the score for the assessment criteria
+label            | string  | Human readable label
 
 
