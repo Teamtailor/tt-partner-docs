@@ -86,7 +86,10 @@ endpoint         | string  | Path appended to the partner result base URL; Teamt
 
 Actions let you surface contextual buttons on the candidate's partner result card. Provide any `buttonText` you want rendered in the UI and an `endpoint` relative to the your partner base URL. When a recruiter clicks the button we send POST request to `{base-url}/{endpoint}` with the same partner event as [originally sent](#webhooks) allowing you to let user trigger additional operations.
 
-#### Assessment Criteria object
+#### Assessment Criteria objects
+
+The individual scores for the assessment criteria included in the [Webhook config](#webhook-config).
+
 Attribute        | Type    | Description
 -----------------|---------|------------
 id               | string  | Your unique identifier for the assessment criteria specified in the webhook config.
