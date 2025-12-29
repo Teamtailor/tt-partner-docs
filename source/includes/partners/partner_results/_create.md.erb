@@ -27,17 +27,6 @@ Content-Type: application/vnd.api+json
   }
 }
 ```
-
-Allowed values in `attributes`:
-
-- `status`: `sending` | `sent` | `pending` | `completed` | `failed`
-- `summary`: string
-- `job-id`: integer (Job reference)
-- `candidate-id`: integer (Candidate reference)
-- `assessment.score`: integer
-- `assessment.grade`: `top_fit` | `might_be_fit` | `might_not_be_fit` | `unknown`
-- `details`: JSON object (free-form)
-
 > Example response
 
 ```json
