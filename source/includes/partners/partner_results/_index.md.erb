@@ -15,7 +15,7 @@ This is the object representing a result from a test or similar, displayed on th
     "attributes": {
       "assessment": {
         "score": 82,
-        "grade": "excelled",
+        "grade": "top_fit",
         "duration": 1934
       },
       "details": {
@@ -75,7 +75,7 @@ assessment-criteria | list    | List of assessment criteria objects containing k
 Attribute        | Type    | Description
 -----------------|---------|------------
 score            | integer | Must be between 0 and 100.
-grade            | string  | May be __"failed"__, __"passed"__ or __"excelled"__.
+grade            | string  | May be __"top_fit"__, __"might_be_fit"__, __"might_not_be_fit"__ or __"unknown"__.
 duration         | integer | Duration of test in seconds
 
 #### Action object
