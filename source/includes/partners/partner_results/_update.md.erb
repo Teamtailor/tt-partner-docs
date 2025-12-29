@@ -15,7 +15,7 @@ Content-Type: application/vnd.api+json
       "summary": "The candidate passed the test with excellent results",
       "assessment": {
         "score": 82,
-        "grade": "excelled",
+        "grade": "top_fit",
         "duration": "0:32:14"
       },
       "details": {
@@ -26,6 +26,14 @@ Content-Type: application/vnd.api+json
   }
 }
 ```
+
+Allowed values in `attributes`:
+
+- `status`: `sending` | `sent` | `pending` | `completed` | `failed`
+- `summary`: string
+- `assessment.score`: integer
+- `assessment.grade`: `top_fit` | `might_be_fit` | `might_not_be_fit` | `unknown`
+- `details`: JSON object (free-form)
 
 > Example response
 
@@ -40,7 +48,7 @@ Content-Type: application/vnd.api+json
     "attributes": {
       "assessment": {
         "score": 82,
-        "grade": "excelled",
+        "grade": "top_fit",
         "duration": 1934
       },
       "details": {
