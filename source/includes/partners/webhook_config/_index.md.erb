@@ -127,7 +127,7 @@ All of the supported field types:
 
 #### File uploads
 When using the `file` type, we upload the files to a private folder on S3, and send a signed URL to the file in the webhook.
-This URL is valid for 24 hours, so make sure to download the file when the webhook is sent to you.
+This URL is valid for 60 seconds, so make sure to download the file when the webhook is sent to you.
 
 #### Infobox
 Renders a box with the icon of following types: 'info', 'error', 'warning', 'success', 'default'
@@ -175,5 +175,3 @@ Attribute        | Type    | Description
 -----------------|---------|------------
 id               | string  | Your unique identifier for this assessment criteria.  Use this identifier when updating the `partner-result` with the score for the assessment criteria
 label            | string  | Human readable label
-
-
