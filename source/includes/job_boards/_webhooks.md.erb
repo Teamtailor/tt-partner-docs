@@ -17,7 +17,7 @@ Use this endpoint to configure the options visible in the form by returning the 
 > Request
 
 ```http
-GET ${BASE_URL}/config?page=1&job_id=23&user_id=789 HTTP/1.1
+GET ${BASE_URL}/config?page=1&locale=en HTTP/1.1
 ```
 
 > Response
@@ -27,30 +27,122 @@ GET ${BASE_URL}/config?page=1&job_id=23&user_id=789 HTTP/1.1
   "config": {
     "1": [
       {
-        "id": "experience-level",
-        "label": "Experience level",
-        "placeholder": "Experience level",
+        "id": "job-role",
+        "label": "Job role",
         "type": "select",
+        "required": true,
         "options": [
-          { "id": 1, "label": "Junior" },
-          { "id": 2, "label": "Senior" },
+          { "id": "dev", "label": "Software engineer" },
+          { "id": "pm", "label": "Product manager" },
+          { "id": "data", "label": "Data analyst" }
+        ]
+      },
+      {
+        "id": "contract-type",
+        "label": "Contract type",
+        "type": "select",
+        "required": true,
+        "options": [
+          { "id": "full-time", "label": "Full-time" },
+          { "id": "part-time", "label": "Part-time" },
+          { "id": "contract", "label": "Contract" }
+        ],
+        "dynamicField": {
+          "url": "${BASE_URL}/config/dynamic/employment-based-fields"
+        }
+      },
+      {
+        "id": "pay-period",
+        "label": "Pay period",
+        "type": "select",
+        "required": true,
+        "options": [
+          { "id": "hourly", "label": "Hourly" },
+          { "id": "monthly", "label": "Monthly" },
+          { "id": "yearly", "label": "Yearly" }
+        ]
+      },
+      {
+        "type": "expandable",
+        "label": "Optional ad preferences",
+        "fields": [
+          {
+            "id": "total-openings",
+            "label": "Total openings",
+            "type": "number",
+            "min": 1,
+            "max": 499,
+            "value": 1,
+            "required": false
+          },
+          {
+            "id": "is-remote",
+            "label": "Remote available",
+            "type": "checkbox",
+            "required": false
+          },
+          {
+            "id": "is-urgent",
+            "label": "Urgent hire",
+            "type": "checkbox",
+            "required": false
+          },
+          {
+            "id": "is-featured",
+            "label": "Featured listing",
+            "type": "checkbox",
+            "required": false
+          }
+        ]
+      },
+      {
+        "type": "group",
+        "label": "Education",
+        "fields": [
+          {
+            "id": "education-level",
+            "label": "Education level",
+            "type": "select",
+            "required": false,
+            "options": [
+              { "id": "hs", "label": "High school" },
+              { "id": "bachelor", "label": "Bachelor's degree" },
+              { "id": "master", "label": "Master's degree" }
+            ]
+          },
+          {
+            "id": "study-field",
+            "label": "Field of study",
+            "type": "select",
+            "required": false,
+            "options": [
+              { "id": "cs", "label": "Computer science" },
+              { "id": "business", "label": "Business" }
+            ]
+          },
+          {
+            "id": "graduation-year",
+            "label": "Graduation year",
+            "type": "number",
+            "required": false,
+            "min": 1970,
+            "max": 2026
+          }
         ]
       }
     ],
-    "2": [
-      {
-        "id": "degree-level",
-        "label": "Required degree level",
-        "placeholder": "Choose degree level",
-        "type": "select",
-        "options": [
-          { "id": 1, "label": "Bachelor's Degree" },
-          { "id": 2, "label": "Master's Degree" },
-        ]
-      },
-    ],
-    "page": 1,
-    "hasNextPage": true
+    "hasNextPage": false,
+    "hasRedirectLink": false,
+    "selectLocation": {
+      "required": true,
+      "multiple": false,
+      "description": "Select a location",
+      "filterBy": { "country": "Sweden" },
+      "dynamicField": {
+        "url": "${BASE_URL}/config/dynamic/location-based-fields"
+      }
+    },
+    "page": "1"
   }
 }
 ```
@@ -61,16 +153,30 @@ GET ${BASE_URL}/config?page=1&job_id=23&user_id=789 HTTP/1.1
 
 #### Query parameters
 
-* page - the page number for which it should be config
+* page - the page number for which it should be config (required)
+* locale - locale used for labels (optional, default: `en`)
 * job_id - id of the job
+* company_uuid - company UUID
+* job_board_id - channel internal name
+* action - `create` or `update`
+* external_id - external identifier (present on update flows)
+* existing_agreement - whether the activation already has an agreement
+* field_id - previously selected field values (id=value)
+
+`field_id` is a placeholder for any field id from your config. For example, if the user selected
+`job-role = dev`, the next request may include `job-role=dev` in the query string.
 
 ### Expected config response
 
 Attribute        | Type    | Description
 -----------------|---------|------------
 config           | object  | Top-level object
-page             | number  | Indicates current page
+page             | string  | Indicates current page
 hasNextPage      | boolean | Indicates whether there is a next page to be fetched
+hasRedirectLink  | boolean | Indicates whether a redirect link should be shown
+selectLocation   | object  | Location selector definition
+
+`page` is a string in JSON responses (even though it represents a page number).
 
 ### Field objects
 
@@ -78,9 +184,29 @@ Attribute        | Type    | Description
 -----------------|---------|------------
 id               | string  | Identifier for this field, will be sent in webhook
 label            | string  | Human readable label
-placeholder      | string  | Form placeholder
+placeholder      | string  | Optional form placeholder
 type             | string  | Type of form element (see below)
-options          | array   | Options
+options          | array   | Options (required for `select`/`multiselect`)
+required         | boolean | Whether the field is required
+fields           | array   | Nested fields for `expandable` or `group` items
+dynamicField     | object  | Follow-up config to fetch based on current selection
+
+`expandable` and `group` are layout-only types, so they do not have `id` and are not included in webhook data.
+
+`dynamicField.url` should return a response with the same structure as `/config` and will be requested with
+query parameters for selected fields (`id=value`).
+
+`selectLocation` uses the same `dynamicField` pattern and is returned next to pages, not inside `config[page]`.
+
+`selectLocation` can include:
+
+Attribute        | Type    | Description
+-----------------|---------|------------
+required         | boolean | Whether the location is required
+multiple         | boolean | Whether multiple locations can be selected
+description      | string  | Helper text displayed to the user
+filterBy         | object  | Location filter (e.g. `{ "country": "Sweden" }`)
+dynamicField     | object  | Follow-up config to fetch based on location selection
 
 ### Supported field types
 
@@ -88,7 +214,7 @@ Field objects follow the HTML form standard in regards to types, possible option
 For example, __disabled__ may be provided for the __"text"__ type, __step__, __min__ and __max__ may be provided for the __"number"__ type and an __options__ array
 with __id__/__label__ may be provided for the __"select"__ type.
 
-All of the supported field types:
+Input field types:
 
 * checkbox
 * color
@@ -112,6 +238,11 @@ All of the supported field types:
 * url
 * week
 
+Layout field types:
+
+* expandable
+* group
+
 ### Pagination
 
 We support multiple pages of the config form (pagination).
@@ -126,10 +257,8 @@ there will be included query string parameters with the selected options (id=val
 {
   "config": {
     "1": [],
-    "2": [],
-    "3": [],
-    "page": 1,
-    "hasNextPage": true
+    "page": "1",
+    "hasNextPage": false
   }
 }
 ```
