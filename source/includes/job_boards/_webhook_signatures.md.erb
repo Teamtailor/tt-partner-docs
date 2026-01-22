@@ -1,23 +1,28 @@
 # Webhook signatures
+
 To validate authenticity of webhooks sent by Teamtailor we include a `Teamtailor-Signature` header in each request. The header contains a [HMAC](https://en.wikipedia.org/wiki/HMAC) and allows you to validate that the webhook was actually sent by Teamtailor. You can use your job board api key to verify secret token.
 
 ## Signature structure
+
 The structure of `Teamtailor-Signature` is a timestamp (to prevent [replay attacks](https://en.wikipedia.org/wiki/Replay_attack)) followed by a comma and two or more schemes separated by commans. The current only valid signature scheme is `v1` and the latest scheme should always be used to prevent [downgrading attacks](https://en.wikipedia.org/wiki/Downgrade_attack).
 
-```
-# Example signature
+> Example signature
+
+```txt
 Teamtailor-Signature: t=1539756759,
   v1=2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae,
   v0=fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9
 ```
 
 ## Checking signatures
-To validate a signature you may first check that the timestamp is in valid range (eg five minutes). This range is, however, up to you. 
+
+To validate a signature you may first check that the timestamp is in valid range (eg five minutes). This range is, however, up to you.
 
 After checking the timestamp you can verify the hash by computing it yourself and compare it to the lastest hash included in the request, `vX`. If it match, Teamtailor sent the webhook.
 
-```
-# Computing the hash
+> Example of signature check
+
+```js
 hash = sha256(timestamp + "." + payload, secret_key)
 ```
 
