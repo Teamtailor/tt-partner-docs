@@ -353,7 +353,7 @@ analytics        | false      | Contains analytics data. Implements *analytics* 
 
 Attribute         | Type    | Description
 ------------------|---------|------------
-resume            | object  | Candidate's resume file. Implements *file* object
+resume            | object  | Candidate's resume file. Implements *file* object, or a *resume url* payload (see below)
 first-name        | string  |
 last-name         | string  |
 full-name         | string  |
@@ -379,6 +379,18 @@ Resume type | file-type
 * pdf       | "application/pdf"
 * txt       | "text/plain"
 * rtf       | "application/rtf"
+
+### Resume via URL
+
+You can send a resume as a remote URL instead of uploading binary data.
+
+```json
+{
+  "resume": {
+    "url": "https://example.com/resume.pdf"
+  }
+}
+```
 
 
 ### Analytics object
