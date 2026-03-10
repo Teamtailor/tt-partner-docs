@@ -24,7 +24,7 @@ This is the object representing a result from a test or similar, displayed on th
       },
       "status": "sent",
       "summary": "High five",
-      "url": "apple.com",
+      "url": "https://apple.com",
       "candidate-id": 333,
       "job-id": 444,
       "attachments": [
@@ -57,32 +57,32 @@ This is the object representing a result from a test or similar, displayed on th
 
 ### Attributes
 
-Attribute        | Type    | Description
------------------|---------|------------
-assessment       | object  | Assessment object.
-details          | object  | Details object. May be any valid JSON object at most 2 levels deep. The data is displayed to the customer.
-status           | string  | May be __"sending"__, __"sent"__, __"pending"__, __"completed"__ or __"failed"__.
-summary          | string  | Summary text. This field does not have character limit, but we show only 150 characters in the candidate modal. So we recommend keeping it short. Full message can be viewed in 'view details' modal.
-url              | string  | URL for viewing a report on your website.
-candidate-id     | string  | __Immutable__ UUID identifier for candidate.
-job-id           | number  | ID of the job webhook was sent from.
-attachments      | list    | List of attachment objects containing keys: __"url"__ and __"description"__.
-actions          | list    | List of action objects containing button label and POST endpoint configuration.
-assessment-criteria | list    | List of assessment criteria objects containing keys: __"id"__ and __"score"__ (optional)
+Attribute           | Required                         | Description
+--------------------|----------------------------------|------------
+assessment          | Optional                         | Assessment object.
+details             | Optional                         | Details object. May be any valid JSON object at most 2 levels deep. The data is displayed to the customer.
+status              | Yes on create, optional on update | May be __"sending"__, __"sent"__, __"pending"__, __"completed"__ or __"failed"__.
+summary             | Optional                         | Summary text. This field does not have character limit, but we show only 150 characters in the candidate modal. So we recommend keeping it short. Full message can be viewed in 'view details' modal.
+url                 | Optional                         | URL for viewing a report on your website. Must be a valid HTTP or HTTPS URL.
+candidate-id        | Yes on create, no on update      | __Immutable__ numeric identifier for candidate.
+job-id              | Optional                         | ID of the job webhook was sent from.
+attachments         | Optional                         | List of attachment objects containing exactly __"url"__ and __"description"__.
+actions             | Optional                         | List of action objects containing button label and POST endpoint configuration.
+assessment-criteria | Optional                         | List of assessment criteria objects containing keys: __"id"__ and optional __"score"__.
 
 
 #### Assessment object
-Attribute        | Type    | Description
------------------|---------|------------
-score            | integer | Must be between 0 and 100.
-grade            | string or null  | May be __"top_fit"__, __"might_be_fit"__, __"might_not_be_fit"__, __"unknown"__ or __null__.
-duration         | integer | Duration of test in seconds
+Attribute | Required | Description
+----------|----------|------------
+score     | Optional | Must be between 0 and 100.
+grade     | Optional | May be __"top_fit"__, __"might_be_fit"__, __"might_not_be_fit"__, __"unknown"__ or __null__.
+duration  | Optional | Duration of test in seconds. `HH:MM:SS` strings are also accepted on write.
 
 #### Action object
-Attribute        | Type    | Description
------------------|---------|------------
-buttonText       | string  | Text displayed on the action button.
-endpoint         | string  | Path appended to the partner result base URL; Teamtailor issues a POST request when the button is clicked.
+Attribute  | Required | Description
+-----------|----------|------------
+buttonText | Yes      | Text displayed on the action button.
+endpoint   | Yes      | Path appended to the partner result base URL; Teamtailor issues a POST request when the button is clicked.
 
 Actions let you surface contextual buttons on the candidate's partner result card. Provide any `buttonText` you want rendered in the UI and an `endpoint` relative to the your partner base URL. When a recruiter clicks the button we send POST request to `{base-url}/{endpoint}` with the same partner event as [originally sent](#webhooks) allowing you to let user trigger additional operations.
 
@@ -90,7 +90,7 @@ Actions let you surface contextual buttons on the candidate's partner result car
 
 The individual scores for the assessment criteria included in the [Webhook config](#webhook-config).
 
-Attribute        | Type    | Description
------------------|---------|------------
-id               | string  | Your unique identifier for the assessment criteria specified in the webhook config.
-score            | integer | Must be between 0 and 100.
+Attribute | Required | Description
+----------|----------|------------
+id        | Yes      | Your unique identifier for the assessment criteria specified in the webhook config.
+score     | Optional | Must be between 0 and 100.

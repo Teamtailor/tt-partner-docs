@@ -1,5 +1,20 @@
 ## Create a new result
 
+### Request attributes
+
+Attribute           | Required | Description
+--------------------|----------|------------
+status              | Yes      | Partner result status. Must be __"sending"__, __"sent"__, __"pending"__, __"completed"__ or __"failed"__.
+candidate-id        | Yes      | Numeric identifier for the candidate.
+summary             | Optional | Summary text shown on the candidate profile.
+job-id              | Optional | ID of the job webhook was sent from.
+url                 | Optional | URL for viewing a report on your website. Must be a valid HTTP or HTTPS URL.
+assessment          | Optional | Assessment object. `score` must be between 0 and 100, `grade` may be __"top_fit"__, __"might_be_fit"__, __"might_not_be_fit"__, __"unknown"__ or __null__, and `duration` accepts seconds or `HH:MM:SS`.
+details             | Optional | Details object displayed to the customer. Must be valid JSON with a maximum depth of 2.
+attachments         | Optional | List of attachment objects containing exactly __"url"__ and __"description"__.
+actions             | Optional | List of action objects containing `buttonText` and `endpoint`.
+assessment-criteria | Optional | List of assessment criteria objects containing `id` and optional `score` between 0 and 100.
+
 ```http
 POST https://api.teamtailor.com/partner/v1/partner-results HTTP/1.1
 Authorization: Bearer abc123abc123
