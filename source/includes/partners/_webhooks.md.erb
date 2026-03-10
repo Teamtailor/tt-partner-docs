@@ -193,7 +193,7 @@ We expect your webhook to return a HTTP 2xx status code. Other responses will in
 
 ## Webhook Response
 
-You can optionally update the partner result directly from your webhook response without needing to make a separate API call to the [Partner Results](#partner-results) endpoint. Include a `partner_result_attributes` object in your webhook response to automatically update the partner result status, assessment scores, details, and attachments.
+You can optionally update the partner result directly from your webhook response without needing to make a separate API call to the [Partner Results](#partner-results) endpoint. Include a `partner_result_attributes` object in your webhook response to automatically update the partner result status, assessment score, details, and attachments. All fields inside `partner_result_attributes` are optional; include only the ones you want to update.
 
 > Example webhook response payload
 
@@ -226,19 +226,19 @@ You can optionally update the partner result directly from your webhook response
 
 ### Webhook Response JSON object
 
-Attribute               | Type    | Description
------------------------ | ------- | -----------
-partner_result_attributes | object | Container object for partner result updates
+Attribute                 | Required | Description
+--------------------------|----------|------------
+partner_result_attributes | Optional | Container object for partner result updates.
 
 ### Partner Result Attributes object
 
-Attribute               | Type    | Description
------------------------ | ------- | -----------
-status                  | string  | Partner result status (must be a valid status value)
-assessment              | object  | Assessment data containing score
-assessment.score        | integer | Assessment score between 0-100
-details                 | object  | Additional details (maximum depth of 2 levels)
-attachments             | array   | List of attachment objects with `url` and `description`
+Attribute        | Required | Description
+-----------------|----------|------------
+status           | Optional | Partner result status. If provided, it must be a valid status value.
+assessment       | Optional | Assessment object. Currently only `assessment.score` is processed from the webhook response.
+assessment.score | Optional | Assessment score between 0 and 100.
+details          | Optional | Additional details. Must be an object with a maximum depth of 2 levels.
+attachments      | Optional | List of attachment objects containing exactly `url` and `description`.
 
 
 <aside class="notice">
