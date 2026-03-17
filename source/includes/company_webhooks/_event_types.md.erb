@@ -19,11 +19,7 @@ Where:
 
 **`candidate.update` is triggered when any of these fields change:**
 
-`email`, `first_name`, `last_name`, `phone`, `pitch`, `linkedin_url`, `picture`, `referring_site`, `referring_url`, `internal`, `restricted_at`
-
-<aside class="notice">
-Fields that appear in the candidate payload but are stored as associations — such as <strong>tags</strong> and <strong>custom fields</strong> — do <strong>not</strong> trigger a <code>candidate.update</code> event when changed.
-</aside>
+`email`, `first_name`, `last_name`, `phone`, `pitch`, `linkedin_url`, `picture`, `referring_site`, `referring_url`, `internal`, `restricted_at`, `custom_fields`, `locations`
 
 ### Job Events
 * `job.create` - New job created
@@ -32,7 +28,7 @@ Fields that appear in the candidate payload but are stored as associations — s
 
 **`job.update` is triggered when any of these fields change:**
 
-`title`, `body`, `pitch`, `status`, `internal`, `employment_type`, `employment_level`, `remote_status`, `language_code`, `currency`, `min_salary`, `max_salary`, `salary_time_unit`, `start_date`, `end_date`, `resume_requirement`, `additional_files_requirement`, `recruiter_email`, `user_id`, `department_id`, `role_id`, `tags`
+`title`, `body`, `pitch`, `status`, `internal`, `employment_type`, `employment_level`, `remote_status`, `language_code`, `currency`, `min_salary`, `max_salary`, `salary_time_unit`, `start_date`, `end_date`, `resume_requirement`, `additional_files_requirement`, `recruiter_email`, `user_id`, `department_id`, `role_id`, `tags`, `custom_fields`, `locations`, `departments`, `team_memberships`
 
 ### Job Application Events
 * `job_application.create` - New application submitted
