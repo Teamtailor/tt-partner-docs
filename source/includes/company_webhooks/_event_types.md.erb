@@ -17,15 +17,27 @@ Where:
 * `candidate.update` - Candidate information updated
 * `candidate.destroy` - Candidate deleted
 
+**`candidate.update` is triggered when any of these fields change:**
+
+`email`, `first_name`, `last_name`, `phone`, `pitch`, `linkedin_url`, `picture`, `referring_site`, `referring_url`, `internal`, `restricted_at`, `custom_fields`, `locations`
+
 ### Job Events
 * `job.create` - New job created
 * `job.update` - Job information updated
 * `job.destroy` - Job deleted
 
+**`job.update` is triggered when any of these fields change:**
+
+`title`, `body`, `pitch`, `status`, `internal`, `employment_type`, `employment_level`, `remote_status`, `language_code`, `currency`, `min_salary`, `max_salary`, `salary_time_unit`, `start_date`, `end_date`, `resume_requirement`, `additional_files_requirement`, `recruiter_email`, `user_id`, `department_id`, `role_id`, `tags`, `custom_fields`, `locations`, `departments`, `team_memberships`
+
 ### Job Application Events
 * `job_application.create` - New application submitted
 * `job_application.update` - Application updated (e.g., stage change, rejection)
 * `job_application.destroy` - Application deleted
+
+**`job_application.update` is triggered when any of these fields change:**
+
+`stage_id`, `rejected_at`, `cover_letter`, `job_title`, `promotion_id`
 
 <aside class="warning">
 <strong>Important:</strong> When handling job application rejection events, if your system notifies candidates about rejection, you must respect the <code>transparent_recruiting_visible_at</code> date as the earliest date for candidate notification. Do not notify candidates before this date.
