@@ -38,9 +38,4 @@ The standard header for signature verification is `TT-Signature`.
 
 ## Retry Mechanism
 
-If your endpoint is temporarily unavailable or returns a non-2xx status code, Teamtailor will retry the webhook delivery:
-
-- First retry: Shortly after the initial attempt
-- Subsequent retries: Using an exponential backoff strategy
-
-After multiple failed attempts, if the webhook still fails to deliver, it will be logged as a failed delivery.
+There is no retry mechanism at the moment, any non 2xx responses will be logged as a failed delivery.
