@@ -189,7 +189,7 @@ candidate.resume        | Candidate resume, object with: `file-name`, `url`. <br
 
 ### Error handling
 
-We expect your webhook to return a HTTP 2xx status code. Other responses will indicate to us that you didn't successfully receive the webhook. In this case we will attempt to deliver the webhook for three times or until we get a HTTP 2xx status code. We will notify you by email on the first retry failure. To render an error message in the partner result you need to return a plain string with a status code >=400.
+We expect your webhook to return a HTTP 2xx status code. Other responses will indicate to us that you didn't successfully receive the webhook. To render an error message in the partner result you need to return a plain string with a status code >=400.
 
 ## Webhook Response
 
