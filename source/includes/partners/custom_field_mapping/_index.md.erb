@@ -1,0 +1,111 @@
+# Custom field mapping
+
+Custom field mapping lets your integration declare a set of custom fields that should exist on candidates (or jobs) in Teamtailor. When the user activates your integration, they can either map each of your fields to a custom field they already have, or let Teamtailor **create the custom field for them** automatically.
+
+Once a field is mapped, the candidate's (or job's) value for that field is included in the [webhook](#webhooks) payload we send you — keyed by the `apiName` you chose, so you always receive the data under names you control, regardless of how the field is named inside the customer's Teamtailor account.
+
+Use this when your integration needs to read structured data the recruiter maintains in Teamtailor (for example a "Seniority", "Preferred language" or "Notice period" field) without asking every customer to set fields up by hand.
+
+## How it works
+
+1. You declare the fields you care about in a `customFieldMapping` array, as part of your [activation config](#webhook-activation-config).
+2. During activation, the user sees your declared fields and, for each one, chooses to **map it to an existing custom field** or **create a new field** with the name and type you specified.
+3. If they choose to create, Teamtailor creates the custom field on the account. Fields are created only once — activating again will not create duplicates.
+4. From then on, whenever we send a webhook for that candidate or job, the values of the mapped fields are included in the `custom-fields` array, keyed by your `apiName`.
+
+## Declaring the mapping
+
+```json
+{
+  "config": {
+    "fields": [
+      {
+        "id": "clientId",
+        "type": "text",
+        "label": "Client ID",
+        "required": true
+      }
+    ],
+    "customFieldMapping": [
+      {
+        "name": "Preferred language",
+        "type": "select",
+        "apiName": "preferred-language",
+        "options": ["English", "French", "German"]
+      },
+      {
+        "name": "Years of experience",
+        "type": "number",
+        "apiName": "years-of-experience"
+      },
+      {
+        "name": "Available from",
+        "type": "date",
+        "apiName": "available-from"
+      }
+    ]
+  }
+}
+```
+
+Add a `customFieldMapping` array next to `fields` inside your activation config. You can provide this config in either of the ways described in the [Webhook activation config](#webhook-activation-config) section:
+
+- as a **static config** set on the [Partner resource](#partners) (recommended when the fields are the same for every customer), or
+- returned by your **dynamic activation endpoint** (`GET ${BASE_URL}/activation`) when you need to build the list per customer.
+
+### Custom field mapping objects
+
+Attribute | Type   | Required | Description
+----------|--------|----------|------------
+name      | string | Yes      | Human readable name. Used as the field's name in Teamtailor when a new field is created.
+type      | string | Yes      | The custom field type (see below).
+apiName   | string | Yes      | The identifier you want this field to be sent under in the webhook payload. It is normalized to lowercase kebab-case (for example `Years Of Experience` becomes `years-of-experience`), so prefer providing it in that form.
+options   | array  | Conditional | List of option values. **Required** for `select` and `multiselect` — fields of these types are skipped if no options are supplied.
+
+### Supported types
+
+Type          | Description
+--------------|------------
+text          | Free text
+number        | Numeric value
+date          | Date
+checkbox      | Boolean (true / false)
+select        | Single choice from `options`
+multiselect   | Multiple choices from `options`
+url           | URL
+phone         | Phone number
+
+Unknown types are ignored.
+
+## Receiving mapped values in webhooks
+
+Mapped fields are delivered in the candidate's (and, where relevant, the job's) `custom-fields` array in the [webhook payload](#webhooks). Each entry is keyed by your `apiName` and contains the field `value`, its `type`, and `mapped-from` — the original field name as it exists in the customer's Teamtailor account.
+
+```json
+{
+  "custom-fields": [
+    {
+      "preferred-language": {
+        "value": ["English"],
+        "type": "select",
+        "mapped-from": "spoken-language"
+      }
+    },
+    {
+      "years-of-experience": {
+        "value": 8,
+        "type": "number",
+        "mapped-from": "experience-years"
+      }
+    }
+  ]
+}
+```
+
+Attribute   | Description
+------------|------------
+value       | The candidate's or job's value for the field. For `select`/`multiselect` this is a list of selected option values; for `number` it is numeric; for `checkbox` it is a boolean.
+type        | The field type as stored in Teamtailor: `text`, `number`, `date`, `boolean`, `select`, `multiselect`, `url`, `phone`, `email`.
+mapped-from | The field's actual `apiName` inside the customer's account. Present only when the field was mapped through custom field mapping.
+
+A field appears in the payload only when the candidate (or job) has a value for it. If the recruiter has not filled in the field, it is omitted.
