@@ -25,6 +25,7 @@ This is the object representing a result from a test or similar, displayed on th
       "status": "sent",
       "summary": "High five",
       "url": "https://apple.com",
+      "label": "SMS Job Offer Link",
       "candidate-id": 333,
       "job-id": 444,
       "attachments": [
@@ -64,6 +65,7 @@ details             | Optional                         | Details object. May be 
 status              | Yes on create, optional on update | May be __"sending"__, __"sent"__, __"pending"__, __"completed"__ or __"failed"__.
 summary             | Optional                         | Summary text. This field does not have character limit, but we show only 150 characters in the candidate modal. So we recommend keeping it short. Full message can be viewed in 'view details' modal.
 url                 | Optional                         | URL for viewing a report on your website. Must be a valid HTTP or HTTPS URL.
+label               | Optional                         | Free-form text identifying which of your workflows produced this result. Maximum 255 characters. Shown in the candidate activity log.
 candidate-id        | Yes on create, no on update      | __Immutable__ numeric identifier for candidate.
 job-id              | Optional                         | ID of the job webhook was sent from.
 attachments         | Optional                         | List of attachment objects containing exactly __"url"__ and __"description"__.
@@ -77,6 +79,39 @@ Attribute | Required | Description
 score     | Optional | Must be between 0 and 100.
 grade     | Optional | May be __"top_fit"__, __"might_be_fit"__, __"might_not_be_fit"__, __"unknown"__ or __null__.
 duration  | Optional | Duration of test in seconds. `HH:MM:SS` strings are also accepted on write.
+
+#### Label
+
+```http
+PUT https://api.teamtailor.com/partner/v1/partner-results/3230d614-a33b-4a25-ac9c-4ec107e60f2e HTTP/1.1
+Authorization: Bearer abc123abc123
+X-Api-Version: <%= config[:api_version] %>
+Content-Type: application/vnd.api+json
+
+{
+  "data":{
+    "type": "partner-results",
+    "id": "3230d614-a33b-4a25-ac9c-4ec107e60f2e",
+    "attributes":{
+      "label": "SMS Job Offer Link"
+    }
+  }
+}
+```
+
+If your integration fans out to several distinct workflows, a single partner name is not enough for a recruiter to tell which one ran. Without a label the candidate activity log reads `Candidate sent to Zapier` for every send, whatever the underlying automation was.
+
+The `label` lets you name the specific workflow behind a result. When it is set, Teamtailor appends it in parentheses after the partner name in the activity log:
+
+`Candidate sent to Zapier (SMS Job Offer Link)`
+
+The label is yours to define — Teamtailor never generates, translates, edits or moderates it, and recruiters cannot override it. Use a value that means something to the customer, such as the name of the automation, assessment or template that produced the result. Values longer than 255 characters are rejected.
+
+You can set `label` when you [create](#create-a-new-result) a result, or push it later with an [update](#update-a-result). Teamtailor snapshots the current value onto the matching "sent" activity entry, so:
+
+* Updating the label updates what the activity log shows the next time the page is rendered.
+* Results sent without a label render exactly as they did before — the label is entirely optional.
+* Activity entries recorded before this feature shipped are not backfilled; they keep the partner-only text.
 
 #### Action object
 Attribute  | Required | Description

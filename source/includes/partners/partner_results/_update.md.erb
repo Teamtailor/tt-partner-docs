@@ -8,6 +8,7 @@ status              | Optional | Partner result status. If provided, it must be 
 summary             | Optional | Summary text shown on the candidate profile.
 job-id              | Optional | ID of the job webhook was sent from.
 url                 | Optional | URL for viewing a report on your website. Must be a valid HTTP or HTTPS URL.
+label               | Optional | Free-form text naming the workflow that produced this result, shown in the candidate activity log. Maximum 255 characters. Updating it updates the activity log on next render. See [Label](#label).
 assessment          | Optional | Assessment object. `score` must be between 0 and 100, `grade` may be __"top_fit"__, __"might_be_fit"__, __"might_not_be_fit"__, __"unknown"__ or __null__, and `duration` accepts seconds or `HH:MM:SS`.
 details             | Optional | Details object displayed to the customer. Must be valid JSON with a maximum depth of 2.
 attachments         | Optional | List of attachment objects containing exactly __"url"__ and __"description"__.
@@ -28,6 +29,7 @@ Content-Type: application/vnd.api+json
     "attributes":{
       "status": "completed",
       "summary": "The candidate passed the test with excellent results",
+      "label": "Backend Screening",
       "assessment": {
         "score": 82,
         "grade": "top_fit",
@@ -64,6 +66,7 @@ Content-Type: application/vnd.api+json
       "status": "completed",
       "summary": "The candidate passed the test with excellent results",
       "url": "http://www.example.com/test/1234",
+      "label": "Backend Screening",
       "candidate-id": 102
     }
   }
