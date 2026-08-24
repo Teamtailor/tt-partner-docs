@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.3.5
+*August 24, 2026*
+Documented the job offer document in candidate.uploads, exposed with a `type` field set to `job-offer-document`
+
 ## Version 1.3.4
 *July 2, 2025*
 Added detailed job_application webhook event documentation with complete payload serialization fields and transparent recruiting compliance requirements
