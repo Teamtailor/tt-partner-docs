@@ -209,6 +209,8 @@ If a customer's config no longer declares a criterion a rule refers to, the rule
 
 ## End-to-end example
 
+> 1. Your response to `GET ${BASE_URL}/config`
+
 ```json
 {
   "config": {
@@ -228,18 +230,31 @@ If a customer's config no longer declares a criterion a rule refers to, the rule
 }
 ```
 
-```json
+> 4. Reporting the decision once the check comes back
+
+```http
+PUT https://api.teamtailor.com/partner/v1/partner-results/3230d614-a33b-4a25-ac9c-4ec107e60f2e HTTP/1.1
+Authorization: Bearer abc123abc123
+X-Api-Version: <%= config[:api_version] %>
+Content-Type: application/vnd.api+json
+
 {
-  "partner_result_attributes": {
-    "status": "completed",
-    "summary": "Background check complete",
-    "criteria": { "report_decision": "consider" }
+  "data": {
+    "type": "partner-results",
+    "id": "3230d614-a33b-4a25-ac9c-4ec107e60f2e",
+    "attributes": {
+      "status": "completed",
+      "summary": "Background check complete, records found",
+      "criteria": { "report_decision": "consider" }
+    }
   }
 }
 ```
 
 1. A recruiter adds your trigger to the *Background check* stage. Teamtailor calls `GET ${BASE_URL}/config` and shows *Report decision* as a rule source.
 2. They build two rules: *If Report decision is Clear → Offer*, and *Otherwise if Report decision is Consider → Manual review*.
-3. A candidate reaches the stage, the trigger fires, and you receive the [webhook](#webhooks).
-4. Your check finishes. You report `"report_decision": "consider"` with `status: "completed"`.
+3. A candidate reaches the stage, the trigger fires, and you receive the [webhook](#webhooks). You order the check and answer `200`.
+4. The check comes back some hours later. You update the partner result with `status: "completed"` and `"report_decision": "consider"`.
 5. The first rule does not match, the second does, and the candidate moves to *Manual review*.
+
+Had you known the decision while handling the webhook itself, you could have skipped step 4 and returned the same `criteria` object inline in the [webhook response](#webhook-response) instead.
