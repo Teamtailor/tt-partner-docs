@@ -15,6 +15,7 @@ details             | Optional | Details object displayed to the customer. Must 
 attachments         | Optional | List of attachment objects containing exactly __"url"__ and __"description"__.
 actions             | Optional | List of action objects containing `buttonText` and `endpoint`.
 assessment-criteria | Optional | List of assessment criteria objects containing `id` and optional `score` between 0 and 100.
+criteria            | Optional | Flat object of [moving criteria](#moving-criteria) values. Stored, but not evaluated against the trigger's rules until the result is [updated](#update-a-result).
 
 ```http
 POST https://api.teamtailor.com/partner/v1/partner-results HTTP/1.1

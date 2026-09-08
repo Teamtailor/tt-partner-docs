@@ -49,8 +49,11 @@ This is the object representing a result from a test or similar, displayed on th
           "id": "algorithm-test-sorting-66345",
           "score": 45
         }
-      ]
-
+      ],
+      "criteria": {
+        "report_decision": "clear",
+        "risk_score": 2
+      }
     }
   }
 }
@@ -71,6 +74,7 @@ job-id              | Optional                         | ID of the job webhook w
 attachments         | Optional                         | List of attachment objects containing exactly __"url"__ and __"description"__.
 actions             | Optional                         | List of action objects containing button label and POST endpoint configuration.
 assessment-criteria | Optional                         | List of assessment criteria objects containing keys: __"id"__ and optional __"score"__.
+criteria            | Optional                         | Flat object reporting the [moving criteria](#moving-criteria) you declared in your webhook config, used to route the candidate to another stage. Not displayed to the customer.
 
 
 #### Assessment object
@@ -112,6 +116,32 @@ You can set `label` when you [create](#create-a-new-result) a result, or push it
 * Updating the label updates what the activity log shows the next time the page is rendered.
 * Results sent without a label render exactly as they did before — the label is entirely optional.
 * Activity entries recorded before this feature shipped are not backfilled; they keep the partner-only text.
+
+#### Criteria object
+
+```json
+{
+  "data": {
+    "type": "partner-results",
+    "id": "3230d614-a33b-4a25-ac9c-4ec107e60f2e",
+    "attributes": {
+      "status": "completed",
+      "criteria": {
+        "report_decision": "clear",
+        "risk_score": 2
+      }
+    }
+  }
+}
+```
+
+The values behind the [moving criteria](#moving-criteria) you declared in your [webhook config](#webhook-config). A recruiter can build rules on these to move the candidate to a different stage when your result comes in.
+
+The object is flat: each key is the `id` of a criterion you declared, and each value is either the `id` of one of that criterion's outcomes (for `kind: "outcome"`) or a number (for `kind: "score"`). Nested objects are rejected. Keys you never declared are stored but never match a rule.
+
+Unlike `details`, `criteria` is not rendered anywhere on the candidate — it exists to drive the routing rules. Put anything a recruiter should read in `details` or `summary`.
+
+Rules are evaluated when the result is **updated**, so `criteria` sent on [create](#create-a-new-result) alone will not move anyone. See [Moving criteria](#moving-criteria) for the full flow.
 
 #### Action object
 Attribute  | Required | Description

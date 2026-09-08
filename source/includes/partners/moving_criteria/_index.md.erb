@@ -1,0 +1,245 @@
+# Moving criteria
+
+Moving criteria let a customer route a candidate to a different stage depending on what your integration reports back.
+
+When a recruiter adds your integration as a trigger on a stage, they can build an ordered list of rules:
+
+`If Report decision is Clear → Interview`
+`Otherwise if Report decision is Consider → Manual review`
+`Otherwise if Result status is Failed → do nothing`
+
+Teamtailor evaluates the rules every time the [partner result](#partner-results) is updated, top to bottom, and the first rule that matches decides where the candidate goes.
+
+Two things are up to you:
+
+1. **Declare** the outcomes you can report, in your [webhook config](#webhook-config), so the recruiter has something to pick from.
+2. **Report** the actual value for a candidate, in the `criteria` object on the [partner result](#partner-results).
+
+Recruiters can always build rules on the assessment score and on the result status, without any work on your side. Declaring moving criteria is what lets them build rules on *your* vocabulary — a background check decision, a risk band, a proctoring verdict.
+
+## Declaring your criteria
+
+```http
+GET ${BASE_URL}/config?job_id=123&stage_id=456&user_id=789 HTTP/1.1
+Authorization: Bearer xxx-provider-key
+```
+
+> Expected response
+
+```json
+{
+  "config": {
+    "fields": [
+      {
+        "id": "package",
+        "label": "Screening package",
+        "type": "select",
+        "options": [
+          { "id": "basic", "label": "Basic" },
+          { "id": "extended", "label": "Extended" }
+        ]
+      }
+    ],
+    "moving_criteria": [
+      {
+        "id": "report_decision",
+        "name": "Report decision",
+        "kind": "outcome",
+        "outcomes": [
+          {
+            "id": "clear",
+            "label": "Clear",
+            "hint": "No records found"
+          },
+          {
+            "id": "consider",
+            "label": "Consider",
+            "hint": "Records found, a human should look at the report"
+          },
+          {
+            "id": "suspended",
+            "label": "Suspended",
+            "hint": "The candidate did not complete the check"
+          }
+        ]
+      },
+      {
+        "id": "risk_score",
+        "name": "Risk score",
+        "kind": "score",
+        "range": { "min": 0, "max": 10 }
+      }
+    ]
+  }
+}
+```
+
+Add a `moving_criteria` array to the config you return from `GET ${BASE_URL}/config`, alongside `fields` and `assessment_criteria`.
+
+Each entry is one thing a rule can be built on. Declare as many as you like — a decision, a sub-score, a verdict per check type.
+
+Attribute | Type   | Required | Description
+----------|--------|----------|------------
+id        | string | Yes      | Your identifier for this criterion. Used as the key in the `criteria` object when you report the result. Must be stable — see [Changing your criteria](#changing-your-criteria).
+name      | string | Yes      | Human readable name. Shown to the recruiter in the rule builder.
+kind      | string | Yes      | Either `"outcome"` for a closed list of values, or `"score"` for a number.
+outcomes  | array  | For `outcome` | The values you can report for this criterion.
+range     | object | For `score` | The numeric range you report in, as `{ "min": 0, "max": 10 }`. Defaults to `0`–`100` when omitted.
+
+### Outcome object
+
+Attribute | Type   | Required | Description
+----------|--------|----------|------------
+id        | string | Yes      | The value you send back in `criteria`. Must be stable.
+label     | string | Yes      | Human readable label, shown in the dropdown.
+hint      | string | Optional | One line explaining when this outcome occurs. Shown under the label in the dropdown — worth filling in, since recruiters rarely know your vocabulary.
+
+### Range object
+
+Attribute | Type   | Required | Description
+----------|--------|----------|------------
+min       | number | Yes      | Lowest value you report.
+max       | number | Yes      | Highest value you report.
+
+The range is only used to bound the number input in the rule builder. Teamtailor does not reject a reported value outside it.
+
+<aside class="notice">
+If you serve the same config to every customer you can store it statically on the <a href="#partners">Partner resource</a> instead of implementing <code>GET /config</code>. Contact Teamtailor before doing that for moving criteria — the static config path currently expects the key spelled <code>movingCriteria</code>.
+</aside>
+
+## Reporting the result
+
+```json
+{
+  "partner_result_attributes": {
+    "status": "completed",
+    "criteria": {
+      "report_decision": "clear",
+      "risk_score": 2
+    }
+  }
+}
+```
+
+Report the values in a `criteria` object on the partner result. The keys are the `id`s you declared, and the values are:
+
+Criterion kind | Value
+---------------|------
+`outcome`      | The `id` of one of the outcomes you declared for that criterion, as a string.
+`score`        | A number.
+
+`criteria` must be a flat object — one level, no nesting. Keys you did not declare are stored but never match a rule.
+
+`criteria` is control data, not content: it is not rendered on the candidate card. Anything you want the recruiter to read belongs in [`details`](#partner-result-object) or `summary`, as before.
+
+### Where to send it
+
+```http
+PUT https://api.teamtailor.com/partner/v1/partner-results/3230d614-a33b-4a25-ac9c-4ec107e60f2e HTTP/1.1
+Authorization: Bearer abc123abc123
+X-Api-Version: <%= config[:api_version] %>
+Content-Type: application/vnd.api+json
+
+{
+  "data": {
+    "type": "partner-results",
+    "id": "3230d614-a33b-4a25-ac9c-4ec107e60f2e",
+    "attributes": {
+      "status": "completed",
+      "summary": "Background check finished, no records found",
+      "criteria": {
+        "report_decision": "clear",
+        "risk_score": 2
+      }
+    }
+  }
+}
+```
+
+Either way works, and both are evaluated the moment the result is updated:
+
+* In the [webhook response](#webhook-response), as `partner_result_attributes.criteria`. Use this when you already know the outcome while handling the webhook.
+* With an [update to the partner result](#update-a-result), as the `criteria` attribute. Use this when the result arrives later.
+
+<aside class="warning">
+Rules are only evaluated when a partner result is <strong>updated</strong>, never when it is first created. Teamtailor creates the result for you when the trigger fires, so in practice you always update — but if you create results yourself with <a href="#create-a-new-result">POST /partner-results</a>, send <code>criteria</code> in a follow-up update.
+</aside>
+
+`criteria` is stored on the result and persists across updates, so you can report values as they arrive. Send whatever you have; a rule matches as soon as everything it asks for is present.
+
+## How rules are evaluated
+
+The recruiter builds an ordered list of rules. Each rule holds one or more conditions and a destination stage.
+
+* **Rules are checked in order and the first match wins.** Everything below a matching rule is ignored, so recruiters put exceptions on top.
+* **Conditions inside a rule are joined by `and` or `or`**, chosen per rule. With `and` every condition has to match; with `or` one is enough.
+* **A rule can point at "Do nothing"**, which stops evaluation without moving the candidate.
+* If no rule matches, the candidate stays where they are.
+
+A condition matches on one of four things:
+
+Source          | Matches against                                             | Comparison
+----------------|-------------------------------------------------------------|------------
+Your outcome    | `criteria["<your criterion id>"]`                            | Equal to one of your declared outcomes
+Your score      | `criteria["<your criterion id>"]`                            | `above`, `below`, `equal`, or `between` two numbers
+Assessment score| `assessment.score` on the partner result                      | `above`, `below`, `equal`, or `between` two numbers
+Result status   | `status` on the partner result                                | Equal to `sent`, `pending`, `completed` or `failed`
+
+`above` and `below` are inclusive — `above 80` matches a score of exactly 80, and `between 60 and 80` includes both ends.
+
+A score condition never matches when the value is missing or is not a number, so a rule on `risk_score` stays inert until you report one.
+
+### When the move is skipped
+
+Even when a rule matches, Teamtailor will not move the candidate if:
+
+* The candidate has already been moved out of the stage the trigger sits on. Rules only apply while the candidate is still where the trigger fired.
+* The candidate has been rejected.
+* The destination stage no longer exists on the job.
+
+## Changing your criteria
+
+Criterion `id`s and outcome `id`s are written into the customer's trigger configuration when a rule is saved. They are your public contract:
+
+* **Renaming a `name`, `label` or `hint` is safe.** Recruiters see the new text immediately.
+* **Changing or removing an `id` breaks existing rules.** The rule keeps the old identifier, renders as *Unavailable* in the trigger, and never matches — so candidates silently stop moving. Add a new criterion instead of repurposing an old one.
+* **Adding criteria or outcomes is safe.** They appear the next time a recruiter opens the trigger.
+
+If a customer's config no longer declares a criterion a rule refers to, the rule stays saved. Restoring the criterion with the same `id` brings it back to life.
+
+## End-to-end example
+
+```json
+{
+  "config": {
+    "fields": [],
+    "moving_criteria": [
+      {
+        "id": "report_decision",
+        "name": "Report decision",
+        "kind": "outcome",
+        "outcomes": [
+          { "id": "clear", "label": "Clear", "hint": "No records found" },
+          { "id": "consider", "label": "Consider", "hint": "Records found" }
+        ]
+      }
+    ]
+  }
+}
+```
+
+```json
+{
+  "partner_result_attributes": {
+    "status": "completed",
+    "summary": "Background check complete",
+    "criteria": { "report_decision": "consider" }
+  }
+}
+```
+
+1. A recruiter adds your trigger to the *Background check* stage. Teamtailor calls `GET ${BASE_URL}/config` and shows *Report decision* as a rule source.
+2. They build two rules: *If Report decision is Clear → Offer*, and *Otherwise if Report decision is Consider → Manual review*.
+3. A candidate reaches the stage, the trigger fires, and you receive the [webhook](#webhooks).
+4. Your check finishes. You report `"report_decision": "consider"` with `status: "completed"`.
+5. The first rule does not match, the second does, and the candidate moves to *Manual review*.

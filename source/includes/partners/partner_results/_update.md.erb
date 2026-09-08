@@ -14,6 +14,7 @@ details             | Optional | Details object displayed to the customer. Must 
 attachments         | Optional | List of attachment objects containing exactly __"url"__ and __"description"__.
 actions             | Optional | List of action objects containing `buttonText` and `endpoint`.
 assessment-criteria | Optional | List of assessment criteria objects containing `id` and optional `score` between 0 and 100.
+criteria            | Optional | Flat object of [moving criteria](#moving-criteria) values, keyed by the criterion `id`s you declared in your webhook config. Values are an outcome `id` or a number. Evaluated against the trigger's rules as soon as the update is saved.
 candidate-id        | No       | __Immutable__. `candidate-id` is not updatable and should not be sent in update requests.
 
 ```http
@@ -38,6 +39,10 @@ Content-Type: application/vnd.api+json
       "details": {
         "rating": "10",
         "awesomeness": "confirmed"
+      },
+      "criteria": {
+        "report_decision": "clear",
+        "risk_score": 2
       }
     }
   }
@@ -67,10 +72,16 @@ Content-Type: application/vnd.api+json
       "summary": "The candidate passed the test with excellent results",
       "url": "http://www.example.com/test/1234",
       "label": "Backend Screening",
-      "candidate-id": 102
+      "candidate-id": 102,
+      "criteria": {
+        "report_decision": "clear",
+        "risk_score": 2
+      }
     }
   }
 }
 ```
 
 Update a result by using the ID from the [Webhook object](#webhooks).
+
+Updating a result is also what triggers stage routing. If the customer has built rules on your [moving criteria](#moving-criteria), Teamtailor evaluates them against the saved result immediately after the update, and moves the candidate when a rule matches.
