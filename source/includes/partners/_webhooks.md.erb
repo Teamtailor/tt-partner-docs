@@ -198,7 +198,7 @@ We expect your webhook to return a HTTP 2xx status code. Other responses will in
 
 ## Webhook Response
 
-You can optionally update the partner result directly from your webhook response without needing to make a separate API call to the [Partner Results](#partner-results) endpoint. Include a `partner_result_attributes` object in your webhook response to automatically update the partner result status, assessment score, details, and attachments. All fields inside `partner_result_attributes` are optional; include only the ones you want to update.
+You can optionally update the partner result directly from your webhook response without needing to make a separate API call to the [Partner Results](#partner-results) endpoint. Include a `partner_result_attributes` object in your webhook response to automatically update the partner result status, assessment score, details, attachments, and moving criteria. All fields inside `partner_result_attributes` are optional; include only the ones you want to update.
 
 > Example webhook response payload
 
@@ -224,7 +224,11 @@ You can optionally update the partner result directly from your webhook response
         "url": "https://slack.com",
         "description": "slack"
       }
-    ]
+    ],
+    "criteria": {
+      "report_decision": "clear",
+      "risk_score": 2
+    }
   }
 }
 ```
@@ -244,6 +248,7 @@ assessment       | Optional | Assessment object. Currently only `assessment.scor
 assessment.score | Optional | Assessment score between 0 and 100.
 details          | Optional | Additional details. Must be an object with a maximum depth of 2 levels.
 attachments      | Optional | List of attachment objects containing exactly `url` and `description`.
+criteria         | Optional | Flat object of [moving criteria](#moving-criteria) values, keyed by the criterion `id`s you declared in your webhook config. Evaluated against the trigger's rules as soon as the response is processed, which can move the candidate to another stage.
 
 
 <aside class="notice">
