@@ -1,7 +1,9 @@
 source 'https://rubygems.org'
 
 # Middleman
-gem 'middleman', '~> 4.3.11'
+gem 'middleman', '~> 4.4.0'
+# Newer Thor releases require a newer Ruby than the Docker image provides.
+gem 'thor', '< 1.3'
 gem 'middleman-gh-pages', '~> 0.0.3'
 gem 'middleman-syntax', '~> 2.1.0'
 gem 'middleman-autoprefixer', '~> 2.7.0'
