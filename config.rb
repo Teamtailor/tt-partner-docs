@@ -30,6 +30,7 @@ activate :autoprefixer do |config|
 end
 
 # Github pages require relative links
+require File.expand_path('lib/inline_url_rewriter_content_length', __dir__)
 activate :relative_assets
 set :relative_links, true
 
