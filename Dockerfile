@@ -10,7 +10,7 @@ WORKDIR /app
 
 
 COPY Gemfile Gemfile.lock ./
-RUN gem install bundler -v 1.17.3
+RUN gem install bundler -v 2.3.26
 RUN bundle install
 
 

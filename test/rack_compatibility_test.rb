@@ -1,11 +1,12 @@
-# Run from the repository root: bundle exec ruby test/inline_url_rewriter_content_length_test.rb
+# Run from the repository root: bundle exec ruby test/rack_compatibility_test.rb
+require 'bundler/setup'
 require 'minitest/autorun'
 require 'middleman-core'
 require 'middleman-core/load_paths'
 Middleman.setup_load_paths
 require 'middleman-core/rack'
 
-class InlineURLRewriterContentLengthTest < Minitest::Test
+class RackCompatibilityTest < Minitest::Test
   def self.request
     @request ||= begin
       app = Middleman::Application.new do
@@ -41,6 +42,23 @@ class InlineURLRewriterContentLengthTest < Minitest::Test
     head = self.class.request.head('/partners/', options)
     assert_equal 200, get.status
     assert_equal get.body.bytesize.to_s, get['Content-Length']
+    assert_equal get.status, head.status
+    assert_equal get['Content-Length'], head['Content-Length']
+    assert_empty head.body
+  end
+
+  # A small header exercises the Range-count guard without resource exhaustion.
+  def test_excessive_ranges_are_ignored
+    path = '/images/logo.png'
+    whole = File.binread("source#{path}")
+    options = { 'HTTP_RANGE' => 'bytes=' + Array.new(101, '0-0').join(',') }
+    assert_nil Rack::Utils.get_byte_ranges(options['HTTP_RANGE'], whole.bytesize)
+    get = self.class.request.get(path, options)
+    head = self.class.request.head(path, options)
+    assert_equal 200, get.status
+    assert_equal whole, get.body.b
+    assert_equal whole.bytesize.to_s, get['Content-Length']
+    assert_nil get['Content-Range']
     assert_equal get.status, head.status
     assert_equal get['Content-Length'], head['Content-Length']
     assert_empty head.body
