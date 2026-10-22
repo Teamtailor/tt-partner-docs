@@ -8,7 +8,7 @@ The JSON to the right is an example of the expected response.
 
 If the config is requested from a "trigger" on a job, we will include the job and stage id's as parameters, which can be used as context for the form.
 
-When the config is requested for a specific candidate, we also include `candidate_id`. It is not included when setting up a trigger.
+When the config is requested for a specific candidate, we also include `candidate_id`. It is not included when setting up a trigger, since there is no candidate at that point.
 
 Note, if you use the same config with the same set of fields for all clients, you can save a static config on the [Partner resource](#partners).
 In that case we won't fetch this endpoint to get the config.
