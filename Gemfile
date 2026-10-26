@@ -1,3 +1,6 @@
+# concurrent-ruby >= 1.3.5 no longer loads logger, which ActiveSupport 6.1 expects.
+require 'logger'
+
 source 'https://rubygems.org'
 
 # Middleman
