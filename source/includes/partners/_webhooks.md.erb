@@ -98,6 +98,11 @@ Authorization: Bearer xxx-provider-key
         "status": {
           "rejected": false
         },
+        "referring-site": "LinkedIn",
+        "referring-url": "https://www.linkedin.com/jobs/view/1234567890",
+        "internal": false,
+        "referred": true,
+        "sourced": false,
         "triggered-by": {
           "id": 31,
           "email": "email22@example.com",
@@ -181,7 +186,7 @@ partner-result          | The result presented to the customer. Update scores, s
 partner-result.update-url | The URL used to update a [Partner Results resource](#partner-results)
 company                 | Company data: `uuid`, `name`, `url` (to career site), `logotype` (URL to file).
 candidate               | Candidate data.
-candidate.job           | Candidate job data: `id`, `title`, `stage`, `tags`, `custom-fields`. When run by trigger also includes: `stage-id`, `trigger-id` and `triggered-by`.
+candidate.job           | Candidate job data: `id`, `title`, `stage`, `tags`, `custom-fields`. When run by trigger also includes: `stage-id`, `trigger-id` and `triggered-by`. <br> Application source data, taken from this job application (a candidate can apply to several jobs from different sources): `referring-site`, `referring-url`, `internal`, `referred` (the candidate was referred to this job or through a general referral), `sourced`. Only included when the candidate has an application to the job.
 candidate.recruiter     | Job recruiter data: `name`, `email`, `phone`.
 candidate.locations     | Candidate locations, list with: `name`, `address`.
 candidate.questions     | Candidate answers to questions, list with: `question`, `answer`. Supported types: Text, Choice (list), Boolean (`yes`/`no`), Range (eg, "10 years"), File (url to file, valid for 1 hour)
