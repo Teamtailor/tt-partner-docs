@@ -103,6 +103,40 @@ Authorization: Bearer xxx-provider-key
         "internal": false,
         "referred": true,
         "sourced": false,
+        "body": "<p>We are looking for a full-stack web developer to join our product team.</p>",
+        "pitch": "Build the product our customers love",
+        "remote-status": "hybrid",
+        "employment-type": "fully",
+        "employment-level": "mid",
+        "department": {
+          "name": "Product development"
+        },
+        "role": {
+          "name": "Developer"
+        },
+        "locations": [
+          {
+            "address": "Sankt Paulsgatan 7B",
+            "administrative-area": null,
+            "city": "Stockholm",
+            "country": "Sweden",
+            "country-code": "SE",
+            "region": null,
+            "zip": "118 46"
+          }
+        ],
+        "start-date": "2026-10-01T00:00:00.000+02:00",
+        "end-date": "2026-11-30T00:00:00.000+01:00",
+        "created-date": "2026-09-28T10:15:42.123+02:00",
+        "url": "https://career.teamtailor.com/jobs/12345-full-stack-web-developer",
+        "apply-url": "https://career.teamtailor.com/jobs/12345-full-stack-web-developer/applications/new",
+        "salary": {
+          "min-salary": 50000,
+          "max-salary": 60000,
+          "salary-currency": "EUR",
+          "salary-time-unit": "yearly",
+          "compensation-type": "gross_salary"
+        },
         "triggered-by": {
           "id": 31,
           "email": "email22@example.com",
@@ -164,7 +198,18 @@ Authorization: Bearer xxx-provider-key
     "uuid": "vAXspNm0J2Y",
     "name": "Teamtailor",
     "url": "https://career.teamtailor.com",
-    "logotype": "https://res.cloudinary.com/teamtailor/image/upload/c_limit,f_auto,h_100,q_auto,w_100,dpr_2.0/v1433344861/b2urpbafegvjzexula0n"
+    "logotype": "https://res.cloudinary.com/teamtailor/image/upload/c_limit,f_auto,h_100,q_auto,w_100,dpr_2.0/v1433344861/b2urpbafegvjzexula0n",
+    "company-info-about": "<p>Teamtailor is the applicant tracking system made for all types of companies.</p>",
+    "subdomain": "career",
+    "headquarters": {
+      "address": "Sankt Paulsgatan 7B",
+      "administrative-area": null,
+      "city": "Stockholm",
+      "country": "Sweden",
+      "country-code": "SE",
+      "region": null,
+      "zip": "118 46"
+    }
   }
 }
 ```
@@ -184,9 +229,9 @@ id                      | Unique identifier of this event.
 webhook-data            | The picked options from your [Webhook config](#webhook-config), for example test ID and threshold value.
 partner-result          | The result presented to the customer. Update scores, status etc using the [Partner Results resource](#partner-results).
 partner-result.update-url | The URL used to update a [Partner Results resource](#partner-results)
-company                 | Company data: `uuid`, `name`, `url` (to career site), `logotype` (URL to file).
+company                 | Company data: `uuid`, `name`, `url` (to career site), `logotype` (URL to file). <br> With the "Include job data" option enabled, also: `company-info-about` (company description), `subdomain` and `headquarters` (location with `address`, `administrative-area`, `city`, `country`, `country-code`, `region`, `zip`).
 candidate               | Candidate data.
-candidate.job           | Candidate job data: `id`, `title`, `stage`, `tags`, `custom-fields`. When run by trigger also includes: `stage-id`, `trigger-id` and `triggered-by`. <br> Application source data, taken from this job application (a candidate can apply to several jobs from different sources): `referring-site`, `referring-url`, `internal`, `referred` (the candidate was referred to this job or through a general referral), `sourced`. Only included when the candidate has an application to the job.
+candidate.job           | Candidate job data: `id`, `title`, `stage`, `tags`, `custom-fields`. When run by trigger also includes: `stage-id`, `trigger-id` and `triggered-by`. <br> Application source data, taken from this job application (a candidate can apply to several jobs from different sources): `referring-site`, `referring-url`, `internal`, `referred` (the candidate was referred to this job or through a general referral), `sourced`. Only included when the candidate has an application to the job. <br> With the "Include job data" option enabled, also: `body` (job description, HTML), `pitch`, `remote-status`, `employment-type`, `employment-level`, `department` (`name`), `role` (`name`), `locations` (list with the same fields as `company.headquarters`), `start-date`, `end-date`, `created-date`, `url` and `apply-url` (only for published, non-internal jobs), `salary` (`min-salary`, `max-salary`, `salary-currency`, `salary-time-unit`, `compensation-type`; only when the job shows its salary). <br> **Note:** Job data is only available to partners with "Include job data" option enabled. To enable this option, please contact us directly.
 candidate.recruiter     | Job recruiter data: `name`, `email`, `phone`.
 candidate.locations     | Candidate locations, list with: `name`, `address`.
 candidate.questions     | Candidate answers to questions, list with: `question`, `answer`. Supported types: Text, Choice (list), Boolean (`yes`/`no`), Range (eg, "10 years"), File (url to file, valid for 1 hour)
