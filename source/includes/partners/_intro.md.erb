@@ -22,3 +22,6 @@ Stack  | Teamtailor Partner API Base URL
 EU     | api.teamtailor.com
 NA     | api.na.teamtailor.com
 AP     | api.au.teamtailor.com
+
+### Which stack a request comes from
+Every request Teamtailor sends to your integration (`POST /webhook`, `GET /config`, `GET /activation` and dynamic field requests) includes a `Teamtailor-Host` header with the host of the stack that sent it, for example `na.teamtailor.com`.
