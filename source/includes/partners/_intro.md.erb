@@ -25,7 +25,3 @@ AP     | api.au.teamtailor.com
 
 ### Which stack a request comes from
 Every request Teamtailor sends to your integration (`POST /webhook`, `GET /config`, `GET /activation` and dynamic field requests) includes a `Teamtailor-Host` header with the host of the stack that sent it, for example `na.teamtailor.com`.
-
-To call Teamtailor back for that activation, use `https://api.` followed by the header value as the base URL. A request with `Teamtailor-Host: na.teamtailor.com` means you call `https://api.na.teamtailor.com`, both for the Partner API and for the Public API with the `teamtailor-api-token`.
-
-Check that the value is a Teamtailor host before you send a token to it.
