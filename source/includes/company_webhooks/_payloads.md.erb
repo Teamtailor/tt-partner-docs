@@ -77,6 +77,49 @@ The job application resource includes the following attributes:
 <strong>Transparent Recruiting Compliance:</strong> If your system notifies candidates about application status changes (especially rejections), you must respect the <code>transparent_recruiting_visible_at</code> date. This represents the earliest date when you can notify the candidate about their rejection status.
 </aside>
 
+### Audit Event
+An audit event payload has its attributes directly in `payload`, with snake_case keys:
+
+```json
+{
+  "payload": {
+    "event_name": "audit_event.create",
+    "id": 143,
+    "action": "update",
+    "actor_id": 1,
+    "actor_label": "Jane Doe",
+    "actor_type": "user",
+    "changes": [
+      {"field": "title", "label": "Title", "visible": true, "old_and_new": true, "from": "Developer", "to": "Senior developer"},
+      {"field": "body", "label": "Body", "visible": false, "old_and_new": true, "from": null, "to": null}
+    ],
+    "company_uuid": "OF71skEUFrs",
+    "description": null,
+    "entry_client": "web_app",
+    "ip_address": "203.0.113.7",
+    "source_id": 42,
+    "source_label": "Senior developer",
+    "source_type": "job",
+    "timestamp": "2026-11-21T15:47:46.573+01:00",
+    "teamtailor_host": "teamtailor.com"
+  },
+  "signature": "NjJmOGIyYTYyNmNmNzVlYjEyZDk4ZmYxODQzYTFhZTlkZDUzNzljM2NlZDEyNzBiNjgwMmFkNDkyOGQ4MmU0YQ=="
+}
+```
+
+- `id` - Audit event identifier, the same as in `GET /v1/audit-events`
+- `action` - What happened, such as `create`, `update` or `destroy`
+- `source_type`, `source_id`, `source_label` - The record the event is about, such as a job or a candidate. `source_label` keeps the record's name after the record is deleted
+- `actor_type`, `actor_id`, `actor_label` - Who did it. `actor_type` is one of `user`, `api_key`, `copilot`, `mcp`, `candidate` and `system`
+- `changes` - The fields that changed. `label` is always in English, so match on `field`. `from` and `to` are `null` for fields whose values the audit log does not show, such as the job ad text. Secrets, such as API key values and passwords, are never included
+- `entry_client` - Where the change came from: `web_app`, `mobile_app`, `sourcing_extension`, `career_site`, `public_api`, `mcp`, `copilot`, `partner`, `system` or `unknown`
+- `ip_address` - The IP address of the request, or `null` when there was none
+- `description` - A short text about the event, or `null`
+- `timestamp` - When the event happened
+- `company_uuid` - Company unique identifier
+
+Teamtailor sends the webhook after the event is saved. Events can arrive in a different order than they happened, so sort them by `timestamp` or `id`. A failed delivery is not retried. To make sure that no event is missing, also collect new events at a regular interval with `GET /v1/audit-events` (see the Audit Events section of the [API documentation](https://docs.teamtailor.com)), and skip events whose `id` you already have.
+
 ## Headers
 
 Each webhook request includes these headers:
@@ -86,5 +129,5 @@ Each webhook request includes these headers:
 - `teamtailor-api-token`: API token (if applicable)
 
 <aside class="notice">
-Note that attributes follow kebab-case naming convention (e.g., "company-name", "remote-status").
+Note that attributes follow kebab-case naming convention (e.g., "company-name", "remote-status"). Audit event attributes use snake_case (e.g., "actor_label", "source_type").
 </aside>
