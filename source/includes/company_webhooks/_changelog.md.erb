@@ -1,5 +1,10 @@
 # Changelog
 
+### 2026-11-26
+Added the `audit_event.create` event and its payload.
+
+Fixed text values that contain ".0" in all webhook payloads. They now arrive unchanged: before, the IP address "10.0.0.1" arrived as "10.0.1".
+
 ### 2026-04-02
 Updated real-time updates description
 
